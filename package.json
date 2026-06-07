@@ -1,0 +1,14 @@
+{
+  "name": "kidstv-shorts-agent",
+  "version": "1.0.0",
+  "description": "AI-powered YouTube Kids Shorts automation agent",
+  "main": "scripts/agent.js",
+  "scripts": {
+    "start": "node scripts/agent.js",
+    "get-token": "node scripts/get_token.js"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=18"
+  }
+}

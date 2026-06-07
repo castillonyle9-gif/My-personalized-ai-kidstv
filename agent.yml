@@ -1,0 +1,62 @@
+name: Kids TV Shorts Agent
+
+on:
+  schedule:
+    # Runs at 06:00, 11:00, 15:00 UTC daily = 10AM, 3PM, 7PM UAE time
+    - cron: '0 6 * * *'
+    - cron: '0 11 * * *'
+    - cron: '0 15 * * *'
+  repository_dispatch:
+    types: [manual_trigger]
+  workflow_dispatch:
+
+jobs:
+  generate-and-upload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Kids TV Agent
+        env:
+          # AI API Keys - 3 accounts rotate automatically
+          GEMINI_KEY_A: ${{ secrets.GEMINI_KEY_A }}
+          GEMINI_KEY_B: ${{ secrets.GEMINI_KEY_B }}
+          GEMINI_KEY_C: ${{ secrets.GEMINI_KEY_C }}
+
+          # Video Generator API Keys - 3 accounts rotate by credits
+          VID_KEY_1: ${{ secrets.VID_KEY_1 }}
+          VID_SVC_1: ${{ secrets.VID_SVC_1 }}
+          VID_KEY_2: ${{ secrets.VID_KEY_2 }}
+          VID_SVC_2: ${{ secrets.VID_SVC_2 }}
+          VID_KEY_3: ${{ secrets.VID_KEY_3 }}
+          VID_SVC_3: ${{ secrets.VID_SVC_3 }}
+
+          # YouTube OAuth Credentials
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+
+          # GitHub token for reading/writing queue.json
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO: ${{ github.repository }}
+
+        run: node scripts/agent.js
+
+      - name: Commit updated queue
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "Kids TV Agent"
+          git add queue.json output_log.json || true
+          git diff --staged --quiet || git commit -m "Agent run: $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push || true

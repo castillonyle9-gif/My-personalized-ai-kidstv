@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kids TV Shorts Agent</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --surface2: #1c1c26;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #f0f0f5;
+    --muted: #888897;
+    --accent: #6c63ff;
+    --accent2: #ff6b6b;
+    --green: #3ddc84;
+    --amber: #ffb347;
+    --font: 'Segoe UI', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; }
+
+  .stars {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(108,99,255,0.04) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(255,107,107,0.04) 0%, transparent 50%);
+  }
+
+  .container { max-width: 780px; margin: 0 auto; padding: 2rem 1.5rem; position: relative; z-index: 1; }
+
+  header { text-align: center; margin-bottom: 2.5rem; }
+  .logo-wrap { display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; border-radius: 18px; background: linear-gradient(135deg, var(--accent), var(--accent2)); margin-bottom: 1rem; font-size: 30px; }
+  h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+  h1 span { background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  header p { color: var(--muted); font-size: 14px; margin-top: 6px; }
+
+  .status-bar { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; margin-bottom: 1.5rem; font-size: 13px; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .status-bar .label { color: var(--muted); }
+  .status-bar .value { color: var(--text); font-weight: 500; }
+  .status-bar .sep { color: var(--border2); }
+
+  .card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 14px; padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
+  .card-title { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; display: flex; align-items: center; gap: 6px; }
+  .card-title .badge { font-size: 10px; padding: 2px 7px; border-radius: 4px; text-transform: none; letter-spacing: 0; font-weight: 500; }
+  .badge-auto { background: rgba(61,220,132,0.15); color: var(--green); }
+  .badge-manual { background: rgba(108,99,255,0.15); color: #a59cff; }
+
+  .form-row { display: flex; gap: 10px; margin-bottom: 10px; }
+  .form-row.stack { flex-direction: column; }
+  select, input[type=text], input[type=password], textarea {
+    background: var(--surface2); border: 0.5px solid var(--border2); color: var(--text);
+    border-radius: 8px; padding: 10px 12px; font-size: 13px; font-family: var(--font);
+    outline: none; transition: border-color 0.2s;
+  }
+  select:focus, input:focus, textarea:focus { border-color: var(--accent); }
+  select { cursor: pointer; }
+  textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+  label { font-size: 12px; color: var(--muted); display: block; margin-bottom: 4px; }
+
+  .input-group { flex: 1; display: flex; flex-direction: column; }
+
+  .btn { padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #7b73ff; transform: translateY(-1px); }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-outline { background: transparent; color: var(--text); border: 0.5px solid var(--border2); }
+  .btn-outline:hover { background: var(--surface2); }
+  .btn-green { background: var(--green); color: #000; }
+  .btn-green:hover { background: #52e898; }
+  .btn-sm { padding: 6px 12px; font-size: 12px; }
+
+  .queue-list { display: flex; flex-direction: column; gap: 8px; }
+  .queue-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--surface2); border: 0.5px solid var(--border); border-radius: 10px; font-size: 13px; }
+  .queue-num { width: 22px; height: 22px; border-radius: 6px; background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .queue-info { flex: 1; }
+  .queue-topic { font-weight: 500; }
+  .queue-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .queue-status { font-size: 11px; padding: 3px 9px; border-radius: 5px; font-weight: 500; flex-shrink: 0; }
+  .status-pending { background: rgba(255,179,71,0.15); color: var(--amber); }
+  .status-done { background: rgba(61,220,132,0.15); color: var(--green); }
+  .status-running { background: rgba(108,99,255,0.15); color: #a59cff; }
+  .queue-del { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 16px; padding: 2px 6px; border-radius: 4px; }
+  .queue-del:hover { color: var(--accent2); background: rgba(255,107,107,0.1); }
+
+  .output-block { background: var(--surface2); border: 0.5px solid var(--border); border-radius: 10px; padding: 14px; font-size: 13px; line-height: 1.7; color: var(--text); white-space: pre-wrap; min-height: 80px; }
+  .output-block.empty { color: var(--muted); font-style: italic; }
+
+  .tabs { display: flex; gap: 4px; margin-bottom: 1rem; }
+  .tab-btn { padding: 7px 14px; font-size: 12px; border-radius: 7px; border: 0.5px solid transparent; background: transparent; color: var(--muted); cursor: pointer; font-weight: 500; }
+  .tab-btn.active { background: var(--surface2); color: var(--text); border-color: var(--border2); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .api-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .api-slot { background: var(--surface2); border: 0.5px solid var(--border); border-radius: 10px; padding: 12px; }
+  .api-slot-head { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
+  .slot-tag { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; }
+  .tag-a { background: rgba(108,99,255,0.2); color: #a59cff; }
+  .tag-b { background: rgba(61,220,132,0.2); color: var(--green); }
+  .tag-c { background: rgba(255,179,71,0.2); color: var(--amber); }
+  .tag-v1 { background: rgba(108,99,255,0.2); color: #a59cff; }
+  .tag-v2 { background: rgba(255,107,107,0.2); color: #ff9a9a; }
+  .tag-v3 { background: rgba(61,220,132,0.2); color: var(--green); }
+  .api-slot label { font-size: 11px; }
+  .api-slot input, .api-slot select { width: 100%; margin-bottom: 7px; font-size: 12px; padding: 7px 10px; }
+  .api-slot .purpose { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  .guide-steps { display: flex; flex-direction: column; gap: 10px; }
+  .guide-step { display: flex; gap: 14px; align-items: flex-start; padding: 14px; background: var(--surface2); border: 0.5px solid var(--border); border-radius: 10px; }
+  .step-num { width: 28px; height: 28px; border-radius: 8px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .step-body { flex: 1; }
+  .step-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .step-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+  .step-desc code { background: var(--surface); border: 0.5px solid var(--border2); padding: 1px 5px; border-radius: 4px; font-size: 11px; color: #c3b8ff; font-family: monospace; }
+  .step-desc a { color: var(--accent); text-decoration: none; }
+  .step-desc a:hover { text-decoration: underline; }
+
+  .copy-btn { background: none; border: 0.5px solid var(--border2); color: var(--muted); font-size: 11px; padding: 4px 9px; border-radius: 5px; cursor: pointer; }
+  .copy-btn:hover { color: var(--text); background: var(--surface2); }
+
+  .row-between { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .countdown-chip { background: var(--surface2); border: 0.5px solid var(--border); padding: 5px 12px; border-radius: 6px; font-size: 12px; color: var(--muted); }
+  .countdown-chip span { color: var(--text); font-weight: 600; font-family: monospace; }
+
+  @media (max-width: 600px) {
+    .api-grid { grid-template-columns: 1fr; }
+    .form-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<div class="container">
+  <header>
+    <div class="logo-wrap">🎬</div>
+    <h1>Kids TV <span>Shorts Agent</span></h1>
+    <p>Add a topic below → GitHub Actions generates, renders & uploads automatically</p>
+  </header>
+
+  <div class="status-bar">
+    <span class="status-dot"></span>
+    <span class="label">GitHub Actions:</span>
+    <span class="value" id="actions-status">Online</span>
+    <span class="sep">·</span>
+    <span class="label">Next run:</span>
+    <span class="value" id="next-run">checking...</span>
+    <span class="sep">·</span>
+    <span class="label">Credits reset in:</span>
+    <span class="value" id="countdown">--:--:--</span>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('queue')">📋 Queue</button>
+    <button class="tab-btn" onclick="switchTab('setup')">🔑 API Setup</button>
+    <button class="tab-btn" onclick="switchTab('guide')">📖 Setup Guide</button>
+  </div>
+
+  <!-- QUEUE TAB -->
+  <div class="tab-panel active" id="tab-queue">
+    <div class="card">
+      <div class="card-title">Add video to queue <span class="badge badge-manual">Manual trigger</span></div>
+      <div class="form-row">
+        <div class="input-group">
+          <label>Category</label>
+          <select id="cat">
+            <option value="animals">🐾 Animals & Nature</option>
+            <option value="numbers">🔢 Numbers & Counting</option>
+            <option value="alphabet">🔤 Alphabet & Letters</option>
+            <option value="colors">🎨 Colors & Shapes</option>
+            <option value="nursery">🎵 Nursery Rhymes</option>
+            <option value="dinosaurs">🦕 Dinosaurs</option>
+            <option value="space">🚀 Space & Planets</option>
+            <option value="vehicles">🚗 Vehicles & Transport</option>
+            <option value="bedtime">🌙 Bedtime Stories</option>
+            <option value="science">🔬 Fun Science</option>
+          </select>
+        </div>
+        <div class="input-group" style="flex:2">
+          <label>Topic detail</label>
+          <input type="text" id="topic" placeholder="e.g. funny elephant facts for toddlers" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="input-group">
+          <label>Schedule time (UTC)</label>
+          <select id="sched-time">
+            <option value="06:00">06:00 UTC (9 AM UAE)</option>
+            <option value="11:00">11:00 UTC (2 PM UAE)</option>
+            <option value="15:00">15:00 UTC (6 PM UAE)</option>
+            <option value="custom">Custom time</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>AI slot</label>
+          <select id="ai-slot">
+            <option value="A">Slot A (Script writer)</option>
+            <option value="B">Slot B (Voiceover)</option>
+            <option value="C">Slot C (SEO)</option>
+            <option value="auto">Auto (rotate)</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>Video gen</label>
+          <select id="vid-slot">
+            <option value="1">Gen 1 (Primary)</option>
+            <option value="2">Gen 2 (Backup)</option>
+            <option value="3">Gen 3 (Overflow)</option>
+            <option value="auto">Auto (rotate)</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:4px;">
+        <button class="btn btn-primary" onclick="addToQueue()">➕ Add to Queue</button>
+        <button class="btn btn-green" onclick="triggerNow()">⚡ Trigger GitHub Action Now</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row-between">
+        <div class="card-title" style="margin-bottom:0">Upload queue <span class="badge badge-auto">Auto-processes</span></div>
+        <button class="btn btn-outline btn-sm" onclick="clearDone()">Clear done</button>
+      </div>
+      <div style="height:10px"></div>
+      <div class="queue-list" id="queue-list">
+        <div style="color:var(--muted);font-size:13px;text-align:center;padding:1.5rem 0;">No videos queued yet. Add one above.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row-between">
+        <div class="card-title" style="margin-bottom:0">Latest generation output</div>
+        <button class="copy-btn" onclick="copyEl('output-box')">Copy</button>
+      </div>
+      <div style="height:8px"></div>
+      <div class="output-block empty" id="output-box">Output from the last GitHub Actions run will appear here once you trigger it.</div>
+    </div>
+  </div>
+
+  <!-- SETUP TAB -->
+  <div class="tab-panel" id="tab-setup">
+    <div class="card">
+      <div class="card-title">AI script engines — 3 accounts</div>
+      <div class="api-grid">
+        <div class="api-slot">
+          <div class="api-slot-head"><span class="slot-tag tag-a">Slot A</span><span style="font-size:12px;font-weight:600;">Script Writer</span></div>
+          <label>Provider</label>
+          <select id="ai-prov-a"><option value="gemini">Google Gemini</option><option value="claude">Claude</option><option value="openai">OpenAI</option></select>
+          <label>API Key</label>
+          <input type="password" id="ai-key-a" placeholder="AIza..." />
+          <div class="purpose">✍️ Writes video scripts</div>
+        </div>
+        <div class="api-slot">
+          <div class="api-slot-head"><span class="slot-tag tag-b">Slot B</span><span style="font-size:12px;font-weight:600;">Voiceover</span></div>
+          <label>Provider</label>
+          <select id="ai-prov-b"><option value="gemini">Google Gemini</option><option value="claude">Claude</option><option value="openai">OpenAI</option></select>
+          <label>API Key</label>
+          <input type="password" id="ai-key-b" placeholder="AIza..." />
+          <div class="purpose">🎙️ Narration rewrites</div>
+        </div>
+        <div class="api-slot">
+          <div class="api-slot-head"><span class="slot-tag tag-c">Slot C</span><span style="font-size:12px;font-weight:600;">SEO & Meta</span></div>
+          <label>Provider</label>
+          <select id="ai-prov-c"><option value="gemini">Google Gemini</option><option value="claude">Claude</option><option value="openai">OpenAI</option></select>
+          <label>API Key</label>
+          <input type="password" id="ai-key-c" placeholder="AIza..." />
+          <div class="purpose">🏷️ Titles, tags, hashtags</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Video generators — 3 accounts</div>
+      <div class="countdown-chip" style="margin-bottom:12px;">Daily credit reset in <span id="countdown2">--:--:--</span></div>
+      <div class="api-grid">
+        <div class="api-slot">
+          <div class="api-slot-head"><span class="slot-tag tag-v1">Gen 1</span><span style="font-size:12px;font-weight:600;">Primary</span></div>
+          <label>Service</label>
+          <select id="vid-svc-1"><option value="luma">Luma Dream Machine</option><option value="runway">Runway Gen-3</option><option value="kling">Kling AI</option><option value="pika">Pika Labs</option><option value="haiper">Haiper</option></select>
+          <label>API Key</label>
+          <input type="password" id="vid-key-1" placeholder="Key..." />
+        </div>
+        <div class="api-slot">
+          <div class="api-slot-head"><span class="slot-tag tag-v2">Gen 2</span><span style="font-size:12px;font-weight:600;">Backup</span></div>
+          <label>Service</label>
+          <select id="vid-svc-2"><option value="kling">Kling AI</option><option value="luma">Luma Dream Machine</option><option value="runway">Runway Gen-3</option><option value="pika">Pika Labs</option><option value="haiper">Haiper</option></select>
+          <label>API Key</label>
+          <input type="password" id="vid-key-2" placeholder="Key..." />
+        </div>
+        <div class="api-slot">
+          <div class="api-slot-head"><span class="slot-tag tag-v3">Gen 3</span><span style="font-size:12px;font-weight:600;">Overflow</span></div>
+          <label>Service</label>
+          <select id="vid-svc-3"><option value="haiper">Haiper</option><option value="luma">Luma Dream Machine</option><option value="runway">Runway Gen-3</option><option value="kling">Kling AI</option><option value="pika">Pika Labs</option></select>
+          <label>API Key</label>
+          <input type="password" id="vid-key-3" placeholder="Key..." />
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">YouTube Data API</div>
+      <div class="form-row stack">
+        <div class="input-group">
+          <label>YouTube Channel ID</label>
+          <input type="text" id="yt-channel" placeholder="UCxxxxxxxxxxxxxxxxxxxx" />
+        </div>
+        <div class="input-group">
+          <label>OAuth Client ID (from Google Cloud Console)</label>
+          <input type="text" id="yt-client-id" placeholder="xxxxx.apps.googleusercontent.com" />
+        </div>
+        <div class="input-group">
+          <label>OAuth Refresh Token (see Guide → Step 3)</label>
+          <input type="password" id="yt-refresh-token" placeholder="1//xxxxx..." />
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:4px;">These go into GitHub Secrets — never hardcode them. See the Setup Guide tab.</p>
+    </div>
+
+    <button class="btn btn-primary" onclick="exportSecrets()">📋 Copy GitHub Secrets block</button>
+    <span id="exp-msg" style="font-size:12px;color:var(--green);margin-left:10px;display:none;">Copied! Paste into your .env or GitHub Secrets.</span>
+  </div>
+
+  <!-- GUIDE TAB -->
+  <div class="tab-panel" id="tab-guide">
+    <div class="card">
+      <div class="card-title">Complete setup guide</div>
+      <div class="guide-steps">
+        <div class="guide-step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Fork / create the GitHub repo</div>
+            <div class="step-desc">Go to <a href="https://github.com" target="_blank">github.com</a> → New repository → name it <code>kidstv-agent</code> → set to Public → create. Then upload all the files from this project (index.html, .github/workflows/agent.yml, scripts/agent.js, package.json).</div>
+          </div>
+        </div>
+        <div class="guide-step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Enable GitHub Pages</div>
+            <div class="step-desc">In your repo → Settings → Pages → Source: <code>Deploy from branch</code> → Branch: <code>main</code> → folder: <code>/ (root)</code> → Save. Your site will be live at <code>https://YOUR_USERNAME.github.io/kidstv-agent</code> in ~2 minutes.</div>
+          </div>
+        </div>
+        <div class="guide-step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Get YouTube OAuth credentials</div>
+            <div class="step-desc">Go to <a href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a> → New Project → Enable "YouTube Data API v3" → Credentials → Create OAuth 2.0 Client ID (Desktop app) → Download JSON. Run <code>node scripts/get_token.js</code> locally once to get your refresh token. Never share this.</div>
+          </div>
+        </div>
+        <div class="guide-step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Add secrets to GitHub</div>
+            <div class="step-desc">Repo → Settings → Secrets and variables → Actions → New secret. Add each key:<br><br>
+              <code>GEMINI_KEY_A</code> · <code>GEMINI_KEY_B</code> · <code>GEMINI_KEY_C</code><br>
+              <code>VID_KEY_1</code> · <code>VID_KEY_2</code> · <code>VID_KEY_3</code><br>
+              <code>YT_CLIENT_ID</code> · <code>YT_CLIENT_SECRET</code> · <code>YT_REFRESH_TOKEN</code>
+            </div>
+          </div>
+        </div>
+        <div class="guide-step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <div class="step-title">How queueing works (offline-safe)</div>
+            <div class="step-desc">When you add a topic on the website, it saves to <code>queue.json</code> in your repo via the GitHub API (no server needed). GitHub Actions runs at 06:00, 11:00, and 15:00 UTC daily, reads the queue, generates scripts with Gemini, creates a video prompt, and posts to YouTube. You can also trigger it manually from the Queue tab.</div>
+          </div>
+        </div>
+        <div class="guide-step">
+          <div class="step-num">6</div>
+          <div class="step-body">
+            <div class="step-title">Commit the workflow file</div>
+            <div class="step-desc">The file <code>.github/workflows/agent.yml</code> is included in the download. Just push it to your repo and GitHub will automatically run it on schedule. Free for public repos (2,000 minutes/month on free plan — more than enough for 3 videos/day).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let queue = JSON.parse(localStorage.getItem('ktv_queue') || '[]');
+const GITHUB_TOKEN_KEY = 'ktv_gh_token';
+const GITHUB_REPO_KEY = 'ktv_gh_repo';
+
+function saveQueue() { localStorage.setItem('ktv_queue', JSON.stringify(queue)); }
+
+function renderQueue() {
+  const el = document.getElementById('queue-list');
+  if (!queue.length) {
+    el.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;padding:1.5rem 0;">No videos queued yet. Add one above.</div>';
+    return;
+  }
+  el.innerHTML = queue.map((item, i) => `
+    <div class="queue-item">
+      <div class="queue-num">${i+1}</div>
+      <div class="queue-info">
+        <div class="queue-topic">${item.topic || item.cat}</div>
+        <div class="queue-meta">${item.cat} · ${item.time} UTC · AI Slot ${item.aiSlot} · Gen ${item.vidSlot}</div>
+      </div>
+      <span class="queue-status status-${item.status}">${item.status}</span>
+      <button class="queue-del" onclick="removeItem(${i})" title="Remove">×</button>
+    </div>
+  `).join('');
+}
+
+function addToQueue() {
+  const cat = document.getElementById('cat').options[document.getElementById('cat').selectedIndex].text;
+  const topic = document.getElementById('topic').value.trim() || cat;
+  const time = document.getElementById('sched-time').value;
+  const aiSlot = document.getElementById('ai-slot').value;
+  const vidSlot = document.getElementById('vid-slot').value;
+  queue.push({ cat, topic, time, aiSlot, vidSlot, status: 'pending', added: new Date().toISOString() });
+  saveQueue();
+  renderQueue();
+  pushQueueToGitHub();
+}
+
+function removeItem(i) {
+  queue.splice(i, 1);
+  saveQueue();
+  renderQueue();
+}
+
+function clearDone() {
+  queue = queue.filter(i => i.status !== 'done');
+  saveQueue();
+  renderQueue();
+}
+
+async function pushQueueToGitHub() {
+  const token = localStorage.getItem(GITHUB_TOKEN_KEY);
+  const repo = localStorage.getItem(GITHUB_REPO_KEY);
+  if (!token || !repo) return;
+  try {
+    const getRes = await fetch(`https://api.github.com/repos/${repo}/contents/queue.json`, {
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+    });
+    const existing = getRes.ok ? await getRes.json() : null;
+    const content = btoa(JSON.stringify(queue, null, 2));
+    await fetch(`https://api.github.com/repos/${repo}/contents/queue.json`, {
+      method: 'PUT',
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'Update queue', content, sha: existing?.sha })
+    });
+  } catch(e) { console.error('GitHub push failed:', e); }
+}
+
+async function triggerNow() {
+  const token = localStorage.getItem(GITHUB_TOKEN_KEY);
+  const repo = localStorage.getItem(GITHUB_REPO_KEY);
+  if (!token || !repo) {
+    alert('Add your GitHub Personal Access Token and repo name first.\n\nOpen the Setup Guide tab → Step 4 for instructions.');
+    return;
+  }
+  await pushQueueToGitHub();
+  const res = await fetch(`https://api.github.com/repos/${repo}/dispatches`, {
+    method: 'POST',
+    headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+    body: JSON.stringify({ event_type: 'manual_trigger' })
+  });
+  if (res.ok || res.status === 204) {
+    document.getElementById('output-box').textContent = '⚡ GitHub Action triggered! Check your repo Actions tab in ~30 seconds.';
+    document.getElementById('output-box').className = 'output-block';
+  } else {
+    alert('Trigger failed. Check your GitHub token has "repo" and "workflow" permissions.');
+  }
+}
+
+function exportSecrets() {
+  const keys = {
+    GEMINI_KEY_A: document.getElementById('ai-key-a').value,
+    GEMINI_KEY_B: document.getElementById('ai-key-b').value,
+    GEMINI_KEY_C: document.getElementById('ai-key-c').value,
+    VID_KEY_1: document.getElementById('vid-key-1').value,
+    VID_KEY_2: document.getElementById('vid-key-2').value,
+    VID_KEY_3: document.getElementById('vid-key-3').value,
+    YT_CHANNEL: document.getElementById('yt-channel').value,
+    YT_CLIENT_ID: document.getElementById('yt-client-id').value,
+    YT_REFRESH_TOKEN: document.getElementById('yt-refresh-token').value,
+  };
+  const text = Object.entries(keys).filter(([,v])=>v).map(([k,v])=>`${k}=${v}`).join('\n');
+  navigator.clipboard.writeText(text);
+  const msg = document.getElementById('exp-msg');
+  msg.style.display = 'inline';
+  setTimeout(()=>{ msg.style.display='none'; }, 2500);
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+function copyEl(id) {
+  navigator.clipboard.writeText(document.getElementById(id).textContent);
+}
+
+function updateCountdown() {
+  const now = new Date();
+  const tom = new Date(now); tom.setUTCHours(24,0,0,0);
+  const diff = tom - now;
+  const h = String(Math.floor(diff/3600000)).padStart(2,'0');
+  const m = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+  const s = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+  const t = `${h}:${m}:${s}`;
+  document.getElementById('countdown').textContent = t;
+  document.getElementById('countdown2').textContent = t;
+  const runs = [6,11,15];
+  const utcH = now.getUTCHours(), utcM = now.getUTCMinutes();
+  let next = runs.find(h => h > utcH || (h === utcH && utcM < 0));
+  if (!next) next = runs[0];
+  document.getElementById('next-run').textContent = `${String(next).padStart(2,'0')}:00 UTC`;
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+renderQueue();
+</script>
+</body>
+</html>
