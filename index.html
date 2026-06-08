@@ -3,522 +3,1228 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kids TV Shorts Agent</title>
+<title>Kids TV Agent v3</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0a0f;
-    --surface: #13131a;
-    --surface2: #1c1c26;
-    --border: rgba(255,255,255,0.08);
-    --border2: rgba(255,255,255,0.14);
-    --text: #f0f0f5;
-    --muted: #888897;
-    --accent: #6c63ff;
-    --accent2: #ff6b6b;
-    --green: #3ddc84;
-    --amber: #ffb347;
-    --font: 'Segoe UI', system-ui, sans-serif;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; }
+:root {
+  --bg:      #060810;
+  --s1:      #0c0f1a;
+  --s2:      #131726;
+  --s3:      #1a1f30;
+  --s4:      #222840;
+  --b1:      rgba(255,255,255,0.06);
+  --b2:      rgba(255,255,255,0.11);
+  --b3:      rgba(255,255,255,0.18);
+  --text:    #dde3f5;
+  --muted:   #5d6480;
+  --soft:    #8d96b5;
+  --pink:    #ff4d8d;
+  --blue:    #4d8fff;
+  --green:   #3de8a0;
+  --gold:    #ffcc4d;
+  --purple:  #9d7bff;
+  --red:     #ff4d4d;
+  --cyan:    #4dfff3;
+  --orange:  #ff8c4d;
+  --ff:      'Outfit', sans-serif;
+  --mono:    'JetBrains Mono', monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--ff);min-height:100vh;overflow-x:hidden}
 
-  .stars {
-    position: fixed; inset: 0; pointer-events: none; z-index: 0;
-    background: radial-gradient(ellipse at 20% 50%, rgba(108,99,255,0.04) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 20%, rgba(255,107,107,0.04) 0%, transparent 50%);
-  }
+/* ANIMATED BG */
+.bg-mesh{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg-mesh span{position:absolute;border-radius:50%;filter:blur(120px);animation:drift 20s infinite alternate}
+.bg-mesh span:nth-child(1){width:600px;height:600px;background:rgba(255,77,141,0.07);top:-200px;right:-100px;animation-duration:18s}
+.bg-mesh span:nth-child(2){width:500px;height:500px;background:rgba(77,143,255,0.07);bottom:-150px;left:-80px;animation-duration:22s}
+.bg-mesh span:nth-child(3){width:400px;height:400px;background:rgba(157,123,255,0.05);top:40%;left:35%;animation-duration:25s}
+@keyframes drift{0%{transform:translate(0,0) scale(1)}100%{transform:translate(40px,30px) scale(1.1)}}
 
-  .container { max-width: 780px; margin: 0 auto; padding: 2rem 1.5rem; position: relative; z-index: 1; }
+/* LOGIN */
+#login-screen{position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;background:var(--bg)}
+.login-wrap{width:420px;position:relative}
+.login-glow{position:absolute;inset:-40px;background:radial-gradient(ellipse,rgba(255,77,141,0.12),transparent 70%);pointer-events:none}
+.login-box{background:var(--s1);border:0.5px solid var(--b2);border-radius:24px;padding:2.5rem;position:relative;backdrop-filter:blur(20px)}
+.login-top{text-align:center;margin-bottom:2rem}
+.login-icon{font-size:42px;display:block;margin-bottom:10px}
+.login-title{font-size:24px;font-weight:800;letter-spacing:-0.5px}
+.login-title em{font-style:normal;color:var(--pink)}
+.login-sub{font-size:13px;color:var(--muted);margin-top:4px}
+.lf{margin-bottom:14px}
+.lf label{font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px;font-weight:600}
+.lf input{width:100%;padding:12px 14px;background:var(--s2);border:0.5px solid var(--b2);border-radius:12px;color:var(--text);font-family:var(--ff);font-size:14px;outline:none;transition:border-color .2s}
+.lf input:focus{border-color:var(--pink)}
+.login-err{font-size:12px;color:var(--red);margin-bottom:12px;display:none;padding:8px 12px;background:rgba(255,77,77,.08);border-radius:8px;border:0.5px solid rgba(255,77,77,.2)}
+.login-submit{width:100%;padding:13px;background:linear-gradient(135deg,var(--pink),#ff8d6b);border:none;border-radius:12px;color:#fff;font-family:var(--ff);font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;margin-bottom:14px}
+.login-submit:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(255,77,141,.3)}
+.auth-switch{font-size:12px;color:var(--muted);text-align:center}
+.auth-switch span{color:var(--blue);cursor:pointer;font-weight:600}
+.auth-switch span:hover{text-decoration:underline}
 
-  header { text-align: center; margin-bottom: 2.5rem; }
-  .logo-wrap { display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; border-radius: 18px; background: linear-gradient(135deg, var(--accent), var(--accent2)); margin-bottom: 1rem; font-size: 30px; }
-  h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
-  h1 span { background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  header p { color: var(--muted); font-size: 14px; margin-top: 6px; }
+/* APP */
+#app{display:none;position:relative;z-index:1}
+.layout{display:flex;min-height:100vh}
 
-  .status-bar { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; margin-bottom: 1.5rem; font-size: 13px; }
-  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-  .status-bar .label { color: var(--muted); }
-  .status-bar .value { color: var(--text); font-weight: 500; }
-  .status-bar .sep { color: var(--border2); }
+/* SIDEBAR */
+.sidebar{width:230px;flex-shrink:0;background:var(--s1);border-right:0.5px solid var(--b1);display:flex;flex-direction:column;padding:1.25rem 0;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sb-brand{padding:0 1rem 1.25rem;border-bottom:0.5px solid var(--b1);margin-bottom:1rem}
+.sb-brand .ico{font-size:30px;line-height:1}
+.sb-brand h2{font-size:16px;font-weight:800;letter-spacing:-.3px;margin-top:6px}
+.sb-brand h2 em{font-style:normal;color:var(--pink)}
+.sb-brand p{font-size:10px;color:var(--muted);margin-top:2px}
+.sb-section{padding:0 .75rem;margin-bottom:.75rem}
+.sb-section-label{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;padding:0 .5rem;margin-bottom:4px}
+.sb-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;font-size:13px;font-weight:500;color:var(--soft);cursor:pointer;transition:all .15s;border:none;background:none;width:100%;text-align:left}
+.sb-item .ico{font-size:16px;width:20px;text-align:center;flex-shrink:0}
+.sb-item:hover{background:var(--s2);color:var(--text)}
+.sb-item.active{background:rgba(255,77,141,.1);color:var(--pink);border:0.5px solid rgba(255,77,141,.18)}
+.sb-badge{margin-left:auto;font-size:10px;padding:2px 7px;border-radius:5px;font-weight:700;background:rgba(255,77,141,.15);color:var(--pink)}
+.sb-bottom{margin-top:auto;padding:0 .75rem}
+.user-chip{background:var(--s2);border:0.5px solid var(--b2);border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.user-av{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--pink),var(--purple));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;flex-shrink:0}
+.user-name{font-size:12px;font-weight:600}
+.user-email{font-size:10px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:130px}
+.logout-btn{width:100%;padding:8px;background:none;border:0.5px solid var(--b2);border-radius:9px;color:var(--muted);font-size:12px;cursor:pointer;font-family:var(--ff);transition:all .15s}
+.logout-btn:hover{border-color:var(--red);color:var(--red)}
 
-  .card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 14px; padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
-  .card-title { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; display: flex; align-items: center; gap: 6px; }
-  .card-title .badge { font-size: 10px; padding: 2px 7px; border-radius: 4px; text-transform: none; letter-spacing: 0; font-weight: 500; }
-  .badge-auto { background: rgba(61,220,132,0.15); color: var(--green); }
-  .badge-manual { background: rgba(108,99,255,0.15); color: #a59cff; }
+/* MAIN */
+.main{flex:1;overflow-y:auto}
+.page{display:none;padding:2rem 2rem 4rem;max-width:1020px}
+.page.active{display:block}
+.ph{margin-bottom:2rem}
+.ph h1{font-size:28px;font-weight:800;letter-spacing:-.5px}
+.ph h1 em{font-style:normal;color:var(--pink)}
+.ph p{font-size:13px;color:var(--muted);margin-top:5px}
 
-  .form-row { display: flex; gap: 10px; margin-bottom: 10px; }
-  .form-row.stack { flex-direction: column; }
-  select, input[type=text], input[type=password], textarea {
-    background: var(--surface2); border: 0.5px solid var(--border2); color: var(--text);
-    border-radius: 8px; padding: 10px 12px; font-size: 13px; font-family: var(--font);
-    outline: none; transition: border-color 0.2s;
-  }
-  select:focus, input:focus, textarea:focus { border-color: var(--accent); }
-  select { cursor: pointer; }
-  textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
-  label { font-size: 12px; color: var(--muted); display: block; margin-bottom: 4px; }
+/* CARDS */
+.card{background:var(--s1);border:0.5px solid var(--b1);border-radius:18px;padding:1.5rem;margin-bottom:1rem}
+.card-head{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:1.25rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tag{font-size:10px;padding:2px 8px;border-radius:5px;font-weight:700;text-transform:none;letter-spacing:0}
+.tag-pink  {background:rgba(255,77,141,.13);color:var(--pink)}
+.tag-blue  {background:rgba(77,143,255,.13);color:var(--blue)}
+.tag-green {background:rgba(61,232,160,.13);color:var(--green)}
+.tag-gold  {background:rgba(255,204,77,.13);color:var(--gold)}
+.tag-purple{background:rgba(157,123,255,.13);color:var(--purple)}
+.tag-cyan  {background:rgba(77,255,243,.13);color:var(--cyan)}
+.tag-orange{background:rgba(255,140,77,.13);color:var(--orange)}
 
-  .input-group { flex: 1; display: flex; flex-direction: column; }
+/* STATS */
+.stat-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:1.25rem}
+.stat{background:var(--s1);border:0.5px solid var(--b1);border-radius:14px;padding:1rem 1.25rem}
+.stat-l{font-size:11px;color:var(--muted);margin-bottom:5px;font-weight:500}
+.stat-v{font-size:26px;font-weight:800;line-height:1;font-family:var(--ff)}
+.c-pink{color:var(--pink)} .c-blue{color:var(--blue)} .c-green{color:var(--green)} .c-gold{color:var(--gold)} .c-purple{color:var(--purple)}
 
-  .btn { padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px; }
-  .btn-primary { background: var(--accent); color: #fff; }
-  .btn-primary:hover { background: #7b73ff; transform: translateY(-1px); }
-  .btn-primary:active { transform: scale(0.98); }
-  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-  .btn-outline { background: transparent; color: var(--text); border: 0.5px solid var(--border2); }
-  .btn-outline:hover { background: var(--surface2); }
-  .btn-green { background: var(--green); color: #000; }
-  .btn-green:hover { background: #52e898; }
-  .btn-sm { padding: 6px 12px; font-size: 12px; }
+/* PIPELINE VISUAL */
+.pipeline{display:flex;align-items:center;gap:0;margin:1rem 0;overflow-x:auto;padding-bottom:4px}
+.pip-step{background:var(--s2);border:0.5px solid var(--b2);border-radius:12px;padding:10px 14px;text-align:center;flex-shrink:0;min-width:100px}
+.pip-step .p-ico{font-size:20px;display:block;margin-bottom:4px}
+.pip-step .p-name{font-size:11px;font-weight:600;color:var(--text)}
+.pip-step .p-tool{font-size:10px;color:var(--muted);margin-top:2px}
+.pip-step.active-step{background:rgba(255,77,141,.08);border-color:rgba(255,77,141,.25)}
+.pip-arr{color:var(--muted);font-size:18px;padding:0 4px;flex-shrink:0}
 
-  .queue-list { display: flex; flex-direction: column; gap: 8px; }
-  .queue-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--surface2); border: 0.5px solid var(--border); border-radius: 10px; font-size: 13px; }
-  .queue-num { width: 22px; height: 22px; border-radius: 6px; background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .queue-info { flex: 1; }
-  .queue-topic { font-weight: 500; }
-  .queue-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
-  .queue-status { font-size: 11px; padding: 3px 9px; border-radius: 5px; font-weight: 500; flex-shrink: 0; }
-  .status-pending { background: rgba(255,179,71,0.15); color: var(--amber); }
-  .status-done { background: rgba(61,220,132,0.15); color: var(--green); }
-  .status-running { background: rgba(108,99,255,0.15); color: #a59cff; }
-  .queue-del { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 16px; padding: 2px 6px; border-radius: 4px; }
-  .queue-del:hover { color: var(--accent2); background: rgba(255,107,107,0.1); }
+/* CATEGORIES */
+.cat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.cat{background:var(--s2);border:1.5px solid var(--b1);border-radius:13px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .15s;user-select:none}
+.cat:hover{border-color:rgba(255,77,141,.4);background:rgba(255,77,141,.05)}
+.cat.on{border-color:var(--pink);background:rgba(255,77,141,.1);box-shadow:0 0 0 3px rgba(255,77,141,.1)}
+.cat .ce{font-size:26px;display:block;margin-bottom:5px}
+.cat .cn{font-size:11px;font-weight:600;color:var(--soft);line-height:1.3}
+.cat.on .cn{color:var(--pink)}
 
-  .output-block { background: var(--surface2); border: 0.5px solid var(--border); border-radius: 10px; padding: 14px; font-size: 13px; line-height: 1.7; color: var(--text); white-space: pre-wrap; min-height: 80px; }
-  .output-block.empty { color: var(--muted); font-style: italic; }
+/* FORMS */
+label{font-size:12px;color:var(--muted);display:block;margin-bottom:5px;font-weight:500}
+input[type=text],input[type=password],input[type=email],select,textarea{width:100%;background:var(--s2);border:0.5px solid var(--b2);color:var(--text);border-radius:10px;padding:10px 13px;font-size:13px;font-family:var(--ff);outline:none;transition:border-color .2s}
+input:focus,select:focus,textarea:focus{border-color:var(--pink)}
+textarea{resize:vertical;min-height:80px;line-height:1.65}
+.fr{display:flex;gap:10px;margin-bottom:12px}
+.fg{flex:1;display:flex;flex-direction:column}
+.fg2{flex:2;display:flex;flex-direction:column}
+.stack{flex-direction:column;gap:10px}
 
-  .tabs { display: flex; gap: 4px; margin-bottom: 1rem; }
-  .tab-btn { padding: 7px 14px; font-size: 12px; border-radius: 7px; border: 0.5px solid transparent; background: transparent; color: var(--muted); cursor: pointer; font-weight: 500; }
-  .tab-btn.active { background: var(--surface2); color: var(--text); border-color: var(--border2); }
-  .tab-panel { display: none; }
-  .tab-panel.active { display: block; }
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 20px;border-radius:11px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .18s;white-space:nowrap;font-family:var(--ff)}
+.btn:disabled{opacity:.35;cursor:not-allowed;transform:none!important;filter:none!important}
+.btn-pink{background:linear-gradient(135deg,var(--pink),#ff8d6b);color:#fff}
+.btn-pink:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,77,141,.3)}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-blue:hover:not(:disabled){filter:brightness(1.1);transform:translateY(-1px)}
+.btn-green{background:var(--green);color:#000}
+.btn-green:hover:not(:disabled){filter:brightness(1.05);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--soft);border:0.5px solid var(--b2)}
+.btn-ghost:hover:not(:disabled){background:var(--s2);color:var(--text)}
+.btn-red{background:rgba(255,77,77,.1);color:var(--red);border:0.5px solid rgba(255,77,77,.2)}
+.btn-red:hover:not(:disabled){background:rgba(255,77,77,.2)}
+.btn-sm{padding:7px 14px;font-size:12px;border-radius:9px}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap}
+.loader{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.15);border-top-color:currentColor;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-  .api-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-  .api-slot { background: var(--surface2); border: 0.5px solid var(--border); border-radius: 10px; padding: 12px; }
-  .api-slot-head { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
-  .slot-tag { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; }
-  .tag-a { background: rgba(108,99,255,0.2); color: #a59cff; }
-  .tag-b { background: rgba(61,220,132,0.2); color: var(--green); }
-  .tag-c { background: rgba(255,179,71,0.2); color: var(--amber); }
-  .tag-v1 { background: rgba(108,99,255,0.2); color: #a59cff; }
-  .tag-v2 { background: rgba(255,107,107,0.2); color: #ff9a9a; }
-  .tag-v3 { background: rgba(61,220,132,0.2); color: var(--green); }
-  .api-slot label { font-size: 11px; }
-  .api-slot input, .api-slot select { width: 100%; margin-bottom: 7px; font-size: 12px; padding: 7px 10px; }
-  .api-slot .purpose { font-size: 11px; color: var(--muted); margin-top: 4px; }
+/* API SLOTS */
+.api-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.api-slot{background:var(--s2);border:0.5px solid var(--b1);border-radius:13px;padding:14px}
+.api-head{display:flex;align-items:center;gap:7px;margin-bottom:12px}
+.api-slot label{font-size:11px}
+.api-slot input,.api-slot select{font-size:12px;padding:8px 10px;margin-bottom:8px}
+.api-slot .purpose{font-size:11px;color:var(--muted);margin-top:2px}
+.slot-tag{font-size:10px;font-weight:800;padding:3px 8px;border-radius:5px}
 
-  .guide-steps { display: flex; flex-direction: column; gap: 10px; }
-  .guide-step { display: flex; gap: 14px; align-items: flex-start; padding: 14px; background: var(--surface2); border: 0.5px solid var(--border); border-radius: 10px; }
-  .step-num { width: 28px; height: 28px; border-radius: 8px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
-  .step-body { flex: 1; }
-  .step-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
-  .step-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
-  .step-desc code { background: var(--surface); border: 0.5px solid var(--border2); padding: 1px 5px; border-radius: 4px; font-size: 11px; color: #c3b8ff; font-family: monospace; }
-  .step-desc a { color: var(--accent); text-decoration: none; }
-  .step-desc a:hover { text-decoration: underline; }
+/* TOPICS */
+.topic-list{display:flex;flex-direction:column;gap:6px}
+.topic-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--s2);border:0.5px solid var(--b1);border-radius:11px;font-size:13px;cursor:pointer;transition:all .15s;user-select:none}
+.topic-item:hover{border-color:rgba(255,77,141,.3);background:rgba(255,77,141,.04)}
+.topic-item.on{border-color:var(--green);background:rgba(61,232,160,.06)}
+.t-num{font-size:11px;color:var(--muted);font-family:var(--mono);width:24px;flex-shrink:0}
+.t-text{flex:1;font-weight:500}
+.t-check{font-size:14px;opacity:0;transition:opacity .15s;color:var(--green)}
+.topic-item.on .t-check{opacity:1}
 
-  .copy-btn { background: none; border: 0.5px solid var(--border2); color: var(--muted); font-size: 11px; padding: 4px 9px; border-radius: 5px; cursor: pointer; }
-  .copy-btn:hover { color: var(--text); background: var(--surface2); }
+/* QUEUE */
+.q-list{display:flex;flex-direction:column;gap:8px}
+.q-item{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--s2);border:0.5px solid var(--b1);border-radius:13px}
+.q-n{width:28px;height:28px;border-radius:8px;background:var(--pink);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.q-info{flex:1}
+.q-title{font-size:13px;font-weight:600}
+.q-meta{font-size:11px;color:var(--muted);margin-top:2px}
+.q-status{font-size:11px;padding:3px 9px;border-radius:6px;font-weight:700;flex-shrink:0}
+.qs-pending{background:rgba(255,204,77,.12);color:var(--gold)}
+.qs-running{background:rgba(77,143,255,.12);color:var(--blue)}
+.qs-done{background:rgba(61,232,160,.12);color:var(--green)}
+.qs-error{background:rgba(255,77,77,.12);color:var(--red)}
+.q-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;padding:3px 7px;border-radius:5px}
+.q-del:hover{color:var(--red)}
 
-  .row-between { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .countdown-chip { background: var(--surface2); border: 0.5px solid var(--border); padding: 5px 12px; border-radius: 6px; font-size: 12px; color: var(--muted); }
-  .countdown-chip span { color: var(--text); font-weight: 600; font-family: monospace; }
+/* OUTPUT */
+.out-box{background:var(--s2);border:0.5px solid var(--b1);border-radius:12px;padding:14px;font-size:13px;line-height:1.8;color:var(--text);white-space:pre-wrap;min-height:90px;font-family:var(--ff)}
+.out-box.empty{color:var(--muted);font-style:italic}
 
-  @media (max-width: 600px) {
-    .api-grid { grid-template-columns: 1fr; }
-    .form-row { flex-direction: column; }
-  }
+/* LOG TABLE */
+.log-tbl{width:100%;border-collapse:collapse;font-size:12px}
+.log-tbl th{text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;letter-spacing:.07em;text-transform:uppercase;border-bottom:0.5px solid var(--b1);font-weight:700}
+.log-tbl td{padding:10px 12px;border-bottom:0.5px solid var(--b1);vertical-align:top}
+.log-tbl tr:last-child td{border-bottom:none}
+.log-tbl tr:hover td{background:var(--s2)}
+
+/* MISC */
+.row-btw{display:flex;align-items:center;justify-content:space-between}
+.copy-btn{background:none;border:0.5px solid var(--b2);color:var(--muted);font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;font-family:var(--ff)}
+.copy-btn:hover{color:var(--text);background:var(--s3)}
+.cd-chip{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:var(--s2);border:0.5px solid var(--b1);border-radius:9px;font-size:12px;color:var(--muted)}
+.cd-chip .dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 2s infinite}
+.cd-chip strong{color:var(--text);font-family:var(--mono)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.notice{background:rgba(77,143,255,.06);border:0.5px solid rgba(77,143,255,.18);border-radius:11px;padding:12px 14px;font-size:12px;color:var(--soft);line-height:1.7;margin-top:10px}
+.notice strong{color:var(--blue)}
+.notice code{background:var(--s3);padding:1px 5px;border-radius:4px;font-size:11px;color:var(--cyan);font-family:var(--mono)}
+.success-notice{background:rgba(61,232,160,.06);border:0.5px solid rgba(61,232,160,.18);border-radius:11px;padding:12px 14px;font-size:12px;color:var(--soft);line-height:1.7;margin-top:10px}
+.success-notice strong{color:var(--green)}
+.divider{height:.5px;background:var(--b1);margin:1.25rem 0}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;background:var(--s1);border:0.5px solid var(--b2);border-radius:12px;padding:12px 18px;font-size:13px;color:var(--text);box-shadow:0 10px 40px rgba(0,0,0,.6);transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none;font-weight:500}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.ok{border-color:rgba(61,232,160,.3)}
+.toast.err{border-color:rgba(255,77,77,.3)}
+
+/* PROGRESS BAR */
+.progress-wrap{height:4px;background:var(--s3);border-radius:2px;overflow:hidden;margin:8px 0}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--purple));border-radius:2px;transition:width .4s}
+
+/* STEP INDICATOR */
+.steps{display:flex;align-items:center;gap:0;margin-bottom:1.5rem}
+.step-item{display:flex;align-items:center;gap:8px;flex:1}
+.step-circle{width:28px;height:28px;border-radius:50%;background:var(--s3);border:0.5px solid var(--b2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--muted);flex-shrink:0;transition:all .3s}
+.step-circle.done{background:var(--green);border-color:var(--green);color:#000}
+.step-circle.active{background:var(--pink);border-color:var(--pink);color:#fff}
+.step-label{font-size:11px;color:var(--muted);font-weight:600}
+.step-label.active{color:var(--text)}
+.step-line{flex:1;height:.5px;background:var(--b2);margin:0 8px}
+.step-line.done{background:var(--green)}
+
+@media(max-width:768px){.sidebar{display:none}.cat-grid{grid-template-columns:repeat(3,1fr)}.api-grid{grid-template-columns:1fr}.stat-row{grid-template-columns:1fr 1fr}.page{padding:1rem}}
 </style>
 </head>
 <body>
-<div class="stars"></div>
-<div class="container">
-  <header>
-    <div class="logo-wrap">🎬</div>
-    <h1>Kids TV <span>Shorts Agent</span></h1>
-    <p>Add a topic below → GitHub Actions generates, renders & uploads automatically</p>
-  </header>
 
-  <div class="status-bar">
-    <span class="status-dot"></span>
-    <span class="label">GitHub Actions:</span>
-    <span class="value" id="actions-status">Online</span>
-    <span class="sep">·</span>
-    <span class="label">Next run:</span>
-    <span class="value" id="next-run">checking...</span>
-    <span class="sep">·</span>
-    <span class="label">Credits reset in:</span>
-    <span class="value" id="countdown">--:--:--</span>
-  </div>
+<div class="bg-mesh"><span></span><span></span><span></span></div>
+<div class="toast" id="toast"></div>
 
-  <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('queue')">📋 Queue</button>
-    <button class="tab-btn" onclick="switchTab('setup')">🔑 API Setup</button>
-    <button class="tab-btn" onclick="switchTab('guide')">📖 Setup Guide</button>
-  </div>
-
-  <!-- QUEUE TAB -->
-  <div class="tab-panel active" id="tab-queue">
-    <div class="card">
-      <div class="card-title">Add video to queue <span class="badge badge-manual">Manual trigger</span></div>
-      <div class="form-row">
-        <div class="input-group">
-          <label>Category</label>
-          <select id="cat">
-            <option value="animals">🐾 Animals & Nature</option>
-            <option value="numbers">🔢 Numbers & Counting</option>
-            <option value="alphabet">🔤 Alphabet & Letters</option>
-            <option value="colors">🎨 Colors & Shapes</option>
-            <option value="nursery">🎵 Nursery Rhymes</option>
-            <option value="dinosaurs">🦕 Dinosaurs</option>
-            <option value="space">🚀 Space & Planets</option>
-            <option value="vehicles">🚗 Vehicles & Transport</option>
-            <option value="bedtime">🌙 Bedtime Stories</option>
-            <option value="science">🔬 Fun Science</option>
-          </select>
-        </div>
-        <div class="input-group" style="flex:2">
-          <label>Topic detail</label>
-          <input type="text" id="topic" placeholder="e.g. funny elephant facts for toddlers" />
-        </div>
+<!-- ═══ LOGIN ═══ -->
+<div id="login-screen">
+  <div class="login-wrap">
+    <div class="login-glow"></div>
+    <div class="login-box">
+      <div class="login-top">
+        <span class="login-icon">🎬</span>
+        <div class="login-title">Kids TV <em>Agent</em></div>
+        <div class="login-sub" id="login-sub">Sign in — all your APIs & history auto-load</div>
       </div>
-      <div class="form-row">
-        <div class="input-group">
-          <label>Schedule time (UTC)</label>
-          <select id="sched-time">
-            <option value="06:00">06:00 UTC (9 AM UAE)</option>
-            <option value="11:00">11:00 UTC (2 PM UAE)</option>
-            <option value="15:00">15:00 UTC (6 PM UAE)</option>
-            <option value="custom">Custom time</option>
-          </select>
-        </div>
-        <div class="input-group">
-          <label>AI slot</label>
-          <select id="ai-slot">
-            <option value="A">Slot A (Script writer)</option>
-            <option value="B">Slot B (Voiceover)</option>
-            <option value="C">Slot C (SEO)</option>
-            <option value="auto">Auto (rotate)</option>
-          </select>
-        </div>
-        <div class="input-group">
-          <label>Video gen</label>
-          <select id="vid-slot">
-            <option value="1">Gen 1 (Primary)</option>
-            <option value="2">Gen 2 (Backup)</option>
-            <option value="3">Gen 3 (Overflow)</option>
-            <option value="auto">Auto (rotate)</option>
-          </select>
-        </div>
+      <div class="login-err" id="login-err"></div>
+      <div class="lf" id="field-chname" style="display:none">
+        <label>Channel Name</label>
+        <input type="text" id="reg-chname" placeholder="e.g. Sunny Kids TV" />
       </div>
-      <div style="display:flex;gap:8px;margin-top:4px;">
-        <button class="btn btn-primary" onclick="addToQueue()">➕ Add to Queue</button>
-        <button class="btn btn-green" onclick="triggerNow()">⚡ Trigger GitHub Action Now</button>
+      <div class="lf">
+        <label>Email</label>
+        <input type="email" id="auth-email" placeholder="you@email.com" />
       </div>
-    </div>
-
-    <div class="card">
-      <div class="row-between">
-        <div class="card-title" style="margin-bottom:0">Upload queue <span class="badge badge-auto">Auto-processes</span></div>
-        <button class="btn btn-outline btn-sm" onclick="clearDone()">Clear done</button>
+      <div class="lf">
+        <label>Password</label>
+        <input type="password" id="auth-pass" placeholder="Min 6 characters" />
       </div>
-      <div style="height:10px"></div>
-      <div class="queue-list" id="queue-list">
-        <div style="color:var(--muted);font-size:13px;text-align:center;padding:1.5rem 0;">No videos queued yet. Add one above.</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="row-between">
-        <div class="card-title" style="margin-bottom:0">Latest generation output</div>
-        <button class="copy-btn" onclick="copyEl('output-box')">Copy</button>
-      </div>
-      <div style="height:8px"></div>
-      <div class="output-block empty" id="output-box">Output from the last GitHub Actions run will appear here once you trigger it.</div>
-    </div>
-  </div>
-
-  <!-- SETUP TAB -->
-  <div class="tab-panel" id="tab-setup">
-    <div class="card">
-      <div class="card-title">AI script engines — 3 accounts</div>
-      <div class="api-grid">
-        <div class="api-slot">
-          <div class="api-slot-head"><span class="slot-tag tag-a">Slot A</span><span style="font-size:12px;font-weight:600;">Script Writer</span></div>
-          <label>Provider</label>
-          <select id="ai-prov-a"><option value="gemini">Google Gemini</option><option value="claude">Claude</option><option value="openai">OpenAI</option></select>
-          <label>API Key</label>
-          <input type="password" id="ai-key-a" placeholder="AIza..." />
-          <div class="purpose">✍️ Writes video scripts</div>
-        </div>
-        <div class="api-slot">
-          <div class="api-slot-head"><span class="slot-tag tag-b">Slot B</span><span style="font-size:12px;font-weight:600;">Voiceover</span></div>
-          <label>Provider</label>
-          <select id="ai-prov-b"><option value="gemini">Google Gemini</option><option value="claude">Claude</option><option value="openai">OpenAI</option></select>
-          <label>API Key</label>
-          <input type="password" id="ai-key-b" placeholder="AIza..." />
-          <div class="purpose">🎙️ Narration rewrites</div>
-        </div>
-        <div class="api-slot">
-          <div class="api-slot-head"><span class="slot-tag tag-c">Slot C</span><span style="font-size:12px;font-weight:600;">SEO & Meta</span></div>
-          <label>Provider</label>
-          <select id="ai-prov-c"><option value="gemini">Google Gemini</option><option value="claude">Claude</option><option value="openai">OpenAI</option></select>
-          <label>API Key</label>
-          <input type="password" id="ai-key-c" placeholder="AIza..." />
-          <div class="purpose">🏷️ Titles, tags, hashtags</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">Video generators — 3 accounts</div>
-      <div class="countdown-chip" style="margin-bottom:12px;">Daily credit reset in <span id="countdown2">--:--:--</span></div>
-      <div class="api-grid">
-        <div class="api-slot">
-          <div class="api-slot-head"><span class="slot-tag tag-v1">Gen 1</span><span style="font-size:12px;font-weight:600;">Primary</span></div>
-          <label>Service</label>
-          <select id="vid-svc-1"><option value="luma">Luma Dream Machine</option><option value="runway">Runway Gen-3</option><option value="kling">Kling AI</option><option value="pika">Pika Labs</option><option value="haiper">Haiper</option></select>
-          <label>API Key</label>
-          <input type="password" id="vid-key-1" placeholder="Key..." />
-        </div>
-        <div class="api-slot">
-          <div class="api-slot-head"><span class="slot-tag tag-v2">Gen 2</span><span style="font-size:12px;font-weight:600;">Backup</span></div>
-          <label>Service</label>
-          <select id="vid-svc-2"><option value="kling">Kling AI</option><option value="luma">Luma Dream Machine</option><option value="runway">Runway Gen-3</option><option value="pika">Pika Labs</option><option value="haiper">Haiper</option></select>
-          <label>API Key</label>
-          <input type="password" id="vid-key-2" placeholder="Key..." />
-        </div>
-        <div class="api-slot">
-          <div class="api-slot-head"><span class="slot-tag tag-v3">Gen 3</span><span style="font-size:12px;font-weight:600;">Overflow</span></div>
-          <label>Service</label>
-          <select id="vid-svc-3"><option value="haiper">Haiper</option><option value="luma">Luma Dream Machine</option><option value="runway">Runway Gen-3</option><option value="kling">Kling AI</option><option value="pika">Pika Labs</option></select>
-          <label>API Key</label>
-          <input type="password" id="vid-key-3" placeholder="Key..." />
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">YouTube Data API</div>
-      <div class="form-row stack">
-        <div class="input-group">
-          <label>YouTube Channel ID</label>
-          <input type="text" id="yt-channel" placeholder="UCxxxxxxxxxxxxxxxxxxxx" />
-        </div>
-        <div class="input-group">
-          <label>OAuth Client ID (from Google Cloud Console)</label>
-          <input type="text" id="yt-client-id" placeholder="xxxxx.apps.googleusercontent.com" />
-        </div>
-        <div class="input-group">
-          <label>OAuth Refresh Token (see Guide → Step 3)</label>
-          <input type="password" id="yt-refresh-token" placeholder="1//xxxxx..." />
-        </div>
-      </div>
-      <p style="font-size:12px;color:var(--muted);margin-top:4px;">These go into GitHub Secrets — never hardcode them. See the Setup Guide tab.</p>
-    </div>
-
-    <button class="btn btn-primary" onclick="exportSecrets()">📋 Copy GitHub Secrets block</button>
-    <span id="exp-msg" style="font-size:12px;color:var(--green);margin-left:10px;display:none;">Copied! Paste into your .env or GitHub Secrets.</span>
-  </div>
-
-  <!-- GUIDE TAB -->
-  <div class="tab-panel" id="tab-guide">
-    <div class="card">
-      <div class="card-title">Complete setup guide</div>
-      <div class="guide-steps">
-        <div class="guide-step">
-          <div class="step-num">1</div>
-          <div class="step-body">
-            <div class="step-title">Fork / create the GitHub repo</div>
-            <div class="step-desc">Go to <a href="https://github.com" target="_blank">github.com</a> → New repository → name it <code>kidstv-agent</code> → set to Public → create. Then upload all the files from this project (index.html, .github/workflows/agent.yml, scripts/agent.js, package.json).</div>
-          </div>
-        </div>
-        <div class="guide-step">
-          <div class="step-num">2</div>
-          <div class="step-body">
-            <div class="step-title">Enable GitHub Pages</div>
-            <div class="step-desc">In your repo → Settings → Pages → Source: <code>Deploy from branch</code> → Branch: <code>main</code> → folder: <code>/ (root)</code> → Save. Your site will be live at <code>https://YOUR_USERNAME.github.io/kidstv-agent</code> in ~2 minutes.</div>
-          </div>
-        </div>
-        <div class="guide-step">
-          <div class="step-num">3</div>
-          <div class="step-body">
-            <div class="step-title">Get YouTube OAuth credentials</div>
-            <div class="step-desc">Go to <a href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a> → New Project → Enable "YouTube Data API v3" → Credentials → Create OAuth 2.0 Client ID (Desktop app) → Download JSON. Run <code>node scripts/get_token.js</code> locally once to get your refresh token. Never share this.</div>
-          </div>
-        </div>
-        <div class="guide-step">
-          <div class="step-num">4</div>
-          <div class="step-body">
-            <div class="step-title">Add secrets to GitHub</div>
-            <div class="step-desc">Repo → Settings → Secrets and variables → Actions → New secret. Add each key:<br><br>
-              <code>GEMINI_KEY_A</code> · <code>GEMINI_KEY_B</code> · <code>GEMINI_KEY_C</code><br>
-              <code>VID_KEY_1</code> · <code>VID_KEY_2</code> · <code>VID_KEY_3</code><br>
-              <code>YT_CLIENT_ID</code> · <code>YT_CLIENT_SECRET</code> · <code>YT_REFRESH_TOKEN</code>
-            </div>
-          </div>
-        </div>
-        <div class="guide-step">
-          <div class="step-num">5</div>
-          <div class="step-body">
-            <div class="step-title">How queueing works (offline-safe)</div>
-            <div class="step-desc">When you add a topic on the website, it saves to <code>queue.json</code> in your repo via the GitHub API (no server needed). GitHub Actions runs at 06:00, 11:00, and 15:00 UTC daily, reads the queue, generates scripts with Gemini, creates a video prompt, and posts to YouTube. You can also trigger it manually from the Queue tab.</div>
-          </div>
-        </div>
-        <div class="guide-step">
-          <div class="step-num">6</div>
-          <div class="step-body">
-            <div class="step-title">Commit the workflow file</div>
-            <div class="step-desc">The file <code>.github/workflows/agent.yml</code> is included in the download. Just push it to your repo and GitHub will automatically run it on schedule. Free for public repos (2,000 minutes/month on free plan — more than enough for 3 videos/day).</div>
-          </div>
-        </div>
+      <button class="login-submit" id="login-btn" onclick="handleAuth()">Sign In</button>
+      <div class="auth-switch">
+        <span id="auth-toggle" onclick="toggleAuth()">No account yet? Sign up free</span>
       </div>
     </div>
   </div>
+</div>
 
+<!-- ═══ APP ═══ -->
+<div id="app">
+<div class="layout">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-brand">
+    <div class="ico">🎬</div>
+    <h2>Kids TV <em>Agent</em></h2>
+    <p id="sb-ch">Loading...</p>
+  </div>
+  <div class="sb-section">
+    <div class="sb-section-label">Main</div>
+    <button class="sb-item active" onclick="nav('dashboard',this)"><span class="ico">📊</span>Dashboard</button>
+    <button class="sb-item" onclick="nav('generate',this)"><span class="ico">✨</span>Generate<span class="sb-badge" id="sb-queue-count">0</span></button>
+    <button class="sb-item" onclick="nav('queue',this)"><span class="ico">📋</span>Queue</button>
+    <button class="sb-item" onclick="nav('logs',this)"><span class="ico">📝</span>Upload Logs</button>
+  </div>
+  <div class="sb-section">
+    <div class="sb-section-label">API Settings</div>
+    <button class="sb-item" onclick="nav('ai-apis',this)"><span class="ico">🧠</span>AI APIs</button>
+    <button class="sb-item" onclick="nav('audio-apis',this)"><span class="ico">🎙️</span>Audio APIs</button>
+    <button class="sb-item" onclick="nav('music-apis',this)"><span class="ico">🎵</span>Music APIs</button>
+    <button class="sb-item" onclick="nav('video-apis',this)"><span class="ico">🎬</span>Video APIs</button>
+    <button class="sb-item" onclick="nav('youtube',this)"><span class="ico">▶️</span>YouTube</button>
+    <button class="sb-item" onclick="nav('github',this)"><span class="ico">⚙️</span>GitHub</button>
+  </div>
+  <div class="sb-bottom">
+    <div class="user-chip">
+      <div class="user-av" id="sb-av">K</div>
+      <div>
+        <div class="user-name" id="sb-name">...</div>
+        <div class="user-email" id="sb-email">...</div>
+      </div>
+    </div>
+    <button class="logout-btn" onclick="logout()">Sign out</button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- ═══ DASHBOARD ═══ -->
+<div class="page active" id="page-dashboard">
+  <div class="ph"><h1>Dashboard <em>Overview</em></h1><p>One click — AI handles everything from script to YouTube upload.</p></div>
+
+  <div class="stat-row">
+    <div class="stat"><div class="stat-l">Queued</div><div class="stat-v c-pink" id="ds-q">0</div></div>
+    <div class="stat"><div class="stat-l">Done Today</div><div class="stat-v c-green" id="ds-t">0</div></div>
+    <div class="stat"><div class="stat-l">Total Uploads</div><div class="stat-v c-blue" id="ds-tot">0</div></div>
+    <div class="stat"><div class="stat-l">Topics Used</div><div class="stat-v c-purple" id="ds-used">0</div></div>
+    <div class="stat"><div class="stat-l">Reset In</div><div class="stat-v c-gold" id="ds-cd">--:--</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">Full automation pipeline <span class="tag tag-green">Active</span></div>
+    <div class="pipeline">
+      <div class="pip-step"><span class="p-ico">🧠</span><div class="p-name">Script</div><div class="p-tool">Gemini AI</div></div>
+      <div class="pip-arr">→</div>
+      <div class="pip-step"><span class="p-ico">🎙️</span><div class="p-name">Voice</div><div class="p-tool">Edge TTS / Kokoro</div></div>
+      <div class="pip-arr">→</div>
+      <div class="pip-step"><span class="p-ico">🎵</span><div class="p-name">Music</div><div class="p-tool">Mubert / Jamendo</div></div>
+      <div class="pip-arr">→</div>
+      <div class="pip-step"><span class="p-ico">🎬</span><div class="p-name">Video</div><div class="p-tool">Kling / Luma</div></div>
+      <div class="pip-arr">→</div>
+      <div class="pip-step"><span class="p-ico">⚙️</span><div class="p-name">Merge</div><div class="p-tool">FFmpeg</div></div>
+      <div class="pip-arr">→</div>
+      <div class="pip-step"><span class="p-ico">▶️</span><div class="p-name">Upload</div><div class="p-tool">YouTube API</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">Quick generate — pick a category</div>
+    <div class="cat-grid" id="dash-cats"></div>
+    <div class="btn-row" style="margin-top:14px">
+      <button class="btn btn-pink" id="dash-gen-btn" onclick="quickGen()">✨ Generate &amp; Auto-Upload</button>
+      <button class="btn btn-blue" onclick="triggerGH()">⚡ Trigger GitHub Now</button>
+    </div>
+    <div id="dash-out" class="out-box empty" style="margin-top:12px">Pick a category above → AI picks fresh topic → generates script + voice + music + video → uploads to YouTube automatically.</div>
+    <div class="progress-wrap" style="display:none" id="dash-progress"><div class="progress-fill" id="dash-progress-fill" style="width:0%"></div></div>
+    <div id="dash-step-msg" style="font-size:12px;color:var(--muted);margin-top:6px;display:none"></div>
+  </div>
+
+  <div class="card">
+    <div class="row-btw" style="margin-bottom:12px">
+      <div class="card-head" style="margin:0">Recent queue</div>
+      <button class="btn btn-ghost btn-sm" onclick="nav('queue',document.querySelectorAll('.sb-item')[3])">View all</button>
+    </div>
+    <div class="q-list" id="dash-q-preview"></div>
+  </div>
+</div>
+
+<!-- ═══ GENERATE ═══ -->
+<div class="page" id="page-generate">
+  <div class="ph"><h1>Generate <em>Content</em></h1><p>Pick category → AI suggests topics → select one → everything generates automatically.</p></div>
+
+  <div class="card">
+    <div class="card-head">Step 1 — Choose category</div>
+    <div class="cat-grid" id="gen-cats"></div>
+  </div>
+
+  <div class="card" id="topics-card" style="display:none">
+    <div class="row-btw" style="margin-bottom:12px">
+      <div class="card-head" style="margin:0">Step 2 — Fresh AI topics <span class="tag tag-green">Never repeated</span></div>
+      <button class="btn btn-ghost btn-sm" onclick="loadTopics()">🔄 Refresh</button>
+    </div>
+    <div id="topics-loading" style="color:var(--muted);font-size:13px;padding:10px 0;display:none"><span class="loader" style="color:var(--pink)"></span> Generating fresh topics for this category...</div>
+    <div class="topic-list" id="topic-list"></div>
+  </div>
+
+  <div class="card" id="gen-out-card" style="display:none">
+    <div class="card-head">Step 3 — Generated package <span class="tag tag-pink">Ready to upload</span></div>
+    <div id="gen-loading" style="display:none;padding:10px 0">
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)"><span class="loader" style="color:var(--pink)"></span><span id="gen-step-txt">Working...</span></div>
+      <div class="progress-wrap"><div class="progress-fill" id="gen-prog-fill" style="width:0%"></div></div>
+    </div>
+    <div id="gen-output" style="display:none">
+      <div style="margin-bottom:10px">
+        <div class="row-btw" style="margin-bottom:6px"><label style="margin:0;font-size:13px;font-weight:700;color:var(--text)">📝 Script (voiceover-ready)</label><button class="copy-btn" onclick="cp('o-script')">Copy</button></div>
+        <div class="out-box" id="o-script"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+        <div>
+          <div class="row-btw" style="margin-bottom:5px"><label style="margin:0;font-weight:700;color:var(--text)">🏷️ Title</label><button class="copy-btn" onclick="cp('o-title')">Copy</button></div>
+          <div class="out-box" id="o-title" style="min-height:50px"></div>
+        </div>
+        <div>
+          <div class="row-btw" style="margin-bottom:5px"><label style="margin:0;font-weight:700;color:var(--text)">#️⃣ Tags &amp; Hashtags</label><button class="copy-btn" onclick="cp('o-tags')">Copy</button></div>
+          <div class="out-box" id="o-tags" style="min-height:50px"></div>
+        </div>
+      </div>
+      <div style="margin-bottom:10px">
+        <div class="row-btw" style="margin-bottom:5px"><label style="margin:0;font-weight:700;color:var(--text)">📄 Description</label><button class="copy-btn" onclick="cp('o-desc')">Copy</button></div>
+        <div class="out-box" id="o-desc"></div>
+      </div>
+      <div style="margin-bottom:10px">
+        <div class="row-btw" style="margin-bottom:5px"><label style="margin:0;font-weight:700;color:var(--text)">🎙️ Voiceover Script</label><button class="copy-btn" onclick="cp('o-voice')">Copy</button></div>
+        <div class="out-box" id="o-voice"></div>
+      </div>
+      <div>
+        <div class="row-btw" style="margin-bottom:5px"><label style="margin:0;font-weight:700;color:var(--text)">🎥 Video Generation Prompt</label><button class="copy-btn" onclick="cp('o-vp')">Copy</button></div>
+        <div class="out-box" id="o-vp"></div>
+      </div>
+      <div class="btn-row" style="margin-top:14px">
+        <button class="btn btn-green" onclick="addToQueue()">➕ Add to Queue</button>
+        <button class="btn btn-blue" onclick="triggerGH()">⚡ Upload Now</button>
+        <button class="btn btn-ghost btn-sm" onclick="loadTopics()">New Topic</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ QUEUE ═══ -->
+<div class="page" id="page-queue">
+  <div class="ph"><h1>Upload <em>Queue</em></h1><p>GitHub Actions processes this automatically 3× daily. Trigger manually anytime.</p></div>
+  <div class="card">
+    <div class="row-btw" style="margin-bottom:14px">
+      <div class="cd-chip"><span class="dot"></span>Credit reset in <strong id="q-cd">--:--:--</strong></div>
+      <div class="btn-row" style="margin:0">
+        <button class="btn btn-blue btn-sm" onclick="triggerGH()">⚡ Trigger Now</button>
+        <button class="btn btn-ghost btn-sm" onclick="clearDone()">Clear done</button>
+      </div>
+    </div>
+    <div class="q-list" id="full-queue"></div>
+  </div>
+</div>
+
+<!-- ═══ LOGS ═══ -->
+<div class="page" id="page-logs">
+  <div class="ph"><h1>Upload <em>Logs</em></h1><p>Complete history of all generated and uploaded videos.</p></div>
+  <div class="card">
+    <div class="row-btw" style="margin-bottom:14px">
+      <div class="card-head" style="margin:0">Generation history</div>
+      <button class="btn btn-red btn-sm" onclick="clearLogs()">Clear all</button>
+    </div>
+    <table class="log-tbl">
+      <thead><tr><th>#</th><th>Topic</th><th>Category</th><th>Title</th><th>Audio</th><th>Music</th><th>Status</th><th>Date</th></tr></thead>
+      <tbody id="log-body"></tbody>
+    </table>
+    <div id="no-logs" style="color:var(--muted);font-size:13px;text-align:center;padding:2rem;display:none">No uploads yet. Generate your first video!</div>
+  </div>
+</div>
+
+<!-- ═══ AI APIS ═══ -->
+<div class="page" id="page-ai-apis">
+  <div class="ph"><h1>AI Script <em>APIs</em></h1><p>3 Gemini accounts rotate automatically. Saved to your account — never re-enter.</p></div>
+  <div class="card">
+    <div class="card-head">Gemini AI — 3 slots <span class="tag tag-pink">Script + Topics + SEO</span></div>
+    <div class="api-grid">
+      <div class="api-slot">
+        <div class="api-head"><span class="slot-tag tag-pink">Slot A</span><span style="font-size:12px;font-weight:700">Script Writer</span></div>
+        <label>Provider</label><select id="ai-prov-a"><option value="gemini">Google Gemini</option><option value="openai">OpenAI</option></select>
+        <label>API Key</label><input type="password" id="ai-key-a" placeholder="AIzaSy..." oninput="dirty=true" />
+        <div class="purpose">✍️ Scripts + topic generation</div>
+      </div>
+      <div class="api-slot">
+        <div class="api-head"><span class="slot-tag tag-purple">Slot B</span><span style="font-size:12px;font-weight:700">Voiceover Writer</span></div>
+        <label>Provider</label><select id="ai-prov-b"><option value="gemini">Google Gemini</option><option value="openai">OpenAI</option></select>
+        <label>API Key</label><input type="password" id="ai-key-b" placeholder="AIzaSy..." oninput="dirty=true" />
+        <div class="purpose">🎙️ Narration rewrites</div>
+      </div>
+      <div class="api-slot">
+        <div class="api-head"><span class="slot-tag tag-gold">Slot C</span><span style="font-size:12px;font-weight:700">SEO & Meta</span></div>
+        <label>Provider</label><select id="ai-prov-c"><option value="gemini">Google Gemini</option><option value="openai">OpenAI</option></select>
+        <label>API Key</label><input type="password" id="ai-key-c" placeholder="AIzaSy..." oninput="dirty=true" />
+        <div class="purpose">🏷️ Titles, tags, hashtags</div>
+      </div>
+    </div>
+    <div class="btn-row" style="margin-top:14px"><button class="btn btn-pink" onclick="saveAll()">💾 Save AI Keys</button><span id="ai-saved" style="font-size:12px;color:var(--green);display:none;margin-left:8px">✓ Saved</span></div>
+  </div>
+</div>
+
+<!-- ═══ AUDIO APIS ═══ -->
+<div class="page" id="page-audio-apis">
+  <div class="ph"><h1>Audio / TTS <em>APIs</em></h1><p>Converts your script to voiceover MP3 automatically. 3 slots rotate for reliability.</p></div>
+  <div class="card">
+    <div class="card-head">TTS engines — 3 slots <span class="tag tag-cyan">Auto-rotate</span></div>
+    <div class="api-grid">
+      <div class="api-slot">
+        <div class="api-head"><span class="slot-tag tag-cyan">TTS 1</span><span style="font-size:12px;font-weight:700">Primary Voice</span></div>
+        <label>Service</label>
+        <select id="tts-svc-1" onchange="dirty=true">
+          <option value="edge">Edge TTS (Microsoft) — Free unlimited</option>
+          <option value="kokoro">Kokoro TTS — Free open source</option>
+          <option value="elevenlabs">ElevenLabs — 10K chars/month free</option>
+          <option value="google">Google Cloud TTS — 4M chars/month free</option>
+          <option value="playht">PlayHT — 12.5K words/month free</option>
+        </select>
+        <label>API Key <span style="color:var(--muted);font-size:10px">(Edge TTS needs none)</span></label>
+        <input type="password" id="tts-key-1" placeholder="Leave blank for Edge TTS" oninput="dirty=true" />
+        <label>Voice ID / Name</label>
+        <input type="text" id="tts-voice-1" placeholder="en-US-JennyNeural" oninput="dirty=true" />
+        <div class="purpose">🎙️ Primary voiceover</div>
+      </div>
+      <div class="api-slot">
+        <div class="api-head"><span class="slot-tag tag-blue">TTS 2</span><span style="font-size:12px;font-weight:700">Backup Voice</span></div>
+        <label>Service</label>
+        <select id="tts-svc-2" onchange="dirty=true">
+          <option value="kokoro">Kokoro TTS — Free open source</option>
+          <option value="edge">Edge TTS (Microsoft) — Free unlimited</option>
+          <option value="elevenlabs">ElevenLabs</option>
+          <option value="google">Google Cloud TTS</option>
+          <option value="playht">PlayHT</option>
+        </select>
+        <label>API Key</label>
+        <input type="password" id="tts-key-2" placeholder="Key or blank" oninput="dirty=true" />
+        <label>Voice ID</label>
+        <input type="text" id="tts-voice-2" placeholder="af_heart" oninput="dirty=true" />
+        <div class="purpose">🎙️ Backup voiceover</div>
+      </div>
+      <div class="api-slot">
+        <div class="api-head"><span class="slot-tag tag-green">TTS 3</span><span style="font-size:12px;font-weight:700">Overflow Voice</span></div>
+        <label>Service</label>
+        <select id="tts-svc-3" onchange="dirty=true">
+          <option value="elevenlabs">ElevenLabs — Best quality</option>
+          <option value="edge">Edge TTS</option>
+          <option value="kokoro">Kokoro TTS</option>
+          <option value="google">Google Cloud TTS</option>
+          <option value="playht">PlayHT</option>
+        </select>
+        <label>API Key</label>
+        <input type="password" id="tts-key-3" placeholder="Key..." oninput="dirty=true" />
+        <label>Voice ID</label>
+        <input type="text" id="tts-voice-3" placeholder="EXAVITQu4vr4xnSDxMaL" oninput="dirty=true" />
+        <div class="purpose">🎙️ Overflow / high quality</div>
+      </div>
+    </div>
+    <div class="notice"><strong>Recommended setup:</strong> TTS 1 = Edge TTS (no key needed, unlimited free, warm kids voice). TTS 2 = Kokoro TTS (open source, runs on GitHub Actions). TTS 3 = ElevenLabs (best quality for special videos). The agent tries TTS 1 first and falls back automatically.</div>
+    <div class="btn-row" style="margin-top:14px"><button class="btn btn-pink" onclick="saveAll()">💾 Save Audio Settings</button><span id="audio-saved" style="font-size:12px;color:var(--green);display:none;margin-left:8px">✓ Saved</span></div>
+  </div>
+</div>
+
+<!-- ═══ MUSIC APIS ═══ -->
+<div class="page" id="page-music-apis">
+  <div class="ph"><h1>Music <em>APIs</em></h1><p>Auto-generates background music for every video. Layered under the voiceover at 25% volume.</p></div>
+  <div class="card">
+    <div class="card-head">Music generators — 2 slots <span class="tag tag-gold">Royalty-free auto</span></div>
+    <div class="api-grid" style="grid-template-columns:1fr 1fr">
+      <div class="api-slot">
+        <div class="api-head"><span class="slot-tag tag-gold">Music 1</span><span style="font-size:12px;font-weight:700">Primary</span></div>
+        <label>Service</label>
+        <select id="music-svc-1" onchange="dirty=true">
+          <option value="mubert">Mubert API — Free tier, AI generated</option>
+          <option value="jamendo">Jamendo API — Free, 600K+ tracks</option>
+        </select>
+        <label>API Key</label>
+        <input type="password" id="music-key-1" placeholder="Mubert or Jamendo key..." oninput="dirty=true" />
+        <label>Mood / Style</label>
+        <input type="text" id="music-mood-1" placeholder="cheerful upbeat kids background" oninput="dirty=true" />
+        <div class="purpose">🎵 Primary music source</div>
+      </div>
+      <div class="api-slot">
+        <div class="api-head"><span class="slot-tag tag-orange">Music 2</span><span style="font-size:12px;font-weight:700">Backup</span></div>
+        <label>Service</label>
+        <select id="music-svc-2" onchange="dirty=true">
+          <option value="jamendo">Jamendo API — Free, 600K+ tracks</option>
+          <option value="mubert">Mubert API</option>
+        </select>
+        <label>API Key</label>
+        <input type="password" id="music-key-2" placeholder="Key..." oninput="dirty=true" />
+        <label>Mood / Style</label>
+        <input type="text" id="music-mood-2" placeholder="playful children instrumental" oninput="dirty=true" />
+        <div class="purpose">🎵 Backup music source</div>
+      </div>
+    </div>
+    <div class="notice">
+      <strong>How to get Mubert API:</strong> Go to mubert.com → Developers → Apply for API access (free tier available). Returns AI-generated royalty-free MP3 based on your mood prompt.<br><br>
+      <strong>How to get Jamendo API:</strong> Go to developer.jamendo.com → Register app → free API key instantly. Search by tags like "children", "happy", "playful" and get a direct MP3 download URL.
+    </div>
+    <div class="btn-row" style="margin-top:14px"><button class="btn btn-pink" onclick="saveAll()">💾 Save Music Settings</button><span id="music-saved" style="font-size:12px;color:var(--green);display:none;margin-left:8px">✓ Saved</span></div>
+  </div>
+</div>
+
+<!-- ═══ VIDEO APIS ═══ -->
+<div class="page" id="page-video-apis">
+  <div class="ph"><h1>Video Generator <em>APIs</em></h1><p>3 accounts rotate daily by credits. All generate cartoon-style kids visuals.</p></div>
+  <div class="card">
+    <div class="card-head">Video generators — 3 accounts <span class="tag tag-blue">Daily credit rotation</span></div>
+    <div style="margin-bottom:12px"><div class="cd-chip"><span class="dot"></span>Daily reset in <strong id="vid-cd">--:--:--</strong></div></div>
+    <div class="api-grid">
+      <div class="api-slot">
+        <div class="api-head"><span class="slot-tag tag-blue">Gen 1</span><span style="font-size:12px;font-weight:700">Primary</span></div>
+        <label>Service</label><select id="vid-svc-1" onchange="dirty=true"><option value="kling">Kling AI</option><option value="luma">Luma Dream Machine</option><option value="runway">Runway Gen-3</option><option value="pika">Pika Labs</option><option value="haiper">Haiper</option></select>
+        <label>API Key</label><input type="password" id="vid-key-1" placeholder="Key..." oninput="dirty=true" />
+      </div>
+      <div class="api-slot">
+        <div class="api-head"><span class="slot-tag tag-pink">Gen 2</span><span style="font-size:12px;font-weight:700">Backup</span></div>
+        <label>Service</label><select id="vid-svc-2" onchange="dirty=true"><option value="luma">Luma Dream Machine</option><option value="kling">Kling AI</option><option value="runway">Runway Gen-3</option><option value="pika">Pika Labs</option><option value="haiper">Haiper</option></select>
+        <label>API Key</label><input type="password" id="vid-key-2" placeholder="Key..." oninput="dirty=true" />
+      </div>
+      <div class="api-slot">
+        <div class="api-head"><span class="slot-tag tag-green">Gen 3</span><span style="font-size:12px;font-weight:700">Overflow</span></div>
+        <label>Service</label><select id="vid-svc-3" onchange="dirty=true"><option value="haiper">Haiper</option><option value="luma">Luma Dream Machine</option><option value="kling">Kling AI</option><option value="runway">Runway Gen-3</option><option value="pika">Pika Labs</option></select>
+        <label>API Key</label><input type="password" id="vid-key-3" placeholder="Key..." oninput="dirty=true" />
+      </div>
+    </div>
+    <div class="btn-row" style="margin-top:14px"><button class="btn btn-pink" onclick="saveAll()">💾 Save Video Keys</button><span id="vid-saved" style="font-size:12px;color:var(--green);display:none;margin-left:8px">✓ Saved</span></div>
+  </div>
+</div>
+
+<!-- ═══ YOUTUBE ═══ -->
+<div class="page" id="page-youtube">
+  <div class="ph"><h1>YouTube <em>Settings</em></h1><p>OAuth for auto-upload. Set once, saved forever to your account.</p></div>
+  <div class="card">
+    <div class="card-head">Channel settings</div>
+    <div class="fr">
+      <div class="fg"><label>Channel Name</label><input type="text" id="yt-ch-name" placeholder="Kids TV" oninput="dirty=true" /></div>
+      <div class="fg"><label>Channel ID</label><input type="text" id="yt-ch-id" placeholder="UCxxxxxxxx" oninput="dirty=true" /></div>
+    </div>
+    <div class="fr">
+      <div class="fg"><label>Default Privacy</label><select id="yt-privacy" onchange="dirty=true"><option value="public">Public</option><option value="unlisted">Unlisted</option><option value="private">Private</option></select></div>
+      <div class="fg"><label>Made for Kids (COPPA)</label><select id="yt-kids" onchange="dirty=true"><option value="true">Yes — Made for Kids</option><option value="false">No</option></select></div>
+      <div class="fg"><label>Category ID</label><select id="yt-cat" onchange="dirty=true"><option value="27">27 — Education</option><option value="24">24 — Entertainment</option><option value="1">1 — Film & Animation</option></select></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head">OAuth credentials <span class="tag tag-blue">Google Cloud Console</span></div>
+    <div class="fr stack">
+      <div class="fg"><label>Client ID</label><input type="text" id="yt-cid" placeholder="xxxxx.apps.googleusercontent.com" oninput="dirty=true" /></div>
+      <div class="fg"><label>Client Secret</label><input type="password" id="yt-cs" placeholder="GOCSPX-..." oninput="dirty=true" /></div>
+      <div class="fg"><label>Refresh Token <span style="color:var(--muted);font-size:10px">(run get_token.js once locally)</span></label><input type="password" id="yt-rt" placeholder="1//xxxxx..." oninput="dirty=true" /></div>
+    </div>
+    <div class="notice"><strong>Steps:</strong> console.cloud.google.com → New Project → Enable YouTube Data API v3 → Credentials → OAuth 2.0 Client (Desktop app) → Download JSON → run <code>node scripts/get_token.js</code> once on your computer → copy the refresh_token here.</div>
+  </div>
+  <button class="btn btn-pink" onclick="saveAll()">💾 Save YouTube Settings</button>
+  <span id="yt-saved" style="font-size:12px;color:var(--green);display:none;margin-left:8px">✓ Saved</span>
+</div>
+
+<!-- ═══ GITHUB ═══ -->
+<div class="page" id="page-github">
+  <div class="ph"><h1>GitHub <em>Setup</em></h1><p>Runs your agent 24/7 on GitHub servers — free, no computer needed.</p></div>
+  <div class="card">
+    <div class="card-head">Repository connection</div>
+    <div class="fr">
+      <div class="fg2"><label>Repository (username/repo-name)</label><input type="text" id="gh-repo" placeholder="yourname/kidstv-agent" oninput="dirty=true" /></div>
+      <div class="fg2"><label>Personal Access Token <span style="color:var(--muted);font-size:10px">(repo + workflow)</span></label><input type="password" id="gh-token" placeholder="ghp_..." oninput="dirty=true" /></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-ghost btn-sm" onclick="testGH()">🔌 Test Connection</button>
+      <span id="gh-test" style="font-size:12px;margin-left:4px"></span>
+    </div>
+    <div class="notice"><strong>Get your PAT:</strong> GitHub.com → Settings → Developer settings → Personal access tokens → Tokens (classic) → New → check <code>repo</code> + <code>workflow</code> → Generate → copy it here.</div>
+  </div>
+  <div class="card">
+    <div class="card-head">Upload schedule (UTC times)</div>
+    <div class="fr">
+      <div class="fg"><label>Upload 1</label><select id="sched-1" onchange="dirty=true"><option value="06:00">06:00 — 10AM UAE</option><option value="07:00">07:00 — 11AM UAE</option><option value="05:00">05:00 — 9AM UAE</option></select></div>
+      <div class="fg"><label>Upload 2</label><select id="sched-2" onchange="dirty=true"><option value="11:00">11:00 — 3PM UAE</option><option value="12:00">12:00 — 4PM UAE</option><option value="10:00">10:00 — 2PM UAE</option></select></div>
+      <div class="fg"><label>Upload 3</label><select id="sched-3" onchange="dirty=true"><option value="15:00">15:00 — 7PM UAE</option><option value="16:00">16:00 — 8PM UAE</option><option value="14:00">14:00 — 6PM UAE</option></select></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head">Export GitHub Secrets <span class="tag tag-gold">Paste into repo settings</span></div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Copy all saved keys as GitHub Secrets format → paste into your repo → Settings → Secrets and variables → Actions → add each one.</p>
+    <button class="btn btn-ghost" onclick="exportSecrets()">📋 Copy All Secrets</button>
+    <span id="exp-msg" style="font-size:12px;color:var(--green);display:none;margin-left:8px">✓ Copied!</span>
+  </div>
+  <button class="btn btn-pink" onclick="saveAll()">💾 Save GitHub Settings</button>
+</div>
+
+</main>
+</div>
 </div>
 
 <script>
-let queue = JSON.parse(localStorage.getItem('ktv_queue') || '[]');
-const GITHUB_TOKEN_KEY = 'ktv_gh_token';
-const GITHUB_REPO_KEY = 'ktv_gh_repo';
+// ═══════════════════════════════════════════════════════
+// CORE STATE
+// ═══════════════════════════════════════════════════════
+let CU = null; // current user
+let dirty = false;
+let isSignup = false;
+let selCat = null;
+let selTopic = null;
+let curOut = null;
 
-function saveQueue() { localStorage.setItem('ktv_queue', JSON.stringify(queue)); }
+const CATS = [
+  {id:'animals',   e:'🐾', n:'Animals',    p:'fun animal facts and stories for young children aged 2-8'},
+  {id:'numbers',   e:'🔢', n:'Numbers',    p:'counting math basics and number learning for toddlers'},
+  {id:'alphabet',  e:'🔤', n:'Alphabet',   p:'letters phonics and reading readiness for children'},
+  {id:'colors',    e:'🎨', n:'Colors',     p:'colors shapes and visual learning for kids'},
+  {id:'nursery',   e:'🎵', n:'Nursery',    p:'nursery rhymes kids songs and musical fun'},
+  {id:'dinosaurs', e:'🦕', n:'Dinosaurs',  p:'exciting dinosaur facts and prehistoric world for kids'},
+  {id:'space',     e:'🚀', n:'Space',      p:'planets stars astronauts and space exploration for children'},
+  {id:'vehicles',  e:'🚗', n:'Vehicles',   p:'cars trucks trains planes and transportation for kids'},
+  {id:'bedtime',   e:'🌙', n:'Bedtime',    p:'calming bedtime stories lullabies and sleep time for toddlers'},
+  {id:'science',   e:'🔬', n:'Science',    p:'simple fun science experiments and discoveries for kids'},
+  {id:'food',      e:'🍎', n:'Food',       p:'healthy eating food facts and nutrition for children'},
+  {id:'emotions',  e:'😊', n:'Emotions',   p:'feelings empathy and emotional learning for toddlers'},
+  {id:'ocean',     e:'🌊', n:'Ocean',      p:'sea creatures ocean life and underwater world for kids'},
+  {id:'weather',   e:'⛅', n:'Weather',    p:'seasons weather patterns and nature for children'},
+  {id:'superheroes',e:'🦸',n:'Heroes',     p:'kindness bravery and superhero values stories for kids'},
+];
 
-function renderQueue() {
-  const el = document.getElementById('queue-list');
-  if (!queue.length) {
-    el.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;padding:1.5rem 0;">No videos queued yet. Add one above.</div>';
-    return;
-  }
-  el.innerHTML = queue.map((item, i) => `
-    <div class="queue-item">
-      <div class="queue-num">${i+1}</div>
-      <div class="queue-info">
-        <div class="queue-topic">${item.topic || item.cat}</div>
-        <div class="queue-meta">${item.cat} · ${item.time} UTC · AI Slot ${item.aiSlot} · Gen ${item.vidSlot}</div>
-      </div>
-      <span class="queue-status status-${item.status}">${item.status}</span>
-      <button class="queue-del" onclick="removeItem(${i})" title="Remove">×</button>
-    </div>
-  `).join('');
+// ═══════════════════════════════════════════════════════
+// STORAGE — encrypted per user
+// ═══════════════════════════════════════════════════════
+function enc(t, k) { let o=''; for(let i=0;i<t.length;i++) o+=String.fromCharCode(t.charCodeAt(i)^k.charCodeAt(i%k.length)); return btoa(o); }
+function dec(e, k) { try{ const t=atob(e); let o=''; for(let i=0;i<t.length;i++) o+=String.fromCharCode(t.charCodeAt(i)^k.charCodeAt(i%k.length)); return o; }catch{return null;} }
+const ukey = u => `ktvv3_${u}`;
+
+function getUD() {
+  const raw = localStorage.getItem(ukey(CU.email));
+  if (!raw) return {keys:{}, queue:[], logs:[], usedTopics:[], channelName:CU.name};
+  const d = dec(raw, CU.pass);
+  try { return JSON.parse(d); } catch { return {keys:{}, queue:[], logs:[], usedTopics:[], channelName:CU.name}; }
+}
+function saveUD(data) {
+  data.channelName = CU.name;
+  localStorage.setItem(ukey(CU.email), enc(JSON.stringify(data), CU.pass));
 }
 
-function addToQueue() {
-  const cat = document.getElementById('cat').options[document.getElementById('cat').selectedIndex].text;
-  const topic = document.getElementById('topic').value.trim() || cat;
-  const time = document.getElementById('sched-time').value;
-  const aiSlot = document.getElementById('ai-slot').value;
-  const vidSlot = document.getElementById('vid-slot').value;
-  queue.push({ cat, topic, time, aiSlot, vidSlot, status: 'pending', added: new Date().toISOString() });
-  saveQueue();
-  renderQueue();
-  pushQueueToGitHub();
+// ═══════════════════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════════════════
+function toggleAuth() {
+  isSignup = !isSignup;
+  document.getElementById('login-sub').textContent = isSignup ? 'Create your free account' : 'Sign in — all your APIs & history auto-load';
+  document.getElementById('login-btn').textContent = isSignup ? 'Create Account' : 'Sign In';
+  document.getElementById('auth-toggle').textContent = isSignup ? 'Already have an account? Sign in' : 'No account yet? Sign up free';
+  document.getElementById('field-chname').style.display = isSignup ? 'block' : 'none';
+  document.getElementById('login-err').style.display = 'none';
 }
 
-function removeItem(i) {
-  queue.splice(i, 1);
-  saveQueue();
-  renderQueue();
-}
+function handleAuth() {
+  const email = document.getElementById('auth-email').value.trim();
+  const pass  = document.getElementById('auth-pass').value;
+  const err   = document.getElementById('login-err');
+  if (!email || !pass) { err.textContent='Enter email and password.'; err.style.display='block'; return; }
+  if (pass.length < 6) { err.textContent='Password must be 6+ characters.'; err.style.display='block'; return; }
 
-function clearDone() {
-  queue = queue.filter(i => i.status !== 'done');
-  saveQueue();
-  renderQueue();
-}
-
-async function pushQueueToGitHub() {
-  const token = localStorage.getItem(GITHUB_TOKEN_KEY);
-  const repo = localStorage.getItem(GITHUB_REPO_KEY);
-  if (!token || !repo) return;
-  try {
-    const getRes = await fetch(`https://api.github.com/repos/${repo}/contents/queue.json`, {
-      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
-    });
-    const existing = getRes.ok ? await getRes.json() : null;
-    const content = btoa(JSON.stringify(queue, null, 2));
-    await fetch(`https://api.github.com/repos/${repo}/contents/queue.json`, {
-      method: 'PUT',
-      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: 'Update queue', content, sha: existing?.sha })
-    });
-  } catch(e) { console.error('GitHub push failed:', e); }
-}
-
-async function triggerNow() {
-  const token = localStorage.getItem(GITHUB_TOKEN_KEY);
-  const repo = localStorage.getItem(GITHUB_REPO_KEY);
-  if (!token || !repo) {
-    alert('Add your GitHub Personal Access Token and repo name first.\n\nOpen the Setup Guide tab → Step 4 for instructions.');
-    return;
-  }
-  await pushQueueToGitHub();
-  const res = await fetch(`https://api.github.com/repos/${repo}/dispatches`, {
-    method: 'POST',
-    headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-    body: JSON.stringify({ event_type: 'manual_trigger' })
-  });
-  if (res.ok || res.status === 204) {
-    document.getElementById('output-box').textContent = '⚡ GitHub Action triggered! Check your repo Actions tab in ~30 seconds.';
-    document.getElementById('output-box').className = 'output-block';
+  if (isSignup) {
+    if (localStorage.getItem(ukey(email))) { err.textContent='Account exists. Sign in instead.'; err.style.display='block'; return; }
+    const name = document.getElementById('reg-chname').value.trim() || 'My Kids TV';
+    CU = {email, pass, name};
+    const data = {keys:{}, queue:[], logs:[], usedTopics:[], channelName:name};
+    saveUD(data); bootApp(data);
   } else {
-    alert('Trigger failed. Check your GitHub token has "repo" and "workflow" permissions.');
+    const raw = localStorage.getItem(ukey(email));
+    if (!raw) { err.textContent='No account found. Sign up first.'; err.style.display='block'; return; }
+    const d = dec(raw, pass);
+    if (!d) { err.textContent='Wrong password.'; err.style.display='block'; return; }
+    try {
+      const data = JSON.parse(d);
+      CU = {email, pass, name: data.channelName || 'Kids TV'};
+      bootApp(data);
+    } catch { err.textContent='Wrong password.'; err.style.display='block'; }
+  }
+}
+
+function bootApp(data) {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  const k = data.keys || {};
+  const sv = (id, v) => { const el=document.getElementById(id); if(el&&v!==undefined&&v!==null) el.value=v; };
+  sv('ai-prov-a',k.aiProvA); sv('ai-key-a',k.aiKeyA);
+  sv('ai-prov-b',k.aiProvB); sv('ai-key-b',k.aiKeyB);
+  sv('ai-prov-c',k.aiProvC); sv('ai-key-c',k.aiKeyC);
+  sv('tts-svc-1',k.ttsSvc1); sv('tts-key-1',k.ttsKey1); sv('tts-voice-1',k.ttsVoice1||'en-US-JennyNeural');
+  sv('tts-svc-2',k.ttsSvc2); sv('tts-key-2',k.ttsKey2); sv('tts-voice-2',k.ttsVoice2||'af_heart');
+  sv('tts-svc-3',k.ttsSvc3); sv('tts-key-3',k.ttsKey3); sv('tts-voice-3',k.ttsVoice3);
+  sv('music-svc-1',k.musicSvc1); sv('music-key-1',k.musicKey1); sv('music-mood-1',k.musicMood1||'cheerful upbeat kids background');
+  sv('music-svc-2',k.musicSvc2); sv('music-key-2',k.musicKey2); sv('music-mood-2',k.musicMood2||'playful children instrumental');
+  sv('vid-svc-1',k.vidSvc1); sv('vid-key-1',k.vidKey1);
+  sv('vid-svc-2',k.vidSvc2); sv('vid-key-2',k.vidKey2);
+  sv('vid-svc-3',k.vidSvc3); sv('vid-key-3',k.vidKey3);
+  sv('yt-ch-name',k.ytChName); sv('yt-ch-id',k.ytChId);
+  sv('yt-privacy',k.ytPrivacy); sv('yt-kids',k.ytKids); sv('yt-cat',k.ytCat);
+  sv('yt-cid',k.ytCid); sv('yt-cs',k.ytCs); sv('yt-rt',k.ytRt);
+  sv('gh-repo',k.ghRepo); sv('gh-token',k.ghToken);
+  sv('sched-1',k.sched1); sv('sched-2',k.sched2); sv('sched-3',k.sched3);
+  document.getElementById('sb-name').textContent = CU.name;
+  document.getElementById('sb-email').textContent = CU.email;
+  document.getElementById('sb-ch').textContent = CU.email;
+  document.getElementById('sb-av').textContent = CU.name[0].toUpperCase();
+  buildCatGrids(); renderStats(); renderQPreview(); renderFullQ(); renderLogs(); startCD();
+}
+
+function logout() {
+  if (dirty && !confirm('Unsaved changes. Logout anyway?')) return;
+  CU=null; selCat=null; selTopic=null; curOut=null; dirty=false;
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('app').style.display='none';
+  ['auth-email','auth-pass','reg-chname'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+}
+
+// ═══════════════════════════════════════════════════════
+// SAVE ALL
+// ═══════════════════════════════════════════════════════
+function saveAll() {
+  const data = getUD();
+  const gv = id => { const el=document.getElementById(id); return el ? el.value : ''; };
+  data.keys = {
+    aiProvA:gv('ai-prov-a'), aiKeyA:gv('ai-key-a'),
+    aiProvB:gv('ai-prov-b'), aiKeyB:gv('ai-key-b'),
+    aiProvC:gv('ai-prov-c'), aiKeyC:gv('ai-key-c'),
+    ttsSvc1:gv('tts-svc-1'), ttsKey1:gv('tts-key-1'), ttsVoice1:gv('tts-voice-1'),
+    ttsSvc2:gv('tts-svc-2'), ttsKey2:gv('tts-key-2'), ttsVoice2:gv('tts-voice-2'),
+    ttsSvc3:gv('tts-svc-3'), ttsKey3:gv('tts-key-3'), ttsVoice3:gv('tts-voice-3'),
+    musicSvc1:gv('music-svc-1'), musicKey1:gv('music-key-1'), musicMood1:gv('music-mood-1'),
+    musicSvc2:gv('music-svc-2'), musicKey2:gv('music-key-2'), musicMood2:gv('music-mood-2'),
+    vidSvc1:gv('vid-svc-1'), vidKey1:gv('vid-key-1'),
+    vidSvc2:gv('vid-svc-2'), vidKey2:gv('vid-key-2'),
+    vidSvc3:gv('vid-svc-3'), vidKey3:gv('vid-key-3'),
+    ytChName:gv('yt-ch-name'), ytChId:gv('yt-ch-id'),
+    ytPrivacy:gv('yt-privacy'), ytKids:gv('yt-kids'), ytCat:gv('yt-cat'),
+    ytCid:gv('yt-cid'), ytCs:gv('yt-cs'), ytRt:gv('yt-rt'),
+    ghRepo:gv('gh-repo'), ghToken:gv('gh-token'),
+    sched1:gv('sched-1'), sched2:gv('sched-2'), sched3:gv('sched-3'),
+  };
+  saveUD(data); dirty=false;
+  ['ai-saved','audio-saved','music-saved','vid-saved','yt-saved'].forEach(id=>{
+    const el=document.getElementById(id); if(el){el.style.display='inline';setTimeout(()=>el.style.display='none',2500);}
+  });
+  toast('✓ All settings saved to your account','ok');
+}
+
+// ═══════════════════════════════════════════════════════
+// CATEGORIES
+// ═══════════════════════════════════════════════════════
+function buildCatGrids() {
+  ['dash-cats','gen-cats'].forEach(gid => {
+    const g = document.getElementById(gid);
+    g.innerHTML = CATS.map(c=>`<div class="cat" id="${gid}-${c.id}" onclick="selCategory('${c.id}','${gid}')"><span class="ce">${c.e}</span><span class="cn">${c.n}</span></div>`).join('');
+  });
+}
+
+function selCategory(id, gid) {
+  document.querySelectorAll(`#${gid} .cat`).forEach(c=>c.classList.remove('on'));
+  document.getElementById(`${gid}-${id}`).classList.add('on');
+  selCat = CATS.find(c=>c.id===id);
+  if (gid==='gen-cats') { document.getElementById('topics-card').style.display='block'; document.getElementById('gen-out-card').style.display='none'; selTopic=null; loadTopics(); }
+}
+
+// ═══════════════════════════════════════════════════════
+// GEMINI
+// ═══════════════════════════════════════════════════════
+function getKey(slot=0) {
+  const k=getUD().keys||{};
+  const keys=[k.aiKeyA,k.aiKeyB,k.aiKeyC].filter(Boolean);
+  return keys[slot%keys.length]||null;
+}
+
+async function gemini(prompt, slot=0) {
+  const key=getKey(slot);
+  if (!key) throw new Error('No Gemini API key saved. Go to AI APIs → add your key first.');
+  const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`,{
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:.85,maxOutputTokens:1500}})
+  });
+  if (!r.ok) { const e=await r.json(); if(r.status===429&&slot<2) return gemini(prompt,slot+1); throw new Error('Gemini '+(e.error?.message||r.status)); }
+  const d=await r.json();
+  return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
+}
+
+// ═══════════════════════════════════════════════════════
+// TOPICS
+// ═══════════════════════════════════════════════════════
+async function loadTopics() {
+  if (!selCat) return;
+  document.getElementById('topics-loading').style.display='block';
+  document.getElementById('topic-list').innerHTML='';
+  const data=getUD();
+  const used=(data.usedTopics||[]).filter(t=>t.catId===selCat.id).map(t=>t.topic);
+  const avoid=used.length?`\nNever suggest these already used topics: ${used.slice(-25).join('; ')}`:'';
+  try {
+    const raw=await gemini(`Generate 6 specific fresh YouTube Kids Shorts video topics.
+Category: ${selCat.n} — ${selCat.p}
+Audience: Children 2-8 years old.${avoid}
+Rules: specific not generic, engaging and safe, under 8 words each, educational and fun.
+Return ONLY a JSON array: ["topic 1","topic 2","topic 3","topic 4","topic 5","topic 6"]`);
+    const topics=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    document.getElementById('topics-loading').style.display='none';
+    document.getElementById('topic-list').innerHTML=topics.map((t,i)=>`
+      <div class="topic-item" id="tp-${i}" onclick="pickTopic(${i},'${t.replace(/'/g,"\\'").replace(/"/g,'\\"')}')">
+        <span class="t-num">0${i+1}</span><span class="t-text">${t}</span><span class="t-check">✓</span>
+      </div>`).join('');
+  } catch(e) {
+    document.getElementById('topics-loading').style.display='none';
+    document.getElementById('topic-list').innerHTML=`<div style="color:var(--red);padding:10px;font-size:13px">${e.message}</div>`;
+  }
+}
+
+function pickTopic(i, topic) {
+  document.querySelectorAll('.topic-item').forEach(el=>el.classList.remove('on'));
+  document.getElementById('tp-'+i).classList.add('on');
+  selTopic=topic;
+  generateContent();
+}
+
+// ═══════════════════════════════════════════════════════
+// GENERATE FULL CONTENT
+// ═══════════════════════════════════════════════════════
+async function generateContent() {
+  if (!selCat||!selTopic) return;
+  document.getElementById('gen-out-card').style.display='block';
+  document.getElementById('gen-loading').style.display='block';
+  document.getElementById('gen-output').style.display='none';
+  const setP=(pct,txt)=>{document.getElementById('gen-prog-fill').style.width=pct+'%';document.getElementById('gen-step-txt').textContent=txt;};
+  setP(10,'✍️ Writing script...');
+  try {
+    const data=getUD();
+    const chName=data.keys?.ytChName||'Kids TV';
+    setP(30,'🧠 Generating full content package...');
+    const raw=await gemini(`You are a YouTube Kids Shorts creator for channel "${chName}".
+Create a complete video package. Return ONLY valid JSON no markdown no backticks.
+
+Category: ${selCat.n}
+Topic: ${selTopic}
+Audience: Children 2-8 years
+
+{
+  "script": "110-130 word voiceover script. Exciting hook first 3 seconds. Fun educational facts. End: Subscribe for more [category] videos every day!",
+  "voiceoverScript": "Same script rewritten slow warm enthusiastic with [PAUSE] markers. Perfect for kids narrator. Emphasize exciting words in CAPS.",
+  "title": "YouTube title max 60 chars. Start with emoji. Keyword rich. Exciting.",
+  "description": "3 sentence YouTube description. Keywords included. End with subscribe prompt.",
+  "tags": "tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, tag9, tag10, tag11, tag12",
+  "hashtags": "#KidsTV #Shorts #Children #${selCat.n.replace(/\s/g,'')} #Educational #Learning #Kids",
+  "videoPrompt": "AI video generation prompt: bright vibrant cartoon animation style, safe for children under 8, cheerful friendly animal/character, smooth motion, 9:16 vertical format, no text overlays, colorful backgrounds. Specific: ${selTopic}",
+  "musicMood": "background music mood for this video in 5 words e.g. cheerful upbeat playful kids fun",
+  "durationSeconds": 55
+}`,0);
+    setP(80,'📦 Finalizing package...');
+    const out=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    curOut={...out, category:selCat.n, catId:selCat.id, topic:selTopic};
+    document.getElementById('o-script').textContent=out.script;
+    document.getElementById('o-voice').textContent=out.voiceoverScript;
+    document.getElementById('o-title').textContent=out.title;
+    document.getElementById('o-tags').textContent=out.tags+'\n'+out.hashtags;
+    document.getElementById('o-desc').textContent=out.description;
+    document.getElementById('o-vp').textContent=out.videoPrompt;
+    setP(100,'✅ Done!');
+    // mark topic used
+    data.usedTopics=data.usedTopics||[];
+    data.usedTopics.push({catId:selCat.id,topic:selTopic,date:new Date().toISOString()});
+    if(data.usedTopics.length>300) data.usedTopics=data.usedTopics.slice(-300);
+    saveUD(data);
+    setTimeout(()=>{
+      document.getElementById('gen-loading').style.display='none';
+      document.getElementById('gen-output').style.display='block';
+    },400);
+  } catch(e) {
+    document.getElementById('gen-loading').style.display='none';
+    document.getElementById('gen-out-card').querySelector('.card-head').innerHTML='<span style="color:var(--red)">❌ '+e.message+'</span>';
+    toast(e.message,'err');
+  }
+}
+
+// Quick generate from dashboard
+async function quickGen() {
+  if (!selCat) { toast('Pick a category first!','err'); return; }
+  const btn=document.getElementById('dash-gen-btn');
+  const out=document.getElementById('dash-out');
+  const prog=document.getElementById('dash-progress');
+  const fill=document.getElementById('dash-progress-fill');
+  const step=document.getElementById('dash-step-msg');
+  btn.disabled=true; btn.innerHTML='<span class="loader" style="color:#fff"></span> Working...';
+  out.textContent='Starting full automation pipeline...'; out.className='out-box';
+  prog.style.display='block'; step.style.display='block';
+
+  const setP=(pct,txt)=>{fill.style.width=pct+'%';step.textContent=txt;};
+
+  try {
+    const data=getUD();
+    const chName=data.keys?.ytChName||'Kids TV';
+    const used=(data.usedTopics||[]).filter(t=>t.catId===selCat.id).map(t=>t.topic);
+    const avoid=used.length?`Never repeat: ${used.slice(-25).join('; ')}`:'';
+    setP(10,'🧠 Picking fresh topic...');
+    const raw=await gemini(`You are a YouTube Kids Shorts creator for "${chName}".
+Auto-pick a fresh specific topic and generate complete package.
+Category: ${selCat.n} — ${selCat.p}. Audience: Children 2-8. ${avoid}
+Return ONLY valid JSON:
+{
+  "topic":"specific topic chosen",
+  "script":"110-130 word voiceover script with hook and subscribe CTA",
+  "voiceoverScript":"narration version with [PAUSE] markers and CAPS emphasis",
+  "title":"YouTube title max 60 chars starting with emoji",
+  "description":"3 sentence description with keywords",
+  "tags":"12 comma separated tags",
+  "hashtags":"#KidsTV #Shorts #Children #${selCat.n.replace(/\s/g,'')} #Educational",
+  "videoPrompt":"AI video gen: bright cartoon animation 9:16 vertical safe for kids. Topic: [topic]",
+  "musicMood":"cheerful upbeat kids background playful"
+}`);
+    setP(50,'📦 Package ready, adding to queue...');
+    const result=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    curOut={...result, category:selCat.n, catId:selCat.id};
+    out.textContent=`📌 Topic: ${result.topic}\n\n📝 Script:\n${result.script}\n\n🏷️ Title: ${result.title}\n\n🎙️ Voice: ${result.voiceoverScript?.substring(0,100)}...\n\n🎥 Video Prompt:\n${result.videoPrompt}`;
+    data.usedTopics=data.usedTopics||[];
+    data.usedTopics.push({catId:selCat.id,topic:result.topic,date:new Date().toISOString()});
+    if(data.usedTopics.length>300) data.usedTopics=data.usedTopics.slice(-300);
+    addToQueue(true);
+    setP(80,'⚡ Triggering GitHub upload...');
+    await triggerGH(true);
+    setP(100,'✅ Done! GitHub Actions is processing your video.');
+    step.style.color='var(--green)';
+    toast('✅ Generated & queued! GitHub Actions is uploading.','ok');
+  } catch(e) {
+    out.textContent='❌ '+e.message;
+    step.textContent='Error: '+e.message; step.style.color='var(--red)';
+    toast(e.message,'err');
+  }
+  btn.disabled=false; btn.innerHTML='✨ Generate &amp; Auto-Upload';
+}
+
+// ═══════════════════════════════════════════════════════
+// QUEUE
+// ═══════════════════════════════════════════════════════
+function addToQueue(silent=false) {
+  if (!curOut) { if(!silent) toast('Generate content first!','err'); return; }
+  const data=getUD();
+  data.queue=data.queue||[];
+  data.queue.push({...curOut, status:'pending', added:new Date().toISOString(), id:Date.now()});
+  saveUD(data);
+  renderStats(); renderQPreview(); renderFullQ();
+  const count=data.queue.filter(i=>i.status==='pending').length;
+  document.getElementById('sb-queue-count').textContent=count;
+  if(!silent) toast('✓ Added to upload queue','ok');
+}
+
+function renderQPreview() {
+  const data=getUD();
+  const q=(data.queue||[]).slice(-5).reverse();
+  const el=document.getElementById('dash-q-preview');
+  if(!q.length){el.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;padding:1rem">No videos queued yet.</div>';return;}
+  el.innerHTML=q.map((item,i)=>qHTML(item,i)).join('');
+}
+
+function renderFullQ() {
+  const data=getUD();
+  const q=(data.queue||[]).slice().reverse();
+  const el=document.getElementById('full-queue');
+  if(!q.length){el.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;padding:1.5rem">Queue is empty.</div>';return;}
+  el.innerHTML=q.map((item,i)=>qHTML(item,i,true)).join('');
+}
+
+function qHTML(item,i,del=false) {
+  const t=new Date(item.added).toLocaleString();
+  const db=del?`<button class="q-del" onclick="delQ(${item.id})">×</button>`:'';
+  return `<div class="q-item"><div class="q-n">${i+1}</div><div class="q-info"><div class="q-title">${item.title||item.topic||'Untitled'}</div><div class="q-meta">${item.category||''} · ${t}</div></div><span class="q-status qs-${item.status||'pending'}">${item.status||'pending'}</span>${db}</div>`;
+}
+
+function delQ(id) { const data=getUD(); data.queue=(data.queue||[]).filter(i=>i.id!==id); saveUD(data); renderStats(); renderQPreview(); renderFullQ(); }
+function clearDone() { const data=getUD(); data.queue=(data.queue||[]).filter(i=>i.status!=='done'); saveUD(data); renderStats(); renderQPreview(); renderFullQ(); }
+
+// ═══════════════════════════════════════════════════════
+// LOGS
+// ═══════════════════════════════════════════════════════
+function renderLogs() {
+  const data=getUD();
+  const logs=(data.logs||[]).slice().reverse();
+  const tbody=document.getElementById('log-body');
+  const nl=document.getElementById('no-logs');
+  if(!logs.length){tbody.innerHTML='';nl.style.display='block';return;}
+  nl.style.display='none';
+  tbody.innerHTML=logs.map((l,i)=>`<tr>
+    <td style="color:var(--muted)">${i+1}</td>
+    <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${l.topic||'-'}</td>
+    <td>${l.category||'-'}</td>
+    <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${l.title||'-'}</td>
+    <td><span style="font-size:10px;color:var(--muted)">${l.ttsService||'edge'}</span></td>
+    <td><span style="font-size:10px;color:var(--muted)">${l.musicService||'mubert'}</span></td>
+    <td><span class="q-status qs-${l.status||'done'}">${l.status||'done'}</span></td>
+    <td style="color:var(--muted)">${new Date(l.date||l.timestamp).toLocaleDateString()}</td>
+  </tr>`).join('');
+}
+
+function clearLogs() { if(!confirm('Clear all logs?')) return; const data=getUD(); data.logs=[]; saveUD(data); renderLogs(); }
+
+// ═══════════════════════════════════════════════════════
+// STATS
+// ═══════════════════════════════════════════════════════
+function renderStats() {
+  const data=getUD();
+  const q=data.queue||[];
+  const logs=data.logs||[];
+  const today=new Date().toDateString();
+  const todayDone=logs.filter(l=>new Date(l.date||l.timestamp).toDateString()===today).length;
+  document.getElementById('ds-q').textContent=q.filter(i=>i.status==='pending').length;
+  document.getElementById('ds-t').textContent=todayDone;
+  document.getElementById('ds-tot').textContent=logs.length;
+  document.getElementById('ds-used').textContent=(data.usedTopics||[]).length;
+  const count=q.filter(i=>i.status==='pending').length;
+  document.getElementById('sb-queue-count').textContent=count;
+}
+
+// ═══════════════════════════════════════════════════════
+// GITHUB
+// ═══════════════════════════════════════════════════════
+async function testGH() {
+  const repo=document.getElementById('gh-repo').value.trim();
+  const token=document.getElementById('gh-token').value.trim();
+  const el=document.getElementById('gh-test');
+  if(!repo||!token){el.textContent='❌ Fill in repo and token';el.style.color='var(--red)';return;}
+  el.textContent='Testing...';el.style.color='var(--muted)';
+  try {
+    const r=await fetch(`https://api.github.com/repos/${repo}`,{headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
+    el.textContent=r.ok?'✓ Connected!':'❌ Check token & repo';
+    el.style.color=r.ok?'var(--green)':'var(--red)';
+  } catch { el.textContent='❌ Network error';el.style.color='var(--red)'; }
+}
+
+async function pushQueue() {
+  const data=getUD();
+  const k=data.keys||{};
+  const repo=k.ghRepo; const token=k.ghToken;
+  if(!repo||!token) return;
+  try {
+    const getR=await fetch(`https://api.github.com/repos/${repo}/contents/queue.json`,{headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
+    const ex=getR.ok?await getR.json():null;
+    const content=btoa(unescape(encodeURIComponent(JSON.stringify(data.queue||[],null,2))));
+    await fetch(`https://api.github.com/repos/${repo}/contents/queue.json`,{
+      method:'PUT',headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
+      body:JSON.stringify({message:'Update queue',content,sha:ex?.sha})
+    });
+  } catch(e){console.error('Push queue failed:',e);}
+}
+
+async function triggerGH(silent=false) {
+  const data=getUD(); const k=data.keys||{};
+  const repo=k.ghRepo; const token=k.ghToken;
+  if(!repo||!token){
+    if(!silent){toast('Set GitHub repo & token in Settings → GitHub first!','err');nav('github',document.querySelectorAll('.sb-item')[9]);}
+    return;
+  }
+  if(!silent) toast('Pushing queue to GitHub...','ok');
+  await pushQueue();
+  const r=await fetch(`https://api.github.com/repos/${repo}/dispatches`,{
+    method:'POST',headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
+    body:JSON.stringify({event_type:'manual_trigger'})
+  });
+  if(!silent){
+    if(r.ok||r.status===204) toast('⚡ GitHub Action triggered! Processing in ~30 seconds.','ok');
+    else toast('❌ Trigger failed — check token permissions (repo + workflow).','err');
   }
 }
 
 function exportSecrets() {
-  const keys = {
-    GEMINI_KEY_A: document.getElementById('ai-key-a').value,
-    GEMINI_KEY_B: document.getElementById('ai-key-b').value,
-    GEMINI_KEY_C: document.getElementById('ai-key-c').value,
-    VID_KEY_1: document.getElementById('vid-key-1').value,
-    VID_KEY_2: document.getElementById('vid-key-2').value,
-    VID_KEY_3: document.getElementById('vid-key-3').value,
-    YT_CHANNEL: document.getElementById('yt-channel').value,
-    YT_CLIENT_ID: document.getElementById('yt-client-id').value,
-    YT_REFRESH_TOKEN: document.getElementById('yt-refresh-token').value,
-  };
-  const text = Object.entries(keys).filter(([,v])=>v).map(([k,v])=>`${k}=${v}`).join('\n');
-  navigator.clipboard.writeText(text);
-  const msg = document.getElementById('exp-msg');
-  msg.style.display = 'inline';
-  setTimeout(()=>{ msg.style.display='none'; }, 2500);
+  const data=getUD(); const k=data.keys||{};
+  const lines=[
+    k.aiKeyA&&`GEMINI_KEY_A=${k.aiKeyA}`,
+    k.aiKeyB&&`GEMINI_KEY_B=${k.aiKeyB}`,
+    k.aiKeyC&&`GEMINI_KEY_C=${k.aiKeyC}`,
+    k.ttsKey1&&`TTS_KEY_1=${k.ttsKey1}`,
+    k.ttsSvc1&&`TTS_SVC_1=${k.ttsSvc1}`,
+    k.ttsVoice1&&`TTS_VOICE_1=${k.ttsVoice1}`,
+    k.ttsKey2&&`TTS_KEY_2=${k.ttsKey2}`,
+    k.ttsSvc2&&`TTS_SVC_2=${k.ttsSvc2}`,
+    k.ttsKey3&&`TTS_KEY_3=${k.ttsKey3}`,
+    k.ttsSvc3&&`TTS_SVC_3=${k.ttsSvc3}`,
+    k.musicKey1&&`MUSIC_KEY_1=${k.musicKey1}`,
+    k.musicSvc1&&`MUSIC_SVC_1=${k.musicSvc1}`,
+    k.musicMood1&&`MUSIC_MOOD_1=${k.musicMood1}`,
+    k.musicKey2&&`MUSIC_KEY_2=${k.musicKey2}`,
+    k.musicSvc2&&`MUSIC_SVC_2=${k.musicSvc2}`,
+    k.vidKey1&&`VID_KEY_1=${k.vidKey1}`,
+    k.vidSvc1&&`VID_SVC_1=${k.vidSvc1}`,
+    k.vidKey2&&`VID_KEY_2=${k.vidKey2}`,
+    k.vidSvc2&&`VID_SVC_2=${k.vidSvc2}`,
+    k.vidKey3&&`VID_KEY_3=${k.vidKey3}`,
+    k.vidSvc3&&`VID_SVC_3=${k.vidSvc3}`,
+    k.ytCid&&`YT_CLIENT_ID=${k.ytCid}`,
+    k.ytCs&&`YT_CLIENT_SECRET=${k.ytCs}`,
+    k.ytRt&&`YT_REFRESH_TOKEN=${k.ytRt}`,
+  ].filter(Boolean).join('\n');
+  navigator.clipboard.writeText(lines);
+  document.getElementById('exp-msg').style.display='inline';
+  setTimeout(()=>document.getElementById('exp-msg').style.display='none',2500);
+  toast('✓ All secrets copied! Paste into GitHub Secrets.','ok');
 }
 
-function switchTab(name) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  event.target.classList.add('active');
-  document.getElementById('tab-' + name).classList.add('active');
+// ═══════════════════════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════════════════════
+function nav(page, btn) {
+  document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  document.getElementById('page-'+page).classList.add('active');
+  if(page==='logs') renderLogs();
+  if(page==='queue') renderFullQ();
 }
 
-function copyEl(id) {
-  navigator.clipboard.writeText(document.getElementById(id).textContent);
+// ═══════════════════════════════════════════════════════
+// COUNTDOWN
+// ═══════════════════════════════════════════════════════
+function startCD() {
+  function tick() {
+    const now=new Date(); const tom=new Date(now); tom.setUTCHours(24,0,0,0);
+    const diff=tom-now;
+    const h=String(Math.floor(diff/3600000)).padStart(2,'0');
+    const m=String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+    const s=String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+    const full=`${h}:${m}:${s}`;
+    ['q-cd','vid-cd'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=full;});
+    document.getElementById('ds-cd').textContent=`${h}:${m}`;
+  }
+  tick(); setInterval(tick,1000);
 }
 
-function updateCountdown() {
-  const now = new Date();
-  const tom = new Date(now); tom.setUTCHours(24,0,0,0);
-  const diff = tom - now;
-  const h = String(Math.floor(diff/3600000)).padStart(2,'0');
-  const m = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
-  const s = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
-  const t = `${h}:${m}:${s}`;
-  document.getElementById('countdown').textContent = t;
-  document.getElementById('countdown2').textContent = t;
-  const runs = [6,11,15];
-  const utcH = now.getUTCHours(), utcM = now.getUTCMinutes();
-  let next = runs.find(h => h > utcH || (h === utcH && utcM < 0));
-  if (!next) next = runs[0];
-  document.getElementById('next-run').textContent = `${String(next).padStart(2,'0')}:00 UTC`;
-}
-updateCountdown();
-setInterval(updateCountdown, 1000);
-renderQueue();
+// ═══════════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════════
+function cp(id){navigator.clipboard.writeText(document.getElementById(id).textContent);toast('Copied!','ok');}
+let _tt;
+function toast(msg,type='ok'){const el=document.getElementById('toast');el.textContent=msg;el.className=`toast show ${type}`;clearTimeout(_tt);_tt=setTimeout(()=>el.className='toast',3200);}
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('login-screen').style.display!=='none') handleAuth();});
 </script>
 </body>
 </html>
