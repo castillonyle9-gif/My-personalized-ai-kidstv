@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Kids TV Agent v3</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -28,12 +28,13 @@
   --orange:  #ff8c4d;
   --ff:      'Outfit', sans-serif;
   --mono:    'JetBrains Mono', monospace;
+  --mob-nav-h: 68px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--ff);min-height:100vh;overflow-x:hidden}
 
-/* ANIMATED BG */
+/* ── ANIMATED BG ── */
 .bg-mesh{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .bg-mesh span{position:absolute;border-radius:50%;filter:blur(120px);animation:drift 20s infinite alternate}
 .bg-mesh span:nth-child(1){width:600px;height:600px;background:rgba(255,77,141,0.07);top:-200px;right:-100px;animation-duration:18s}
@@ -41,9 +42,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--ff);min-height:100
 .bg-mesh span:nth-child(3){width:400px;height:400px;background:rgba(157,123,255,0.05);top:40%;left:35%;animation-duration:25s}
 @keyframes drift{0%{transform:translate(0,0) scale(1)}100%{transform:translate(40px,30px) scale(1.1)}}
 
-/* LOGIN */
-#login-screen{position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;background:var(--bg)}
-.login-wrap{width:420px;position:relative}
+/* ── LOGIN ── */
+#login-screen{position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:1rem}
+.login-wrap{width:100%;max-width:420px;position:relative}
 .login-glow{position:absolute;inset:-40px;background:radial-gradient(ellipse,rgba(255,77,141,0.12),transparent 70%);pointer-events:none}
 .login-box{background:var(--s1);border:0.5px solid var(--b2);border-radius:24px;padding:2.5rem;position:relative;backdrop-filter:blur(20px)}
 .login-top{text-align:center;margin-bottom:2rem}
@@ -62,11 +63,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--ff);min-height:100
 .auth-switch span{color:var(--blue);cursor:pointer;font-weight:600}
 .auth-switch span:hover{text-decoration:underline}
 
-/* APP */
+/* ── APP ── */
 #app{display:none;position:relative;z-index:1}
 .layout{display:flex;min-height:100vh}
 
-/* SIDEBAR */
+/* ── DESKTOP SIDEBAR ── */
 .sidebar{width:230px;flex-shrink:0;background:var(--s1);border-right:0.5px solid var(--b1);display:flex;flex-direction:column;padding:1.25rem 0;position:sticky;top:0;height:100vh;overflow-y:auto}
 .sb-brand{padding:0 1rem 1.25rem;border-bottom:0.5px solid var(--b1);margin-bottom:1rem}
 .sb-brand .ico{font-size:30px;line-height:1}
@@ -88,7 +89,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--ff);min-height:100
 .logout-btn{width:100%;padding:8px;background:none;border:0.5px solid var(--b2);border-radius:9px;color:var(--muted);font-size:12px;cursor:pointer;font-family:var(--ff);transition:all .15s}
 .logout-btn:hover{border-color:var(--red);color:var(--red)}
 
-/* MAIN */
+/* ── MAIN ── */
 .main{flex:1;overflow-y:auto}
 .page{display:none;padding:2rem 2rem 4rem;max-width:1020px}
 .page.active{display:block}
@@ -97,7 +98,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--ff);min-height:100
 .ph h1 em{font-style:normal;color:var(--pink)}
 .ph p{font-size:13px;color:var(--muted);margin-top:5px}
 
-/* CARDS */
+/* ── CARDS ── */
 .card{background:var(--s1);border:0.5px solid var(--b1);border-radius:18px;padding:1.5rem;margin-bottom:1rem}
 .card-head{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:1.25rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .tag{font-size:10px;padding:2px 8px;border-radius:5px;font-weight:700;text-transform:none;letter-spacing:0}
@@ -109,14 +110,14 @@ body{background:var(--bg);color:var(--text);font-family:var(--ff);min-height:100
 .tag-cyan  {background:rgba(77,255,243,.13);color:var(--cyan)}
 .tag-orange{background:rgba(255,140,77,.13);color:var(--orange)}
 
-/* STATS */
+/* ── STATS ── */
 .stat-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:1.25rem}
 .stat{background:var(--s1);border:0.5px solid var(--b1);border-radius:14px;padding:1rem 1.25rem}
 .stat-l{font-size:11px;color:var(--muted);margin-bottom:5px;font-weight:500}
 .stat-v{font-size:26px;font-weight:800;line-height:1;font-family:var(--ff)}
 .c-pink{color:var(--pink)} .c-blue{color:var(--blue)} .c-green{color:var(--green)} .c-gold{color:var(--gold)} .c-purple{color:var(--purple)}
 
-/* PIPELINE VISUAL */
+/* ── PIPELINE ── */
 .pipeline{display:flex;align-items:center;gap:0;margin:1rem 0;overflow-x:auto;padding-bottom:4px}
 .pip-step{background:var(--s2);border:0.5px solid var(--b2);border-radius:12px;padding:10px 14px;text-align:center;flex-shrink:0;min-width:100px}
 .pip-step .p-ico{font-size:20px;display:block;margin-bottom:4px}
@@ -125,7 +126,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--ff);min-height:100
 .pip-step.active-step{background:rgba(255,77,141,.08);border-color:rgba(255,77,141,.25)}
 .pip-arr{color:var(--muted);font-size:18px;padding:0 4px;flex-shrink:0}
 
-/* CATEGORIES */
+/* ── CATEGORIES ── */
 .cat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
 .cat{background:var(--s2);border:1.5px solid var(--b1);border-radius:13px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .15s;user-select:none}
 .cat:hover{border-color:rgba(255,77,141,.4);background:rgba(255,77,141,.05)}
@@ -134,7 +135,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--ff);min-height:100
 .cat .cn{font-size:11px;font-weight:600;color:var(--soft);line-height:1.3}
 .cat.on .cn{color:var(--pink)}
 
-/* FORMS */
+/* ── FORMS ── */
 label{font-size:12px;color:var(--muted);display:block;margin-bottom:5px;font-weight:500}
 input[type=text],input[type=password],input[type=email],select,textarea{width:100%;background:var(--s2);border:0.5px solid var(--b2);color:var(--text);border-radius:10px;padding:10px 13px;font-size:13px;font-family:var(--ff);outline:none;transition:border-color .2s}
 input:focus,select:focus,textarea:focus{border-color:var(--pink)}
@@ -144,7 +145,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
 .fg2{flex:2;display:flex;flex-direction:column}
 .stack{flex-direction:column;gap:10px}
 
-/* BUTTONS */
+/* ── BUTTONS ── */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 20px;border-radius:11px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .18s;white-space:nowrap;font-family:var(--ff)}
 .btn:disabled{opacity:.35;cursor:not-allowed;transform:none!important;filter:none!important}
 .btn-pink{background:linear-gradient(135deg,var(--pink),#ff8d6b);color:#fff}
@@ -162,7 +163,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
 .loader{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.15);border-top-color:currentColor;border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* API SLOTS */
+/* ── API SLOTS ── */
 .api-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 .api-slot{background:var(--s2);border:0.5px solid var(--b1);border-radius:13px;padding:14px}
 .api-head{display:flex;align-items:center;gap:7px;margin-bottom:12px}
@@ -171,7 +172,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
 .api-slot .purpose{font-size:11px;color:var(--muted);margin-top:2px}
 .slot-tag{font-size:10px;font-weight:800;padding:3px 8px;border-radius:5px}
 
-/* TOPICS */
+/* ── TOPICS ── */
 .topic-list{display:flex;flex-direction:column;gap:6px}
 .topic-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--s2);border:0.5px solid var(--b1);border-radius:11px;font-size:13px;cursor:pointer;transition:all .15s;user-select:none}
 .topic-item:hover{border-color:rgba(255,77,141,.3);background:rgba(255,77,141,.04)}
@@ -181,12 +182,12 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
 .t-check{font-size:14px;opacity:0;transition:opacity .15s;color:var(--green)}
 .topic-item.on .t-check{opacity:1}
 
-/* QUEUE */
+/* ── QUEUE ── */
 .q-list{display:flex;flex-direction:column;gap:8px}
 .q-item{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--s2);border:0.5px solid var(--b1);border-radius:13px}
 .q-n{width:28px;height:28px;border-radius:8px;background:var(--pink);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.q-info{flex:1}
-.q-title{font-size:13px;font-weight:600}
+.q-info{flex:1;min-width:0}
+.q-title{font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .q-meta{font-size:11px;color:var(--muted);margin-top:2px}
 .q-status{font-size:11px;padding:3px 9px;border-radius:6px;font-weight:700;flex-shrink:0}
 .qs-pending{background:rgba(255,204,77,.12);color:var(--gold)}
@@ -196,19 +197,19 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
 .q-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;padding:3px 7px;border-radius:5px}
 .q-del:hover{color:var(--red)}
 
-/* OUTPUT */
-.out-box{background:var(--s2);border:0.5px solid var(--b1);border-radius:12px;padding:14px;font-size:13px;line-height:1.8;color:var(--text);white-space:pre-wrap;min-height:90px;font-family:var(--ff)}
+/* ── OUTPUT ── */
+.out-box{background:var(--s2);border:0.5px solid var(--b1);border-radius:12px;padding:14px;font-size:13px;line-height:1.8;color:var(--text);white-space:pre-wrap;min-height:90px;font-family:var(--ff);word-break:break-word}
 .out-box.empty{color:var(--muted);font-style:italic}
 
-/* LOG TABLE */
+/* ── LOG TABLE ── */
 .log-tbl{width:100%;border-collapse:collapse;font-size:12px}
 .log-tbl th{text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;letter-spacing:.07em;text-transform:uppercase;border-bottom:0.5px solid var(--b1);font-weight:700}
-.log-tbl td{padding:10px 12px;border-bottom:0.5px solid var(--b1);vertical-align:top}
+.log-tbl td{padding:10px 12px;border-bottom:0.5px solid var(--b1);vertical-align:top;word-break:break-word}
 .log-tbl tr:last-child td{border-bottom:none}
 .log-tbl tr:hover td{background:var(--s2)}
 
-/* MISC */
-.row-btw{display:flex;align-items:center;justify-content:space-between}
+/* ── MISC ── */
+.row-btw{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
 .copy-btn{background:none;border:0.5px solid var(--b2);color:var(--muted);font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;font-family:var(--ff)}
 .copy-btn:hover{color:var(--text);background:var(--s3)}
 .cd-chip{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:var(--s2);border:0.5px solid var(--b1);border-radius:9px;font-size:12px;color:var(--muted)}
@@ -217,31 +218,148 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 .notice{background:rgba(77,143,255,.06);border:0.5px solid rgba(77,143,255,.18);border-radius:11px;padding:12px 14px;font-size:12px;color:var(--soft);line-height:1.7;margin-top:10px}
 .notice strong{color:var(--blue)}
-.notice code{background:var(--s3);padding:1px 5px;border-radius:4px;font-size:11px;color:var(--cyan);font-family:var(--mono)}
+.notice code{background:var(--s3);padding:1px 5px;border-radius:4px;font-size:11px;color:var(--cyan);font-family:var(--mono);word-break:break-all}
 .success-notice{background:rgba(61,232,160,.06);border:0.5px solid rgba(61,232,160,.18);border-radius:11px;padding:12px 14px;font-size:12px;color:var(--soft);line-height:1.7;margin-top:10px}
 .success-notice strong{color:var(--green)}
 .divider{height:.5px;background:var(--b1);margin:1.25rem 0}
-.toast{position:fixed;bottom:24px;right:24px;z-index:9999;background:var(--s1);border:0.5px solid var(--b2);border-radius:12px;padding:12px 18px;font-size:13px;color:var(--text);box-shadow:0 10px 40px rgba(0,0,0,.6);transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none;font-weight:500}
+.toast{position:fixed;bottom:84px;right:16px;z-index:9999;background:var(--s1);border:0.5px solid var(--b2);border-radius:12px;padding:12px 18px;font-size:13px;color:var(--text);box-shadow:0 10px 40px rgba(0,0,0,.6);transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none;font-weight:500;max-width:calc(100vw - 32px)}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.ok{border-color:rgba(61,232,160,.3)}
 .toast.err{border-color:rgba(255,77,77,.3)}
 
-/* PROGRESS BAR */
+/* ── PROGRESS ── */
 .progress-wrap{height:4px;background:var(--s3);border-radius:2px;overflow:hidden;margin:8px 0}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--purple));border-radius:2px;transition:width .4s}
 
-/* STEP INDICATOR */
-.steps{display:flex;align-items:center;gap:0;margin-bottom:1.5rem}
-.step-item{display:flex;align-items:center;gap:8px;flex:1}
-.step-circle{width:28px;height:28px;border-radius:50%;background:var(--s3);border:0.5px solid var(--b2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--muted);flex-shrink:0;transition:all .3s}
-.step-circle.done{background:var(--green);border-color:var(--green);color:#000}
-.step-circle.active{background:var(--pink);border-color:var(--pink);color:#fff}
-.step-label{font-size:11px;color:var(--muted);font-weight:600}
-.step-label.active{color:var(--text)}
-.step-line{flex:1;height:.5px;background:var(--b2);margin:0 8px}
-.step-line.done{background:var(--green)}
+/* ── AUTO SCHEDULER STATUS PANEL ── */
+.sched-panel{background:rgba(61,232,160,.04);border:0.5px solid rgba(61,232,160,.18);border-radius:14px;padding:1rem 1.25rem;margin-top:10px;display:none}
+.sched-panel.active{display:block}
+.sched-title{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--green);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.sched-step{font-size:13px;color:var(--text);line-height:1.6}
+.sched-loop{font-size:11px;color:var(--muted);margin-top:6px;font-family:var(--mono)}
+.retry-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(255,204,77,.1);border:0.5px solid rgba(255,204,77,.2);border-radius:6px;font-size:11px;color:var(--gold);font-weight:700}
 
-@media(max-width:768px){.sidebar{display:none}.cat-grid{grid-template-columns:repeat(3,1fr)}.api-grid{grid-template-columns:1fr}.stat-row{grid-template-columns:1fr 1fr}.page{padding:1rem}}
+/* ── SCENE MANIFEST CARD ── */
+.scene-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.scene-card{background:var(--s2);border:0.5px solid var(--b2);border-radius:12px;padding:12px}
+.scene-num{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.scene-time{font-size:10px;color:var(--pink);font-family:var(--mono);margin-bottom:4px}
+.scene-txt{font-size:12px;color:var(--soft);line-height:1.6;word-break:break-word}
+
+/* ─────────────────────────────────────────────
+   MOBILE BOTTOM NAV — ≤768px
+───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .layout { flex-direction: column !important; }
+
+  /* Collapse sidebar into a fixed bottom dock */
+  .sidebar {
+    width: 100% !important;
+    height: var(--mob-nav-h) !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    z-index: 99999 !important;
+    flex-direction: row !important;
+    padding: 0 !important;
+    border-right: none !important;
+    border-top: 0.5px solid var(--b2) !important;
+    background: rgba(12,15,26,0.97) !important;
+    backdrop-filter: blur(16px) !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    box-shadow: 0 -4px 25px rgba(0,0,0,0.6) !important;
+    scrollbar-width: none !important;
+    align-items: stretch !important;
+  }
+  .sidebar::-webkit-scrollbar { display: none !important; }
+
+  /* Hide branding, labels, user block in mobile dock */
+  .sb-brand,
+  .sb-section-label,
+  .sb-bottom { display: none !important; }
+
+  /* Each section becomes a horizontal strip of icon-buttons */
+  .sb-section {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    gap: 0 !important;
+    flex: 1 !important;
+  }
+
+  /* Nav icon buttons */
+  .sb-item {
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 3px !important;
+    padding: 8px 6px !important;
+    min-width: 60px !important;
+    font-size: 9px !important;
+    border-radius: 0 !important;
+    border: none !important;
+    flex: 1 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    background: none !important;
+  }
+  .sb-item .ico { font-size: 17px !important; margin: 0 !important; width: auto !important; }
+  .sb-item.active { background: rgba(255,77,141,.12) !important; color: var(--pink) !important; border-top: 2px solid var(--pink) !important; }
+  .sb-badge { margin: 0 auto !important; font-size: 9px !important; padding: 1px 5px !important; }
+
+  /* Main content area gets bottom padding to clear the nav dock */
+  .main { padding-bottom: calc(var(--mob-nav-h) + 16px) !important; }
+  .page { padding: 12px 12px 20px !important; }
+
+  /* Stats: 2-column grid on mobile */
+  .stat-row {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+  .stat-v { font-size: 22px !important; }
+
+  /* Category grid: 3 columns on mobile */
+  .cat-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 6px !important; }
+  .cat .ce { font-size: 20px !important; }
+  .cat .cn { font-size: 10px !important; }
+
+  /* API, scene grids: single column */
+  .api-grid,
+  .scene-grid { grid-template-columns: 1fr !important; }
+
+  /* Form rows stack vertically */
+  .fr { flex-direction: column !important; gap: 8px !important; }
+
+  /* Button rows wrap neatly */
+  .btn-row { flex-wrap: wrap !important; gap: 6px !important; }
+  .btn { font-size: 12px !important; padding: 9px 14px !important; }
+
+  /* Credential / key fields — no overflow */
+  input[type=text],input[type=password],input[type=email],select,textarea,
+  .cred-box, .out-box {
+    word-break: break-all !important;
+    font-size: 12px !important;
+    white-space: normal !important;
+  }
+
+  /* Pipeline horizontal scroll */
+  .pipeline { padding-bottom: 8px !important; }
+  .pip-step { min-width: 80px !important; padding: 8px !important; }
+
+  /* Log table scrollable */
+  .card { padding: 1rem !important; overflow-x: auto !important; }
+  .log-tbl { min-width: 540px !important; }
+
+  /* Page headers */
+  .ph h1 { font-size: 22px !important; }
+  .ph p { font-size: 12px !important; }
+
+  /* Toast sits above the bottom dock */
+  .toast { bottom: calc(var(--mob-nav-h) + 12px) !important; }
+}
 </style>
 </head>
 <body>
@@ -257,7 +375,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
       <div class="login-top">
         <span class="login-icon">🎬</span>
         <div class="login-title">Kids TV <em>Agent</em></div>
-        <div class="login-sub" id="login-sub">Sign in — all your APIs & history auto-load</div>
+        <div class="login-sub" id="login-sub">Sign in — all your APIs &amp; history auto-load</div>
       </div>
       <div class="login-err" id="login-err"></div>
       <div class="lf" id="field-chname" style="display:none">
@@ -284,7 +402,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
 <div id="app">
 <div class="layout">
 
-<!-- SIDEBAR -->
+<!-- SIDEBAR / MOBILE BOTTOM NAV -->
 <aside class="sidebar">
   <div class="sb-brand">
     <div class="ico">🎬</div>
@@ -296,14 +414,13 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
     <button class="sb-item active" onclick="nav('dashboard',this)"><span class="ico">📊</span>Dashboard</button>
     <button class="sb-item" onclick="nav('generate',this)"><span class="ico">✨</span>Generate<span class="sb-badge" id="sb-queue-count">0</span></button>
     <button class="sb-item" onclick="nav('queue',this)"><span class="ico">📋</span>Queue</button>
-    <button class="sb-item" onclick="nav('logs',this)"><span class="ico">📝</span>Upload Logs</button>
+    <button class="sb-item" onclick="nav('logs',this)"><span class="ico">📝</span>Logs</button>
   </div>
   <div class="sb-section">
     <div class="sb-section-label">API Settings</div>
     <button class="sb-item" onclick="nav('ai-apis',this)"><span class="ico">🧠</span>AI APIs</button>
-    <button class="sb-item" onclick="nav('audio-apis',this)"><span class="ico">🎙️</span>Audio APIs</button>
-    <button class="sb-item" onclick="nav('music-apis',this)"><span class="ico">🎵</span>Music APIs</button>
-    <button class="sb-item" onclick="nav('video-apis',this)"><span class="ico">🎬</span>Video APIs</button>
+    <button class="sb-item" onclick="nav('audio-apis',this)"><span class="ico">🎵</span>Music</button>
+    <button class="sb-item" onclick="nav('video-apis',this)"><span class="ico">🎬</span>Video</button>
     <button class="sb-item" onclick="nav('youtube',this)"><span class="ico">▶️</span>YouTube</button>
     <button class="sb-item" onclick="nav('github',this)"><span class="ico">⚙️</span>GitHub</button>
   </div>
@@ -319,12 +436,12 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
   </div>
 </aside>
 
-<!-- MAIN -->
+<!-- MAIN CONTENT -->
 <main class="main">
 
 <!-- ═══ DASHBOARD ═══ -->
 <div class="page active" id="page-dashboard">
-  <div class="ph"><h1>Dashboard <em>Overview</em></h1><p>One click — AI handles everything from script to YouTube upload.</p></div>
+  <div class="ph"><h1>Dashboard <em>Overview</em></h1><p>Autonomous zero-cost engine: AI → Scene Manifest → Music → YouTube Shorts.</p></div>
 
   <div class="stat-row">
     <div class="stat"><div class="stat-l">Queued</div><div class="stat-v c-pink" id="ds-q">0</div></div>
@@ -335,32 +452,52 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
   </div>
 
   <div class="card">
-    <div class="card-head">Full automation pipeline <span class="tag tag-green">Active</span></div>
+    <div class="card-head">Full zero-cost automation pipeline <span class="tag tag-green">100% Free</span></div>
     <div class="pipeline">
-      <div class="pip-step"><span class="p-ico">🧠</span><div class="p-name">Script</div><div class="p-tool">Gemini AI</div></div>
+      <div class="pip-step"><span class="p-ico">🧠</span><div class="p-name">Topic</div><div class="p-tool">Gemini Flash</div></div>
       <div class="pip-arr">→</div>
-      <div class="pip-step"><span class="p-ico">🎙️</span><div class="p-name">Voice</div><div class="p-tool">Edge TTS / Kokoro</div></div>
+      <div class="pip-step"><span class="p-ico">🎬</span><div class="p-name">Scene Manifest</div><div class="p-tool">4-Scene JSON</div></div>
       <div class="pip-arr">→</div>
-      <div class="pip-step"><span class="p-ico">🎵</span><div class="p-name">Music</div><div class="p-tool">Mubert / Jamendo</div></div>
+      <div class="pip-step"><span class="p-ico">🎵</span><div class="p-name">Music</div><div class="p-tool">Jamendo Free</div></div>
       <div class="pip-arr">→</div>
-      <div class="pip-step"><span class="p-ico">🎬</span><div class="p-name">Video</div><div class="p-tool">Kling / Luma</div></div>
+      <div class="pip-step"><span class="p-ico">📱</span><div class="p-name">Shorts Meta</div><div class="p-tool">Title+Tags+Desc</div></div>
       <div class="pip-arr">→</div>
-      <div class="pip-step"><span class="p-ico">⚙️</span><div class="p-name">Merge</div><div class="p-tool">FFmpeg</div></div>
+      <div class="pip-step"><span class="p-ico">⚙️</span><div class="p-name">Queue</div><div class="p-tool">GitHub Actions</div></div>
       <div class="pip-arr">→</div>
       <div class="pip-step"><span class="p-ico">▶️</span><div class="p-name">Upload</div><div class="p-tool">YouTube API</div></div>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-head">Quick generate — pick a category</div>
+    <div class="card-head">Autonomous daily scheduler <span class="tag tag-pink">Auto-loop</span><span class="tag tag-gold" id="sched-status-tag">Idle</span></div>
     <div class="cat-grid" id="dash-cats"></div>
     <div class="btn-row" style="margin-top:14px">
-      <button class="btn btn-pink" id="dash-gen-btn" onclick="quickGen()">✨ Generate &amp; Auto-Upload</button>
+      <button class="btn btn-pink" id="dash-gen-btn" onclick="triggerAutonomousDailyPost()">🤖 Run Autonomous Post</button>
       <button class="btn btn-blue" onclick="triggerGH()">⚡ Trigger GitHub Now</button>
+      <button class="btn btn-ghost btn-sm" onclick="stopAutoScheduler()">⏹ Stop Loop</button>
     </div>
-    <div id="dash-out" class="out-box empty" style="margin-top:12px">Pick a category above → AI picks fresh topic → generates script + voice + music + video → uploads to YouTube automatically.</div>
-    <div class="progress-wrap" style="display:none" id="dash-progress"><div class="progress-fill" id="dash-progress-fill" style="width:0%"></div></div>
-    <div id="dash-step-msg" style="font-size:12px;color:var(--muted);margin-top:6px;display:none"></div>
+
+    <!-- Auto-Scheduler Status Panel -->
+    <div class="sched-panel" id="sched-panel">
+      <div class="sched-title"><span class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--green);animation:blink 1s infinite;display:inline-block"></span> Auto-Scheduler Active</div>
+      <div class="sched-step" id="sched-step">Initializing...</div>
+      <div class="progress-wrap"><div class="progress-fill" id="sched-prog-fill" style="width:0%"></div></div>
+      <div class="sched-loop" id="sched-loop"></div>
+    </div>
+
+    <div id="dash-out" class="out-box empty" style="margin-top:12px">Pick a category above → autonomous engine selects viral topic → generates non-verbal scene manifest + Shorts metadata → pushes to YouTube automatically. Zero cost.</div>
+  </div>
+
+  <!-- Scene Manifest Preview -->
+  <div class="card" id="scene-manifest-card" style="display:none">
+    <div class="card-head">Generated scene manifest <span class="tag tag-cyan">Non-verbal · 4 scenes · 16s</span></div>
+    <div id="manifest-title" style="font-size:14px;font-weight:700;margin-bottom:8px;color:var(--text)"></div>
+    <div id="manifest-tags" style="font-size:11px;color:var(--pink);margin-bottom:10px"></div>
+    <div class="scene-grid" id="scene-grid"></div>
+    <div class="btn-row" style="margin-top:12px">
+      <button class="copy-btn" onclick="cp('manifest-json-raw')">Copy Full JSON</button>
+      <pre id="manifest-json-raw" style="display:none"></pre>
+    </div>
   </div>
 
   <div class="card">
@@ -374,7 +511,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
 
 <!-- ═══ GENERATE ═══ -->
 <div class="page" id="page-generate">
-  <div class="ph"><h1>Generate <em>Content</em></h1><p>Pick category → AI suggests topics → select one → everything generates automatically.</p></div>
+  <div class="ph"><h1>Generate <em>Content</em></h1><p>Pick category → AI suggests viral topics → generates non-verbal 4-scene manifest + YouTube Shorts metadata.</p></div>
 
   <div class="card">
     <div class="card-head">Step 1 — Choose category</div>
@@ -383,27 +520,28 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
 
   <div class="card" id="topics-card" style="display:none">
     <div class="row-btw" style="margin-bottom:12px">
-      <div class="card-head" style="margin:0">Step 2 — Fresh AI topics <span class="tag tag-green">Never repeated</span></div>
+      <div class="card-head" style="margin:0">Step 2 — Viral topic archetypes <span class="tag tag-green">Never repeated</span></div>
       <button class="btn btn-ghost btn-sm" onclick="loadTopics()">🔄 Refresh</button>
     </div>
-    <div id="topics-loading" style="color:var(--muted);font-size:13px;padding:10px 0;display:none"><span class="loader" style="color:var(--pink)"></span> Generating fresh topics for this category...</div>
+    <div id="topics-loading" style="color:var(--muted);font-size:13px;padding:10px 0;display:none"><span class="loader" style="color:var(--pink)"></span> Generating high-retention viral topics...</div>
     <div class="topic-list" id="topic-list"></div>
   </div>
 
   <div class="card" id="gen-out-card" style="display:none">
-    <div class="card-head">Step 3 — Generated package <span class="tag tag-pink">Ready to upload</span></div>
+    <div class="card-head">Step 3 — Full Shorts package <span class="tag tag-pink">Upload-ready</span></div>
     <div id="gen-loading" style="display:none;padding:10px 0">
       <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)"><span class="loader" style="color:var(--pink)"></span><span id="gen-step-txt">Working...</span></div>
       <div class="progress-wrap"><div class="progress-fill" id="gen-prog-fill" style="width:0%"></div></div>
     </div>
     <div id="gen-output" style="display:none">
-      <div style="margin-bottom:10px">
-        <div class="row-btw" style="margin-bottom:6px"><label style="margin:0;font-size:13px;font-weight:700;color:var(--text)">📝 Script (voiceover-ready)</label><button class="copy-btn" onclick="cp('o-script')">Copy</button></div>
-        <div class="out-box" id="o-script"></div>
+      <!-- Scene Manifest -->
+      <div style="margin-bottom:12px">
+        <div class="row-btw" style="margin-bottom:6px"><label style="margin:0;font-size:13px;font-weight:700;color:var(--text)">🎬 4-Scene Non-Verbal Manifest</label><button class="copy-btn" onclick="cp('o-manifest')">Copy JSON</button></div>
+        <div class="out-box" id="o-manifest" style="font-family:var(--mono);font-size:11px"></div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px" class="two-col-grid">
         <div>
-          <div class="row-btw" style="margin-bottom:5px"><label style="margin:0;font-weight:700;color:var(--text)">🏷️ Title</label><button class="copy-btn" onclick="cp('o-title')">Copy</button></div>
+          <div class="row-btw" style="margin-bottom:5px"><label style="margin:0;font-weight:700;color:var(--text)">🏷️ Shorts Title</label><button class="copy-btn" onclick="cp('o-title')">Copy</button></div>
           <div class="out-box" id="o-title" style="min-height:50px"></div>
         </div>
         <div>
@@ -415,13 +553,9 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
         <div class="row-btw" style="margin-bottom:5px"><label style="margin:0;font-weight:700;color:var(--text)">📄 Description</label><button class="copy-btn" onclick="cp('o-desc')">Copy</button></div>
         <div class="out-box" id="o-desc"></div>
       </div>
-      <div style="margin-bottom:10px">
-        <div class="row-btw" style="margin-bottom:5px"><label style="margin:0;font-weight:700;color:var(--text)">🎙️ Voiceover Script</label><button class="copy-btn" onclick="cp('o-voice')">Copy</button></div>
-        <div class="out-box" id="o-voice"></div>
-      </div>
       <div>
-        <div class="row-btw" style="margin-bottom:5px"><label style="margin:0;font-weight:700;color:var(--text)">🎥 Video Generation Prompt</label><button class="copy-btn" onclick="cp('o-vp')">Copy</button></div>
-        <div class="out-box" id="o-vp"></div>
+        <div class="row-btw" style="margin-bottom:5px"><label style="margin:0;font-weight:700;color:var(--text)">🎵 Music Mood (Jamendo Query)</label><button class="copy-btn" onclick="cp('o-music')">Copy</button></div>
+        <div class="out-box" id="o-music" style="min-height:40px"></div>
       </div>
       <div class="btn-row" style="margin-top:14px">
         <button class="btn btn-green" onclick="addToQueue()">➕ Add to Queue</button>
@@ -449,155 +583,87 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
 
 <!-- ═══ LOGS ═══ -->
 <div class="page" id="page-logs">
-  <div class="ph"><h1>Upload <em>Logs</em></h1><p>Complete history of all generated and uploaded videos.</p></div>
+  <div class="ph"><h1>Upload <em>Logs</em></h1><p>Complete history of all generated and uploaded Shorts.</p></div>
   <div class="card">
     <div class="row-btw" style="margin-bottom:14px">
       <div class="card-head" style="margin:0">Generation history</div>
       <button class="btn btn-red btn-sm" onclick="clearLogs()">Clear all</button>
     </div>
-    <table class="log-tbl">
-      <thead><tr><th>#</th><th>Topic</th><th>Category</th><th>Title</th><th>Audio</th><th>Music</th><th>Status</th><th>Date</th></tr></thead>
-      <tbody id="log-body"></tbody>
-    </table>
-    <div id="no-logs" style="color:var(--muted);font-size:13px;text-align:center;padding:2rem;display:none">No uploads yet. Generate your first video!</div>
+    <div style="overflow-x:auto">
+      <table class="log-tbl">
+        <thead><tr><th>#</th><th>Topic</th><th>Category</th><th>Title</th><th>Music</th><th>Status</th><th>Date</th></tr></thead>
+        <tbody id="log-body"></tbody>
+      </table>
+    </div>
+    <div id="no-logs" style="color:var(--muted);font-size:13px;text-align:center;padding:2rem;display:none">No uploads yet. Run Autonomous Post to get started!</div>
   </div>
 </div>
 
 <!-- ═══ AI APIS ═══ -->
 <div class="page" id="page-ai-apis">
-  <div class="ph"><h1>AI Script <em>APIs</em></h1><p>3 Gemini accounts rotate automatically. Saved to your account — never re-enter.</p></div>
+  <div class="ph"><h1>AI Script <em>APIs</em></h1><p>3 Gemini Flash free-tier keys rotate automatically. Saved to your account.</p></div>
   <div class="card">
-    <div class="card-head">Gemini AI — 3 slots <span class="tag tag-pink">Script + Topics + SEO</span></div>
+    <div class="card-head">Gemini Flash — 3 free slots <span class="tag tag-pink">Zero cost · rate-limit safe</span></div>
     <div class="api-grid">
       <div class="api-slot">
-        <div class="api-head"><span class="slot-tag tag-pink">Slot A</span><span style="font-size:12px;font-weight:700">Script Writer</span></div>
-        <label>Provider</label><select id="ai-prov-a"><option value="gemini">Google Gemini</option><option value="openai">OpenAI</option></select>
+        <div class="api-head"><span class="slot-tag tag-pink">Slot A</span><span style="font-size:12px;font-weight:700">Primary</span></div>
+        <label>Provider</label><select id="ai-prov-a"><option value="gemini">Google Gemini Flash (Free)</option></select>
         <label>API Key</label><input type="password" id="ai-key-a" placeholder="AIzaSy..." oninput="dirty=true" />
-        <div class="purpose">✍️ Scripts + topic generation</div>
+        <div class="purpose">✍️ Topics + scene manifests</div>
       </div>
       <div class="api-slot">
-        <div class="api-head"><span class="slot-tag tag-purple">Slot B</span><span style="font-size:12px;font-weight:700">Voiceover Writer</span></div>
-        <label>Provider</label><select id="ai-prov-b"><option value="gemini">Google Gemini</option><option value="openai">OpenAI</option></select>
+        <div class="api-head"><span class="slot-tag tag-purple">Slot B</span><span style="font-size:12px;font-weight:700">Backup</span></div>
+        <label>Provider</label><select id="ai-prov-b"><option value="gemini">Google Gemini Flash (Free)</option></select>
         <label>API Key</label><input type="password" id="ai-key-b" placeholder="AIzaSy..." oninput="dirty=true" />
-        <div class="purpose">🎙️ Narration rewrites</div>
+        <div class="purpose">🔄 Rate-limit failover</div>
       </div>
       <div class="api-slot">
-        <div class="api-head"><span class="slot-tag tag-gold">Slot C</span><span style="font-size:12px;font-weight:700">SEO & Meta</span></div>
-        <label>Provider</label><select id="ai-prov-c"><option value="gemini">Google Gemini</option><option value="openai">OpenAI</option></select>
+        <div class="api-head"><span class="slot-tag tag-gold">Slot C</span><span style="font-size:12px;font-weight:700">Overflow</span></div>
+        <label>Provider</label><select id="ai-prov-c"><option value="gemini">Google Gemini Flash (Free)</option></select>
         <label>API Key</label><input type="password" id="ai-key-c" placeholder="AIzaSy..." oninput="dirty=true" />
-        <div class="purpose">🏷️ Titles, tags, hashtags</div>
+        <div class="purpose">🏷️ SEO meta + overflow</div>
       </div>
     </div>
+    <div class="notice"><strong>Get free Gemini keys:</strong> Go to <code>aistudio.google.com</code> → Sign in → Get API key → Create key → paste here. Each key gives 15 requests/min free. 3 keys = 45 req/min with auto-rotation. If all are rate-limited, the scheduler self-heals with a 60s retry pause.</div>
     <div class="btn-row" style="margin-top:14px"><button class="btn btn-pink" onclick="saveAll()">💾 Save AI Keys</button><span id="ai-saved" style="font-size:12px;color:var(--green);display:none;margin-left:8px">✓ Saved</span></div>
   </div>
 </div>
 
-<!-- ═══ AUDIO APIS ═══ -->
+<!-- ═══ MUSIC (replaces audio + music pages) ═══ -->
 <div class="page" id="page-audio-apis">
-  <div class="ph"><h1>Audio / TTS <em>APIs</em></h1><p>Converts your script to voiceover MP3 automatically. 3 slots rotate for reliability.</p></div>
+  <div class="ph"><h1>Music <em>APIs</em></h1><p>Zero-cost royalty-free background music via Jamendo. Layered at 25% volume behind scenes.</p></div>
   <div class="card">
-    <div class="card-head">TTS engines — 3 slots <span class="tag tag-cyan">Auto-rotate</span></div>
-    <div class="api-grid">
-      <div class="api-slot">
-        <div class="api-head"><span class="slot-tag tag-cyan">TTS 1</span><span style="font-size:12px;font-weight:700">Primary Voice</span></div>
-        <label>Service</label>
-        <select id="tts-svc-1" onchange="dirty=true">
-          <option value="edge">Edge TTS (Microsoft) — Free unlimited</option>
-          <option value="kokoro">Kokoro TTS — Free open source</option>
-          <option value="elevenlabs">ElevenLabs — 10K chars/month free</option>
-          <option value="google">Google Cloud TTS — 4M chars/month free</option>
-          <option value="playht">PlayHT — 12.5K words/month free</option>
-        </select>
-        <label>API Key <span style="color:var(--muted);font-size:10px">(Edge TTS needs none)</span></label>
-        <input type="password" id="tts-key-1" placeholder="Leave blank for Edge TTS" oninput="dirty=true" />
-        <label>Voice ID / Name</label>
-        <input type="text" id="tts-voice-1" placeholder="en-US-JennyNeural" oninput="dirty=true" />
-        <div class="purpose">🎙️ Primary voiceover</div>
-      </div>
-      <div class="api-slot">
-        <div class="api-head"><span class="slot-tag tag-blue">TTS 2</span><span style="font-size:12px;font-weight:700">Backup Voice</span></div>
-        <label>Service</label>
-        <select id="tts-svc-2" onchange="dirty=true">
-          <option value="kokoro">Kokoro TTS — Free open source</option>
-          <option value="edge">Edge TTS (Microsoft) — Free unlimited</option>
-          <option value="elevenlabs">ElevenLabs</option>
-          <option value="google">Google Cloud TTS</option>
-          <option value="playht">PlayHT</option>
-        </select>
-        <label>API Key</label>
-        <input type="password" id="tts-key-2" placeholder="Key or blank" oninput="dirty=true" />
-        <label>Voice ID</label>
-        <input type="text" id="tts-voice-2" placeholder="af_heart" oninput="dirty=true" />
-        <div class="purpose">🎙️ Backup voiceover</div>
-      </div>
-      <div class="api-slot">
-        <div class="api-head"><span class="slot-tag tag-green">TTS 3</span><span style="font-size:12px;font-weight:700">Overflow Voice</span></div>
-        <label>Service</label>
-        <select id="tts-svc-3" onchange="dirty=true">
-          <option value="elevenlabs">ElevenLabs — Best quality</option>
-          <option value="edge">Edge TTS</option>
-          <option value="kokoro">Kokoro TTS</option>
-          <option value="google">Google Cloud TTS</option>
-          <option value="playht">PlayHT</option>
-        </select>
-        <label>API Key</label>
-        <input type="password" id="tts-key-3" placeholder="Key..." oninput="dirty=true" />
-        <label>Voice ID</label>
-        <input type="text" id="tts-voice-3" placeholder="EXAVITQu4vr4xnSDxMaL" oninput="dirty=true" />
-        <div class="purpose">🎙️ Overflow / high quality</div>
-      </div>
-    </div>
-    <div class="notice"><strong>Recommended setup:</strong> TTS 1 = Edge TTS (no key needed, unlimited free, warm kids voice). TTS 2 = Kokoro TTS (open source, runs on GitHub Actions). TTS 3 = ElevenLabs (best quality for special videos). The agent tries TTS 1 first and falls back automatically.</div>
-    <div class="btn-row" style="margin-top:14px"><button class="btn btn-pink" onclick="saveAll()">💾 Save Audio Settings</button><span id="audio-saved" style="font-size:12px;color:var(--green);display:none;margin-left:8px">✓ Saved</span></div>
-  </div>
-</div>
-
-<!-- ═══ MUSIC APIS ═══ -->
-<div class="page" id="page-music-apis">
-  <div class="ph"><h1>Music <em>APIs</em></h1><p>Auto-generates background music for every video. Layered under the voiceover at 25% volume.</p></div>
-  <div class="card">
-    <div class="card-head">Music generators — 2 slots <span class="tag tag-gold">Royalty-free auto</span></div>
+    <div class="card-head">Jamendo Free API — 2 slots <span class="tag tag-gold">600K+ royalty-free tracks</span></div>
     <div class="api-grid" style="grid-template-columns:1fr 1fr">
       <div class="api-slot">
         <div class="api-head"><span class="slot-tag tag-gold">Music 1</span><span style="font-size:12px;font-weight:700">Primary</span></div>
-        <label>Service</label>
-        <select id="music-svc-1" onchange="dirty=true">
-          <option value="mubert">Mubert API — Free tier, AI generated</option>
-          <option value="jamendo">Jamendo API — Free, 600K+ tracks</option>
-        </select>
-        <label>API Key</label>
-        <input type="password" id="music-key-1" placeholder="Mubert or Jamendo key..." oninput="dirty=true" />
-        <label>Mood / Style</label>
-        <input type="text" id="music-mood-1" placeholder="cheerful upbeat kids background" oninput="dirty=true" />
-        <div class="purpose">🎵 Primary music source</div>
+        <label>Jamendo Client ID (free)</label>
+        <input type="password" id="music-key-1" placeholder="Jamendo client_id..." oninput="dirty=true" />
+        <label>Search Tags</label>
+        <input type="text" id="music-mood-1" placeholder="children happy playful" oninput="dirty=true" />
+        <div class="purpose">🎵 Primary background music</div>
       </div>
       <div class="api-slot">
         <div class="api-head"><span class="slot-tag tag-orange">Music 2</span><span style="font-size:12px;font-weight:700">Backup</span></div>
-        <label>Service</label>
-        <select id="music-svc-2" onchange="dirty=true">
-          <option value="jamendo">Jamendo API — Free, 600K+ tracks</option>
-          <option value="mubert">Mubert API</option>
-        </select>
-        <label>API Key</label>
-        <input type="password" id="music-key-2" placeholder="Key..." oninput="dirty=true" />
-        <label>Mood / Style</label>
-        <input type="text" id="music-mood-2" placeholder="playful children instrumental" oninput="dirty=true" />
+        <label>Jamendo Client ID (free)</label>
+        <input type="password" id="music-key-2" placeholder="Jamendo client_id..." oninput="dirty=true" />
+        <label>Search Tags</label>
+        <input type="text" id="music-mood-2" placeholder="kids instrumental cheerful" oninput="dirty=true" />
         <div class="purpose">🎵 Backup music source</div>
       </div>
     </div>
     <div class="notice">
-      <strong>How to get Mubert API:</strong> Go to mubert.com → Developers → Apply for API access (free tier available). Returns AI-generated royalty-free MP3 based on your mood prompt.<br><br>
-      <strong>How to get Jamendo API:</strong> Go to developer.jamendo.com → Register app → free API key instantly. Search by tags like "children", "happy", "playful" and get a direct MP3 download URL.
+      <strong>Get free Jamendo API key:</strong> Go to <code>developer.jamendo.com</code> → Register free account → My Apps → Create app → copy the <code>client_id</code> here. Completely free, no credit card. Returns direct MP3 URLs for royalty-free tracks. Search by tags like "children", "happy", "playful". No premium subscription needed.
     </div>
-    <div class="btn-row" style="margin-top:14px"><button class="btn btn-pink" onclick="saveAll()">💾 Save Music Settings</button><span id="music-saved" style="font-size:12px;color:var(--green);display:none;margin-left:8px">✓ Saved</span></div>
+    <div class="btn-row" style="margin-top:14px"><button class="btn btn-pink" onclick="saveAll()">💾 Save Music Settings</button><span id="audio-saved" style="font-size:12px;color:var(--green);display:none;margin-left:8px">✓ Saved</span></div>
   </div>
 </div>
 
 <!-- ═══ VIDEO APIS ═══ -->
 <div class="page" id="page-video-apis">
-  <div class="ph"><h1>Video Generator <em>APIs</em></h1><p>3 accounts rotate daily by credits. All generate cartoon-style kids visuals.</p></div>
+  <div class="ph"><h1>Video Generator <em>APIs</em></h1><p>3 accounts rotate daily by credits. Scene manifests feed directly into these engines.</p></div>
   <div class="card">
-    <div class="card-head">Video generators — 3 accounts <span class="tag tag-blue">Daily credit rotation</span></div>
+    <div class="card-head">Video generators — 3 accounts <span class="tag tag-blue">Scene manifest → video</span></div>
     <div style="margin-bottom:12px"><div class="cd-chip"><span class="dot"></span>Daily reset in <strong id="vid-cd">--:--:--</strong></div></div>
     <div class="api-grid">
       <div class="api-slot">
@@ -616,13 +682,14 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
         <label>API Key</label><input type="password" id="vid-key-3" placeholder="Key..." oninput="dirty=true" />
       </div>
     </div>
+    <div class="notice"><strong>Scene manifests are pre-formatted for these engines.</strong> Each 4-scene JSON block describes exact visual actions, character expressions, timing, and art style — no dialogue, no text overlays. The agent passes each scene description directly as the generation prompt.</div>
     <div class="btn-row" style="margin-top:14px"><button class="btn btn-pink" onclick="saveAll()">💾 Save Video Keys</button><span id="vid-saved" style="font-size:12px;color:var(--green);display:none;margin-left:8px">✓ Saved</span></div>
   </div>
 </div>
 
 <!-- ═══ YOUTUBE ═══ -->
 <div class="page" id="page-youtube">
-  <div class="ph"><h1>YouTube <em>Settings</em></h1><p>OAuth for auto-upload. Set once, saved forever to your account.</p></div>
+  <div class="ph"><h1>YouTube <em>Settings</em></h1><p>OAuth for auto-upload to YouTube Shorts. Set once, saved forever.</p></div>
   <div class="card">
     <div class="card-head">Channel settings</div>
     <div class="fr">
@@ -632,7 +699,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
     <div class="fr">
       <div class="fg"><label>Default Privacy</label><select id="yt-privacy" onchange="dirty=true"><option value="public">Public</option><option value="unlisted">Unlisted</option><option value="private">Private</option></select></div>
       <div class="fg"><label>Made for Kids (COPPA)</label><select id="yt-kids" onchange="dirty=true"><option value="true">Yes — Made for Kids</option><option value="false">No</option></select></div>
-      <div class="fg"><label>Category ID</label><select id="yt-cat" onchange="dirty=true"><option value="27">27 — Education</option><option value="24">24 — Entertainment</option><option value="1">1 — Film & Animation</option></select></div>
+      <div class="fg"><label>Category ID</label><select id="yt-cat" onchange="dirty=true"><option value="27">27 — Education</option><option value="24">24 — Entertainment</option><option value="1">1 — Film &amp; Animation</option></select></div>
     </div>
   </div>
   <div class="card">
@@ -640,9 +707,9 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
     <div class="fr stack">
       <div class="fg"><label>Client ID</label><input type="text" id="yt-cid" placeholder="xxxxx.apps.googleusercontent.com" oninput="dirty=true" /></div>
       <div class="fg"><label>Client Secret</label><input type="password" id="yt-cs" placeholder="GOCSPX-..." oninput="dirty=true" /></div>
-      <div class="fg"><label>Refresh Token <span style="color:var(--muted);font-size:10px">(run get_token.js once locally)</span></label><input type="password" id="yt-rt" placeholder="1//xxxxx..." oninput="dirty=true" /></div>
+      <div class="fg"><label>Refresh Token</label><input type="password" id="yt-rt" placeholder="1//xxxxx..." oninput="dirty=true" /></div>
     </div>
-    <div class="notice"><strong>Steps:</strong> console.cloud.google.com → New Project → Enable YouTube Data API v3 → Credentials → OAuth 2.0 Client (Desktop app) → Download JSON → run <code>node scripts/get_token.js</code> once on your computer → copy the refresh_token here.</div>
+    <div class="notice"><strong>Steps:</strong> <code>console.cloud.google.com</code> → New Project → Enable YouTube Data API v3 → Credentials → OAuth 2.0 Client (Desktop app) → Download JSON → run <code>node scripts/get_token.js</code> once on your computer → copy the refresh_token here.</div>
   </div>
   <button class="btn btn-pink" onclick="saveAll()">💾 Save YouTube Settings</button>
   <span id="yt-saved" style="font-size:12px;color:var(--green);display:none;margin-left:8px">✓ Saved</span>
@@ -673,7 +740,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
   </div>
   <div class="card">
     <div class="card-head">Export GitHub Secrets <span class="tag tag-gold">Paste into repo settings</span></div>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Copy all saved keys as GitHub Secrets format → paste into your repo → Settings → Secrets and variables → Actions → add each one.</p>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Copy all saved keys as GitHub Secrets format → paste into your repo → Settings → Secrets and variables → Actions.</p>
     <button class="btn btn-ghost" onclick="exportSecrets()">📋 Copy All Secrets</button>
     <span id="exp-msg" style="font-size:12px;color:var(--green);display:none;margin-left:8px">✓ Copied!</span>
   </div>
@@ -684,211 +751,438 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
 </div>
 </div>
 
+<style>
+/* Two-col grid collapses on mobile */
+@media (max-width: 600px) {
+  .two-col-grid { grid-template-columns: 1fr !important; }
+}
+</style>
+
 <script>
 // ═══════════════════════════════════════════════════════
-// CORE STATE
+// STATE
 // ═══════════════════════════════════════════════════════
-let CU = null; // current user
+let CU = null;
 let dirty = false;
 let isSignup = false;
 let selCat = null;
 let selTopic = null;
 let curOut = null;
+let autoSchedulerRunning = false;
+let autoSchedulerTimer = null;
+
+// ── VIRAL ARCHETYPES for autonomous topic selection ──
+const VIRAL_ARCHETYPES = [
+  'Baby sharing treats with farm animals',
+  'Clumsy animal causes hilarious chain reaction mishap',
+  'Tiny creature discovers giant shiny object',
+  'Baby animals help each other cross an obstacle',
+  'Surprise gift unwrapping goes dramatically wrong',
+  'Two baby animals compete over the same food item',
+  'Small animal gets stuck and friends rush to rescue',
+  'Baby character triumphantly overcomes big challenge',
+  'Animals form a caring team to repair something broken',
+  'Oversized food item rolls away causing chaos',
+  'Baby discovers a magical glowing object',
+  'Friendly animal accidentally wakes everyone up',
+  'Group of animals learn to share a single treat',
+  'Tiny hero saves the day in an unexpected way',
+  'Baby animal learns kindness through a funny mistake',
+];
 
 const CATS = [
-  {id:'animals',   e:'🐾', n:'Animals',    p:'fun animal facts and stories for young children aged 2-8'},
-  {id:'numbers',   e:'🔢', n:'Numbers',    p:'counting math basics and number learning for toddlers'},
-  {id:'alphabet',  e:'🔤', n:'Alphabet',   p:'letters phonics and reading readiness for children'},
-  {id:'colors',    e:'🎨', n:'Colors',     p:'colors shapes and visual learning for kids'},
-  {id:'nursery',   e:'🎵', n:'Nursery',    p:'nursery rhymes kids songs and musical fun'},
-  {id:'dinosaurs', e:'🦕', n:'Dinosaurs',  p:'exciting dinosaur facts and prehistoric world for kids'},
-  {id:'space',     e:'🚀', n:'Space',      p:'planets stars astronauts and space exploration for children'},
-  {id:'vehicles',  e:'🚗', n:'Vehicles',   p:'cars trucks trains planes and transportation for kids'},
-  {id:'bedtime',   e:'🌙', n:'Bedtime',    p:'calming bedtime stories lullabies and sleep time for toddlers'},
-  {id:'science',   e:'🔬', n:'Science',    p:'simple fun science experiments and discoveries for kids'},
-  {id:'food',      e:'🍎', n:'Food',       p:'healthy eating food facts and nutrition for children'},
-  {id:'emotions',  e:'😊', n:'Emotions',   p:'feelings empathy and emotional learning for toddlers'},
-  {id:'ocean',     e:'🌊', n:'Ocean',      p:'sea creatures ocean life and underwater world for kids'},
-  {id:'weather',   e:'⛅', n:'Weather',    p:'seasons weather patterns and nature for children'},
-  {id:'superheroes',e:'🦸',n:'Heroes',     p:'kindness bravery and superhero values stories for kids'},
+  {id:'animals',    e:'🐾', n:'Animals',     p:'fun animal stories and slapstick animal comedy for toddlers aged 2-8'},
+  {id:'toddler',    e:'👶', n:'Toddler Fun',  p:'cute toddler adventure and sharing stories for children'},
+  {id:'manners',    e:'🌟', n:'Good Manners', p:'kindness sharing empathy and good behaviour stories for kids'},
+  {id:'pets',       e:'🐱', n:'AI Pets',      p:'funny adorable AI pet adventures and mishaps for young children'},
+  {id:'numbers',    e:'🔢', n:'Numbers',      p:'counting math basics and number learning for toddlers'},
+  {id:'colors',     e:'🎨', n:'Colors',       p:'colors shapes and visual learning through funny characters'},
+  {id:'dinosaurs',  e:'🦕', n:'Dinosaurs',    p:'exciting clumsy dinosaur adventures and discoveries for kids'},
+  {id:'space',      e:'🚀', n:'Space',        p:'cartoon astronaut adventures and silly space mishaps for children'},
+  {id:'ocean',      e:'🌊', n:'Ocean',        p:'cute sea creatures helping each other in funny underwater adventures'},
+  {id:'food',       e:'🍎', n:'Food',         p:'giant colorful food comedy and sharing adventures for kids'},
+  {id:'bedtime',    e:'🌙', n:'Bedtime',      p:'calming nighttime adventures and cozy resolution stories for toddlers'},
+  {id:'vehicles',   e:'🚗', n:'Vehicles',     p:'funny talking vehicle rescue adventures and teamwork for kids'},
+  {id:'superheroes',e:'🦸', n:'Heroes',       p:'tiny superhero teamwork kindness and rescue stories for kids'},
+  {id:'science',    e:'🔬', n:'Science',      p:'funny cartoon science experiment mishaps and discoveries for kids'},
+  {id:'weather',    e:'⛅', n:'Weather',      p:'silly weather adventures and nature comedy for children'},
 ];
 
 // ═══════════════════════════════════════════════════════
-// STORAGE — encrypted per user
+// CRYPTO STORAGE
 // ═══════════════════════════════════════════════════════
-function enc(t, k) { let o=''; for(let i=0;i<t.length;i++) o+=String.fromCharCode(t.charCodeAt(i)^k.charCodeAt(i%k.length)); return btoa(o); }
-function dec(e, k) { try{ const t=atob(e); let o=''; for(let i=0;i<t.length;i++) o+=String.fromCharCode(t.charCodeAt(i)^k.charCodeAt(i%k.length)); return o; }catch{return null;} }
-const ukey = u => `ktvv3_${u}`;
+function enc(t,k){let o='';for(let i=0;i<t.length;i++)o+=String.fromCharCode(t.charCodeAt(i)^k.charCodeAt(i%k.length));return btoa(o);}
+function dec(e,k){try{const t=atob(e);let o='';for(let i=0;i<t.length;i++)o+=String.fromCharCode(t.charCodeAt(i)^k.charCodeAt(i%k.length));return o;}catch{return null;}}
+const ukey=u=>`ktvv3_${u}`;
 
-function getUD() {
-  const raw = localStorage.getItem(ukey(CU.email));
-  if (!raw) return {keys:{}, queue:[], logs:[], usedTopics:[], channelName:CU.name};
-  const d = dec(raw, CU.pass);
-  try { return JSON.parse(d); } catch { return {keys:{}, queue:[], logs:[], usedTopics:[], channelName:CU.name}; }
+function getUD(){
+  const raw=localStorage.getItem(ukey(CU.email));
+  if(!raw)return{keys:{},queue:[],logs:[],usedTopics:[],channelName:CU.name};
+  const d=dec(raw,CU.pass);
+  try{return JSON.parse(d);}catch{return{keys:{},queue:[],logs:[],usedTopics:[],channelName:CU.name};}
 }
-function saveUD(data) {
-  data.channelName = CU.name;
-  localStorage.setItem(ukey(CU.email), enc(JSON.stringify(data), CU.pass));
-}
+function saveUD(data){data.channelName=CU.name;localStorage.setItem(ukey(CU.email),enc(JSON.stringify(data),CU.pass));}
 
 // ═══════════════════════════════════════════════════════
 // AUTH
 // ═══════════════════════════════════════════════════════
-function toggleAuth() {
-  isSignup = !isSignup;
-  document.getElementById('login-sub').textContent = isSignup ? 'Create your free account' : 'Sign in — all your APIs & history auto-load';
-  document.getElementById('login-btn').textContent = isSignup ? 'Create Account' : 'Sign In';
-  document.getElementById('auth-toggle').textContent = isSignup ? 'Already have an account? Sign in' : 'No account yet? Sign up free';
-  document.getElementById('field-chname').style.display = isSignup ? 'block' : 'none';
-  document.getElementById('login-err').style.display = 'none';
+function toggleAuth(){
+  isSignup=!isSignup;
+  document.getElementById('login-sub').textContent=isSignup?'Create your free account':'Sign in — all your APIs & history auto-load';
+  document.getElementById('login-btn').textContent=isSignup?'Create Account':'Sign In';
+  document.getElementById('auth-toggle').textContent=isSignup?'Already have an account? Sign in':'No account yet? Sign up free';
+  document.getElementById('field-chname').style.display=isSignup?'block':'none';
+  document.getElementById('login-err').style.display='none';
 }
 
-function handleAuth() {
-  const email = document.getElementById('auth-email').value.trim();
-  const pass  = document.getElementById('auth-pass').value;
-  const err   = document.getElementById('login-err');
-  if (!email || !pass) { err.textContent='Enter email and password.'; err.style.display='block'; return; }
-  if (pass.length < 6) { err.textContent='Password must be 6+ characters.'; err.style.display='block'; return; }
-
-  if (isSignup) {
-    if (localStorage.getItem(ukey(email))) { err.textContent='Account exists. Sign in instead.'; err.style.display='block'; return; }
-    const name = document.getElementById('reg-chname').value.trim() || 'My Kids TV';
-    CU = {email, pass, name};
-    const data = {keys:{}, queue:[], logs:[], usedTopics:[], channelName:name};
-    saveUD(data); bootApp(data);
+function handleAuth(){
+  const email=document.getElementById('auth-email').value.trim();
+  const pass=document.getElementById('auth-pass').value;
+  const err=document.getElementById('login-err');
+  if(!email||!pass){err.textContent='Enter email and password.';err.style.display='block';return;}
+  if(pass.length<6){err.textContent='Password must be 6+ characters.';err.style.display='block';return;}
+  if(isSignup){
+    if(localStorage.getItem(ukey(email))){err.textContent='Account exists. Sign in instead.';err.style.display='block';return;}
+    const name=document.getElementById('reg-chname').value.trim()||'My Kids TV';
+    CU={email,pass,name};
+    const data={keys:{},queue:[],logs:[],usedTopics:[],channelName:name};
+    saveUD(data);bootApp(data);
   } else {
-    const raw = localStorage.getItem(ukey(email));
-    if (!raw) { err.textContent='No account found. Sign up first.'; err.style.display='block'; return; }
-    const d = dec(raw, pass);
-    if (!d) { err.textContent='Wrong password.'; err.style.display='block'; return; }
-    try {
-      const data = JSON.parse(d);
-      CU = {email, pass, name: data.channelName || 'Kids TV'};
-      bootApp(data);
-    } catch { err.textContent='Wrong password.'; err.style.display='block'; }
+    const raw=localStorage.getItem(ukey(email));
+    if(!raw){err.textContent='No account found. Sign up first.';err.style.display='block';return;}
+    const d=dec(raw,pass);
+    if(!d){err.textContent='Wrong password.';err.style.display='block';return;}
+    try{const data=JSON.parse(d);CU={email,pass,name:data.channelName||'Kids TV'};bootApp(data);}
+    catch{err.textContent='Wrong password.';err.style.display='block';}
   }
 }
 
-function bootApp(data) {
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-  const k = data.keys || {};
-  const sv = (id, v) => { const el=document.getElementById(id); if(el&&v!==undefined&&v!==null) el.value=v; };
-  sv('ai-prov-a',k.aiProvA); sv('ai-key-a',k.aiKeyA);
-  sv('ai-prov-b',k.aiProvB); sv('ai-key-b',k.aiKeyB);
-  sv('ai-prov-c',k.aiProvC); sv('ai-key-c',k.aiKeyC);
-  sv('tts-svc-1',k.ttsSvc1); sv('tts-key-1',k.ttsKey1); sv('tts-voice-1',k.ttsVoice1||'en-US-JennyNeural');
-  sv('tts-svc-2',k.ttsSvc2); sv('tts-key-2',k.ttsKey2); sv('tts-voice-2',k.ttsVoice2||'af_heart');
-  sv('tts-svc-3',k.ttsSvc3); sv('tts-key-3',k.ttsKey3); sv('tts-voice-3',k.ttsVoice3);
-  sv('music-svc-1',k.musicSvc1); sv('music-key-1',k.musicKey1); sv('music-mood-1',k.musicMood1||'cheerful upbeat kids background');
-  sv('music-svc-2',k.musicSvc2); sv('music-key-2',k.musicKey2); sv('music-mood-2',k.musicMood2||'playful children instrumental');
-  sv('vid-svc-1',k.vidSvc1); sv('vid-key-1',k.vidKey1);
-  sv('vid-svc-2',k.vidSvc2); sv('vid-key-2',k.vidKey2);
-  sv('vid-svc-3',k.vidSvc3); sv('vid-key-3',k.vidKey3);
-  sv('yt-ch-name',k.ytChName); sv('yt-ch-id',k.ytChId);
-  sv('yt-privacy',k.ytPrivacy); sv('yt-kids',k.ytKids); sv('yt-cat',k.ytCat);
-  sv('yt-cid',k.ytCid); sv('yt-cs',k.ytCs); sv('yt-rt',k.ytRt);
-  sv('gh-repo',k.ghRepo); sv('gh-token',k.ghToken);
-  sv('sched-1',k.sched1); sv('sched-2',k.sched2); sv('sched-3',k.sched3);
-  document.getElementById('sb-name').textContent = CU.name;
-  document.getElementById('sb-email').textContent = CU.email;
-  document.getElementById('sb-ch').textContent = CU.email;
-  document.getElementById('sb-av').textContent = CU.name[0].toUpperCase();
-  buildCatGrids(); renderStats(); renderQPreview(); renderFullQ(); renderLogs(); startCD();
+function bootApp(data){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='block';
+  const k=data.keys||{};
+  const sv=(id,v)=>{const el=document.getElementById(id);if(el&&v!=null)el.value=v;};
+  sv('ai-prov-a',k.aiProvA);sv('ai-key-a',k.aiKeyA);
+  sv('ai-prov-b',k.aiProvB);sv('ai-key-b',k.aiKeyB);
+  sv('ai-prov-c',k.aiProvC);sv('ai-key-c',k.aiKeyC);
+  sv('music-key-1',k.musicKey1);sv('music-mood-1',k.musicMood1||'children happy playful');
+  sv('music-key-2',k.musicKey2);sv('music-mood-2',k.musicMood2||'kids instrumental cheerful');
+  sv('vid-svc-1',k.vidSvc1);sv('vid-key-1',k.vidKey1);
+  sv('vid-svc-2',k.vidSvc2);sv('vid-key-2',k.vidKey2);
+  sv('vid-svc-3',k.vidSvc3);sv('vid-key-3',k.vidKey3);
+  sv('yt-ch-name',k.ytChName);sv('yt-ch-id',k.ytChId);
+  sv('yt-privacy',k.ytPrivacy);sv('yt-kids',k.ytKids);sv('yt-cat',k.ytCat);
+  sv('yt-cid',k.ytCid);sv('yt-cs',k.ytCs);sv('yt-rt',k.ytRt);
+  sv('gh-repo',k.ghRepo);sv('gh-token',k.ghToken);
+  sv('sched-1',k.sched1);sv('sched-2',k.sched2);sv('sched-3',k.sched3);
+  document.getElementById('sb-name').textContent=CU.name;
+  document.getElementById('sb-email').textContent=CU.email;
+  document.getElementById('sb-ch').textContent=CU.email;
+  document.getElementById('sb-av').textContent=CU.name[0].toUpperCase();
+  buildCatGrids();renderStats();renderQPreview();renderFullQ();renderLogs();startCD();
 }
 
-function logout() {
-  if (dirty && !confirm('Unsaved changes. Logout anyway?')) return;
-  CU=null; selCat=null; selTopic=null; curOut=null; dirty=false;
+function logout(){
+  if(dirty&&!confirm('Unsaved changes. Logout anyway?'))return;
+  stopAutoScheduler();
+  CU=null;selCat=null;selTopic=null;curOut=null;dirty=false;
   document.getElementById('login-screen').style.display='flex';
   document.getElementById('app').style.display='none';
-  ['auth-email','auth-pass','reg-chname'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  ['auth-email','auth-pass','reg-chname'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
 }
 
 // ═══════════════════════════════════════════════════════
 // SAVE ALL
 // ═══════════════════════════════════════════════════════
-function saveAll() {
-  const data = getUD();
-  const gv = id => { const el=document.getElementById(id); return el ? el.value : ''; };
-  data.keys = {
-    aiProvA:gv('ai-prov-a'), aiKeyA:gv('ai-key-a'),
-    aiProvB:gv('ai-prov-b'), aiKeyB:gv('ai-key-b'),
-    aiProvC:gv('ai-prov-c'), aiKeyC:gv('ai-key-c'),
-    ttsSvc1:gv('tts-svc-1'), ttsKey1:gv('tts-key-1'), ttsVoice1:gv('tts-voice-1'),
-    ttsSvc2:gv('tts-svc-2'), ttsKey2:gv('tts-key-2'), ttsVoice2:gv('tts-voice-2'),
-    ttsSvc3:gv('tts-svc-3'), ttsKey3:gv('tts-key-3'), ttsVoice3:gv('tts-voice-3'),
-    musicSvc1:gv('music-svc-1'), musicKey1:gv('music-key-1'), musicMood1:gv('music-mood-1'),
-    musicSvc2:gv('music-svc-2'), musicKey2:gv('music-key-2'), musicMood2:gv('music-mood-2'),
-    vidSvc1:gv('vid-svc-1'), vidKey1:gv('vid-key-1'),
-    vidSvc2:gv('vid-svc-2'), vidKey2:gv('vid-key-2'),
-    vidSvc3:gv('vid-svc-3'), vidKey3:gv('vid-key-3'),
-    ytChName:gv('yt-ch-name'), ytChId:gv('yt-ch-id'),
-    ytPrivacy:gv('yt-privacy'), ytKids:gv('yt-kids'), ytCat:gv('yt-cat'),
-    ytCid:gv('yt-cid'), ytCs:gv('yt-cs'), ytRt:gv('yt-rt'),
-    ghRepo:gv('gh-repo'), ghToken:gv('gh-token'),
-    sched1:gv('sched-1'), sched2:gv('sched-2'), sched3:gv('sched-3'),
+function saveAll(){
+  const data=getUD();
+  const gv=id=>{const el=document.getElementById(id);return el?el.value:'';};
+  data.keys={
+    aiProvA:gv('ai-prov-a'),aiKeyA:gv('ai-key-a'),
+    aiProvB:gv('ai-prov-b'),aiKeyB:gv('ai-key-b'),
+    aiProvC:gv('ai-prov-c'),aiKeyC:gv('ai-key-c'),
+    musicKey1:gv('music-key-1'),musicMood1:gv('music-mood-1'),
+    musicKey2:gv('music-key-2'),musicMood2:gv('music-mood-2'),
+    vidSvc1:gv('vid-svc-1'),vidKey1:gv('vid-key-1'),
+    vidSvc2:gv('vid-svc-2'),vidKey2:gv('vid-key-2'),
+    vidSvc3:gv('vid-svc-3'),vidKey3:gv('vid-key-3'),
+    ytChName:gv('yt-ch-name'),ytChId:gv('yt-ch-id'),
+    ytPrivacy:gv('yt-privacy'),ytKids:gv('yt-kids'),ytCat:gv('yt-cat'),
+    ytCid:gv('yt-cid'),ytCs:gv('yt-cs'),ytRt:gv('yt-rt'),
+    ghRepo:gv('gh-repo'),ghToken:gv('gh-token'),
+    sched1:gv('sched-1'),sched2:gv('sched-2'),sched3:gv('sched-3'),
   };
-  saveUD(data); dirty=false;
+  saveUD(data);dirty=false;
   ['ai-saved','audio-saved','music-saved','vid-saved','yt-saved'].forEach(id=>{
-    const el=document.getElementById(id); if(el){el.style.display='inline';setTimeout(()=>el.style.display='none',2500);}
+    const el=document.getElementById(id);if(el){el.style.display='inline';setTimeout(()=>el.style.display='none',2500);}
   });
-  toast('✓ All settings saved to your account','ok');
+  toast('✓ All settings saved','ok');
 }
 
 // ═══════════════════════════════════════════════════════
 // CATEGORIES
 // ═══════════════════════════════════════════════════════
-function buildCatGrids() {
-  ['dash-cats','gen-cats'].forEach(gid => {
-    const g = document.getElementById(gid);
-    g.innerHTML = CATS.map(c=>`<div class="cat" id="${gid}-${c.id}" onclick="selCategory('${c.id}','${gid}')"><span class="ce">${c.e}</span><span class="cn">${c.n}</span></div>`).join('');
+function buildCatGrids(){
+  ['dash-cats','gen-cats'].forEach(gid=>{
+    const g=document.getElementById(gid);
+    g.innerHTML=CATS.map(c=>`<div class="cat" id="${gid}-${c.id}" onclick="selCategory('${c.id}','${gid}')"><span class="ce">${c.e}</span><span class="cn">${c.n}</span></div>`).join('');
   });
 }
 
-function selCategory(id, gid) {
+function selCategory(id,gid){
   document.querySelectorAll(`#${gid} .cat`).forEach(c=>c.classList.remove('on'));
   document.getElementById(`${gid}-${id}`).classList.add('on');
-  selCat = CATS.find(c=>c.id===id);
-  if (gid==='gen-cats') { document.getElementById('topics-card').style.display='block'; document.getElementById('gen-out-card').style.display='none'; selTopic=null; loadTopics(); }
+  selCat=CATS.find(c=>c.id===id);
+  if(gid==='gen-cats'){document.getElementById('topics-card').style.display='block';document.getElementById('gen-out-card').style.display='none';selTopic=null;loadTopics();}
 }
 
 // ═══════════════════════════════════════════════════════
-// GEMINI
+// GEMINI — with rate-limit self-healing
 // ═══════════════════════════════════════════════════════
-function getKey(slot=0) {
+function getKey(slot=0){
   const k=getUD().keys||{};
   const keys=[k.aiKeyA,k.aiKeyB,k.aiKeyC].filter(Boolean);
   return keys[slot%keys.length]||null;
 }
 
-async function gemini(prompt, slot=0) {
+async function gemini(prompt,slot=0,retryCount=0){
   const key=getKey(slot);
-  if (!key) throw new Error('No Gemini API key saved. Go to AI APIs → add your key first.');
+  if(!key)throw new Error('No Gemini API key saved. Go to AI APIs → add your key first.');
   const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`,{
-    method:'POST', headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:.85,maxOutputTokens:1500}})
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:.85,maxOutputTokens:2000}})
   });
-  if (!r.ok) { const e=await r.json(); if(r.status===429&&slot<2) return gemini(prompt,slot+1); throw new Error('Gemini '+(e.error?.message||r.status)); }
+  if(r.status===429){
+    const totalKeys=[getUD().keys?.aiKeyA,getUD().keys?.aiKeyB,getUD().keys?.aiKeyC].filter(Boolean).length;
+    if(slot+1<totalKeys)return gemini(prompt,slot+1,retryCount); // try next key
+    const err=new Error('RATE_LIMIT_ALL_SLOTS');err.isRateLimit=true;throw err;
+  }
+  if(!r.ok){const e=await r.json();throw new Error('Gemini '+(e.error?.message||r.status));}
   const d=await r.json();
   return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
 }
 
 // ═══════════════════════════════════════════════════════
-// TOPICS
+// NON-VERBAL 4-SCENE MANIFEST GENERATOR
 // ═══════════════════════════════════════════════════════
-async function loadTopics() {
-  if (!selCat) return;
+async function generateSceneManifest(topic, category, chName){
+  const catObj=CATS.find(c=>c.n===category)||CATS[0];
+  const prompt=`You are a Lead Creative Director for a viral YouTube Shorts animation studio targeting toddlers aged 2-5.
+
+Generate a 4-scene non-verbal slapstick animation manifest for the topic: "${topic}"
+Category: ${category}
+Channel: ${chName}
+
+CRITICAL RULES:
+- ZERO dialogue, ZERO voiceover, ZERO narration. Completely non-verbal.
+- Story told purely through physical slapstick actions, facial expressions, body language, and sound effects.
+- 3D Pixar/claymation aesthetic: hyper-bright neon-pastel colors, soft plastic textures, chubby expressive characters.
+- Maintain IDENTICAL character clothing colors and markings across all 4 scenes.
+- Each scene = exactly 4 seconds = 16 seconds total Short.
+- 9:16 vertical format. No text overlays.
+
+4-Scene Emotional Loop:
+Scene 1 (0-4s) [Hook]: Chubby expressive 3D character joyfully holds a vibrant oversized shiny object. Nearby characters have huge longing eyes.
+Scene 2 (4-8s) [Mishap]: Sudden unexpected accident — item shatters/spills/drops. Character's face of pure shock.
+Scene 3 (8-12s) [Empathy]: Character bursts into dramatic crying with visible stream tears. Secondary characters immediately rush in to comfort and help.
+Scene 4 (12-16s) [Resolution]: Massive glowing green checkmark or floating hearts burst on screen. Characters repair and share reward together, then joyfully loop back to start pose.
+
+Return ONLY valid minified JSON, no markdown, no backticks:
+{"title":"engaging Shorts title max 60 chars starting with emoji for ${category}","tags":"#shorts #funny #cute #kidstv #animation #toddler #${catObj.id} #${category.toLowerCase().replace(/\s/g,'')} #viral #children","scenes":{"scene_1":"[detailed 3D engine visual: character description, clothing colors, object, lighting, exact action, facial expression, camera angle, background setting]","scene_2":"[detailed 3D engine visual: same character markings, the accident moment, dynamic motion blur, shock expression, debris/spill details, dramatic lighting shift]","scene_3":"[detailed 3D engine visual: same characters, streaming tears animation detail, secondary characters rushing in, warm empathetic lighting, hands reaching out]","scene_4":"[detailed 3D engine visual: glowing reward UI element, repair action, shared treat moment, joyful dancing loop animation, rainbow lighting, camera pulls back to starting frame]"},"musicMood":"${catObj.p} upbeat cheerful children background music","description":"Fun ${category} Shorts for toddlers! Watch what happens when ${topic.toLowerCase()}. Perfect for babies and young children. 🎬✨ Subscribe for more daily ${category} videos! #Shorts #Kids #${category}"}`;
+
+  const raw=await gemini(prompt);
+  return JSON.parse(raw.replace(/```json|```/g,'').trim());
+}
+
+// ═══════════════════════════════════════════════════════
+// SCHEDULER UI HELPERS
+// ═══════════════════════════════════════════════════════
+function schedStep(msg,pct){
+  const panel=document.getElementById('sched-panel');
+  const step=document.getElementById('sched-step');
+  const fill=document.getElementById('sched-prog-fill');
+  if(panel)panel.classList.add('active');
+  if(step)step.textContent=msg;
+  if(fill)fill.style.width=pct+'%';
+  const dashOut=document.getElementById('dash-out');
+  if(dashOut){dashOut.textContent=msg;dashOut.className='out-box';}
+}
+
+function schedLoop(msg){
+  const el=document.getElementById('sched-loop');
+  if(el)el.textContent=msg;
+}
+
+function schedTag(state){
+  const el=document.getElementById('sched-status-tag');
+  if(!el)return;
+  el.textContent=state;
+  el.className='tag';
+  if(state==='Running')el.classList.add('tag-green');
+  else if(state==='Retrying')el.classList.add('tag-gold');
+  else if(state==='Error')el.classList.add('tag-pink');
+  else el.classList.add('tag-blue');
+}
+
+function stopAutoScheduler(){
+  autoSchedulerRunning=false;
+  if(autoSchedulerTimer){clearTimeout(autoSchedulerTimer);autoSchedulerTimer=null;}
+  schedTag('Stopped');
+  schedLoop('Scheduler stopped by user.');
+  const btn=document.getElementById('dash-gen-btn');
+  if(btn){btn.disabled=false;btn.innerHTML='🤖 Run Autonomous Post';}
+  toast('⏹ Scheduler stopped','ok');
+}
+
+// ═══════════════════════════════════════════════════════
+// AUTONOMOUS DAILY SCHEDULER — main engine
+// ═══════════════════════════════════════════════════════
+async function triggerAutonomousDailyPost(){
+  if(autoSchedulerRunning){toast('Scheduler already running. Stop first.','err');return;}
+
+  const btn=document.getElementById('dash-gen-btn');
+  btn.disabled=true;btn.innerHTML='<span class="loader" style="color:#fff"></span> Generating...';
+  autoSchedulerRunning=true;
+  schedTag('Running');
+
+  // ── Auto-pick category ──
+  const activeCard=document.querySelector('#dash-cats .cat.on');
+  let chosenCat=selCat;
+  if(!chosenCat){
+    // Pick random from all categories if none selected
+    chosenCat=CATS[Math.floor(Math.random()*CATS.length)];
+    const catEl=document.getElementById(`dash-cats-${chosenCat.id}`);
+    if(catEl){document.querySelectorAll('#dash-cats .cat').forEach(c=>c.classList.remove('on'));catEl.classList.add('on');}
+  }
+
+  // ── Auto-pick viral archetype + category topic ──
+  const data=getUD();
+  const used=(data.usedTopics||[]).filter(t=>t.catId===chosenCat.id).map(t=>t.topic);
+  const archetype=VIRAL_ARCHETYPES[Math.floor(Math.random()*VIRAL_ARCHETYPES.length)];
+  const chName=data.keys?.ytChName||'Kids TV';
+
+  schedStep(`[Auto-Scheduler] Category: ${chosenCat.n} · Archetype: "${archetype}". Calling Gemini Flash free tier...`, 10);
+  schedLoop(`Loop #${(data.logs||[]).length+1} · ${new Date().toLocaleTimeString()}`);
+
+  try {
+    // ── Step 1: generate specific topic via AI ──
+    const avoidStr=used.length?`Never reuse these topics: ${used.slice(-20).join('; ')}`:'';
+    const topicRaw=await gemini(`Generate ONE specific viral YouTube Shorts topic.
+Category: ${chosenCat.n} — ${chosenCat.p}
+Archetype template: "${archetype}"
+${avoidStr}
+Rules: under 8 words, specific and vivid, safe for toddlers, high visual comedy potential.
+Return ONLY the topic text, nothing else.`);
+    const autoTopic=topicRaw.trim().replace(/^["']|["']$/g,'');
+    schedStep(`✅ Topic selected: "${autoTopic}". Generating 4-scene non-verbal manifest...`, 30);
+
+    // ── Step 2: generate scene manifest ──
+    const manifest=await generateSceneManifest(autoTopic,chosenCat.n,chName);
+    schedStep(`🎬 Scene manifest ready. Building Shorts metadata package...`, 65);
+
+    // ── Show manifest on dashboard ──
+    renderManifestPreview(manifest);
+
+    // ── Save to curOut ──
+    curOut={
+      topic:autoTopic,
+      category:chosenCat.n,
+      catId:chosenCat.id,
+      title:manifest.title,
+      description:manifest.description,
+      tags:manifest.tags,
+      musicMood:manifest.musicMood,
+      scenes:manifest.scenes,
+      status:'pending',
+    };
+
+    // ── Mark topic as used ──
+    data.usedTopics=data.usedTopics||[];
+    data.usedTopics.push({catId:chosenCat.id,topic:autoTopic,date:new Date().toISOString()});
+    if(data.usedTopics.length>300)data.usedTopics=data.usedTopics.slice(-300);
+    saveUD(data);
+
+    schedStep(`📦 Package ready. Pushing to queue & triggering GitHub...`, 85);
+    addToQueue(true);
+    await triggerGH(true);
+
+    schedStep(`✅ Autonomous post complete! GitHub Actions is uploading "${autoTopic}" to YouTube Shorts.`, 100);
+    schedLoop(`Completed at ${new Date().toLocaleTimeString()} · Next: run again or set GitHub schedule`);
+    schedTag('Done');
+    toast(`✅ Auto-post done: "${autoTopic}"`, 'ok');
+
+  } catch(e){
+    // ── Rate limit self-healing ──
+    if(e.isRateLimit){
+      schedTag('Retrying');
+      let countdown=60;
+      schedStep(`⏳ Free tier rate-limit reached across all ${getUD().keys?Object.values({a:getUD().keys.aiKeyA,b:getUD().keys.aiKeyB,c:getUD().keys.aiKeyC}).filter(Boolean).length:0} keys. Self-healing — retrying in 60 seconds...`,50);
+      const countTimer=setInterval(()=>{
+        countdown--;
+        schedLoop(`Resuming in ${countdown}s... All Gemini free slots temporarily exhausted.`);
+        if(countdown<=0)clearInterval(countTimer);
+      },1000);
+      autoSchedulerRunning=false;
+      btn.disabled=false;btn.innerHTML='🤖 Run Autonomous Post';
+      autoSchedulerTimer=setTimeout(()=>{
+        clearInterval(countTimer);
+        triggerAutonomousDailyPost();
+      },60000);
+      return;
+    }
+    schedStep(`❌ Pipeline error: ${e.message}`, 0);
+    schedTag('Error');
+    schedLoop(`Failed at ${new Date().toLocaleTimeString()}`);
+    toast(`❌ ${e.message}`,'err');
+  }
+
+  autoSchedulerRunning=false;
+  btn.disabled=false;btn.innerHTML='🤖 Run Autonomous Post';
+}
+
+// ═══════════════════════════════════════════════════════
+// MANIFEST PREVIEW RENDERER
+// ═══════════════════════════════════════════════════════
+function renderManifestPreview(manifest){
+  const card=document.getElementById('scene-manifest-card');
+  if(!card)return;
+  card.style.display='block';
+  document.getElementById('manifest-title').textContent=manifest.title||'';
+  document.getElementById('manifest-tags').textContent=manifest.tags||'';
+  const SCENE_META=[
+    {num:'Scene 1',time:'0–4s',label:'🪝 Hook'},
+    {num:'Scene 2',time:'4–8s',label:'💥 Mishap'},
+    {num:'Scene 3',time:'8–12s',label:'💧 Empathy'},
+    {num:'Scene 4',time:'12–16s',label:'🏆 Resolution'},
+  ];
+  const grid=document.getElementById('scene-grid');
+  grid.innerHTML=Object.entries(manifest.scenes||{}).map(([k,v],i)=>`
+    <div class="scene-card">
+      <div class="scene-num">${SCENE_META[i]?.label||k}</div>
+      <div class="scene-time">${SCENE_META[i]?.time||''}</div>
+      <div class="scene-txt">${v}</div>
+    </div>`).join('');
+  document.getElementById('manifest-json-raw').textContent=JSON.stringify(manifest,null,2);
+}
+
+// ═══════════════════════════════════════════════════════
+// TOPICS (for Generate page)
+// ═══════════════════════════════════════════════════════
+async function loadTopics(){
+  if(!selCat)return;
   document.getElementById('topics-loading').style.display='block';
   document.getElementById('topic-list').innerHTML='';
   const data=getUD();
   const used=(data.usedTopics||[]).filter(t=>t.catId===selCat.id).map(t=>t.topic);
   const avoid=used.length?`\nNever suggest these already used topics: ${used.slice(-25).join('; ')}`:'';
-  try {
-    const raw=await gemini(`Generate 6 specific fresh YouTube Kids Shorts video topics.
+  // Pick 2 random archetypes to bias the topics
+  const twoArch=[VIRAL_ARCHETYPES[Math.floor(Math.random()*VIRAL_ARCHETYPES.length)],VIRAL_ARCHETYPES[Math.floor(Math.random()*VIRAL_ARCHETYPES.length)]];
+  try{
+    const raw=await gemini(`Generate 6 specific viral YouTube Shorts topics.
 Category: ${selCat.n} — ${selCat.p}
-Audience: Children 2-8 years old.${avoid}
-Rules: specific not generic, engaging and safe, under 8 words each, educational and fun.
+Audience: Toddlers 2-5 years old.
+Viral archetype inspiration: "${twoArch[0]}", "${twoArch[1]}"${avoid}
+Rules: non-verbal slapstick potential, high visual comedy, safe for toddlers, under 8 words each, specific not generic.
 Return ONLY a JSON array: ["topic 1","topic 2","topic 3","topic 4","topic 5","topic 6"]`);
     const topics=JSON.parse(raw.replace(/```json|```/g,'').trim());
     document.getElementById('topics-loading').style.display='none';
@@ -896,13 +1190,18 @@ Return ONLY a JSON array: ["topic 1","topic 2","topic 3","topic 4","topic 5","to
       <div class="topic-item" id="tp-${i}" onclick="pickTopic(${i},'${t.replace(/'/g,"\\'").replace(/"/g,'\\"')}')">
         <span class="t-num">0${i+1}</span><span class="t-text">${t}</span><span class="t-check">✓</span>
       </div>`).join('');
-  } catch(e) {
+  }catch(e){
     document.getElementById('topics-loading').style.display='none';
-    document.getElementById('topic-list').innerHTML=`<div style="color:var(--red);padding:10px;font-size:13px">${e.message}</div>`;
+    if(e.isRateLimit){
+      document.getElementById('topic-list').innerHTML=`<div style="color:var(--gold);padding:10px;font-size:13px">⏳ Rate limit hit — retrying in 60s...</div>`;
+      setTimeout(loadTopics,60000);
+    } else {
+      document.getElementById('topic-list').innerHTML=`<div style="color:var(--red);padding:10px;font-size:13px">${e.message}</div>`;
+    }
   }
 }
 
-function pickTopic(i, topic) {
+function pickTopic(i,topic){
   document.querySelectorAll('.topic-item').forEach(el=>el.classList.remove('on'));
   document.getElementById('tp-'+i).classList.add('on');
   selTopic=topic;
@@ -910,135 +1209,61 @@ function pickTopic(i, topic) {
 }
 
 // ═══════════════════════════════════════════════════════
-// GENERATE FULL CONTENT
+// GENERATE FULL CONTENT (Generate page)
 // ═══════════════════════════════════════════════════════
-async function generateContent() {
-  if (!selCat||!selTopic) return;
+async function generateContent(){
+  if(!selCat||!selTopic)return;
   document.getElementById('gen-out-card').style.display='block';
   document.getElementById('gen-loading').style.display='block';
   document.getElementById('gen-output').style.display='none';
   const setP=(pct,txt)=>{document.getElementById('gen-prog-fill').style.width=pct+'%';document.getElementById('gen-step-txt').textContent=txt;};
-  setP(10,'✍️ Writing script...');
-  try {
+  setP(10,'🎬 Building non-verbal scene manifest...');
+  try{
     const data=getUD();
     const chName=data.keys?.ytChName||'Kids TV';
-    setP(30,'🧠 Generating full content package...');
-    const raw=await gemini(`You are a YouTube Kids Shorts creator for channel "${chName}".
-Create a complete video package. Return ONLY valid JSON no markdown no backticks.
-
-Category: ${selCat.n}
-Topic: ${selTopic}
-Audience: Children 2-8 years
-
-{
-  "script": "110-130 word voiceover script. Exciting hook first 3 seconds. Fun educational facts. End: Subscribe for more [category] videos every day!",
-  "voiceoverScript": "Same script rewritten slow warm enthusiastic with [PAUSE] markers. Perfect for kids narrator. Emphasize exciting words in CAPS.",
-  "title": "YouTube title max 60 chars. Start with emoji. Keyword rich. Exciting.",
-  "description": "3 sentence YouTube description. Keywords included. End with subscribe prompt.",
-  "tags": "tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, tag9, tag10, tag11, tag12",
-  "hashtags": "#KidsTV #Shorts #Children #${selCat.n.replace(/\s/g,'')} #Educational #Learning #Kids",
-  "videoPrompt": "AI video generation prompt: bright vibrant cartoon animation style, safe for children under 8, cheerful friendly animal/character, smooth motion, 9:16 vertical format, no text overlays, colorful backgrounds. Specific: ${selTopic}",
-  "musicMood": "background music mood for this video in 5 words e.g. cheerful upbeat playful kids fun",
-  "durationSeconds": 55
-}`,0);
-    setP(80,'📦 Finalizing package...');
-    const out=JSON.parse(raw.replace(/```json|```/g,'').trim());
-    curOut={...out, category:selCat.n, catId:selCat.id, topic:selTopic};
-    document.getElementById('o-script').textContent=out.script;
-    document.getElementById('o-voice').textContent=out.voiceoverScript;
-    document.getElementById('o-title').textContent=out.title;
-    document.getElementById('o-tags').textContent=out.tags+'\n'+out.hashtags;
-    document.getElementById('o-desc').textContent=out.description;
-    document.getElementById('o-vp').textContent=out.videoPrompt;
-    setP(100,'✅ Done!');
-    // mark topic used
+    setP(40,'🧠 Generating 4-scene non-verbal manifest...');
+    const manifest=await generateSceneManifest(selTopic,selCat.n,chName);
+    setP(85,'📦 Finalizing Shorts package...');
+    curOut={topic:selTopic,category:selCat.n,catId:selCat.id,...manifest};
+    document.getElementById('o-manifest').textContent=JSON.stringify(manifest.scenes,null,2);
+    document.getElementById('o-title').textContent=manifest.title;
+    document.getElementById('o-tags').textContent=manifest.tags;
+    document.getElementById('o-desc').textContent=manifest.description;
+    document.getElementById('o-music').textContent=manifest.musicMood;
     data.usedTopics=data.usedTopics||[];
     data.usedTopics.push({catId:selCat.id,topic:selTopic,date:new Date().toISOString()});
-    if(data.usedTopics.length>300) data.usedTopics=data.usedTopics.slice(-300);
+    if(data.usedTopics.length>300)data.usedTopics=data.usedTopics.slice(-300);
     saveUD(data);
-    setTimeout(()=>{
-      document.getElementById('gen-loading').style.display='none';
-      document.getElementById('gen-output').style.display='block';
-    },400);
-  } catch(e) {
+    setP(100,'✅ Ready!');
+    setTimeout(()=>{document.getElementById('gen-loading').style.display='none';document.getElementById('gen-output').style.display='block';},300);
+  }catch(e){
     document.getElementById('gen-loading').style.display='none';
-    document.getElementById('gen-out-card').querySelector('.card-head').innerHTML='<span style="color:var(--red)">❌ '+e.message+'</span>';
-    toast(e.message,'err');
+    if(e.isRateLimit){
+      document.getElementById('gen-step-txt').textContent='⏳ Rate limit — retrying in 60s...';
+      setTimeout(generateContent,60000);
+    } else {
+      document.getElementById('gen-out-card').querySelector('.card-head').innerHTML=`<span style="color:var(--red)">❌ ${e.message}</span>`;
+      toast(e.message,'err');
+    }
   }
-}
-
-// Quick generate from dashboard
-async function quickGen() {
-  if (!selCat) { toast('Pick a category first!','err'); return; }
-  const btn=document.getElementById('dash-gen-btn');
-  const out=document.getElementById('dash-out');
-  const prog=document.getElementById('dash-progress');
-  const fill=document.getElementById('dash-progress-fill');
-  const step=document.getElementById('dash-step-msg');
-  btn.disabled=true; btn.innerHTML='<span class="loader" style="color:#fff"></span> Working...';
-  out.textContent='Starting full automation pipeline...'; out.className='out-box';
-  prog.style.display='block'; step.style.display='block';
-
-  const setP=(pct,txt)=>{fill.style.width=pct+'%';step.textContent=txt;};
-
-  try {
-    const data=getUD();
-    const chName=data.keys?.ytChName||'Kids TV';
-    const used=(data.usedTopics||[]).filter(t=>t.catId===selCat.id).map(t=>t.topic);
-    const avoid=used.length?`Never repeat: ${used.slice(-25).join('; ')}`:'';
-    setP(10,'🧠 Picking fresh topic...');
-    const raw=await gemini(`You are a YouTube Kids Shorts creator for "${chName}".
-Auto-pick a fresh specific topic and generate complete package.
-Category: ${selCat.n} — ${selCat.p}. Audience: Children 2-8. ${avoid}
-Return ONLY valid JSON:
-{
-  "topic":"specific topic chosen",
-  "script":"110-130 word voiceover script with hook and subscribe CTA",
-  "voiceoverScript":"narration version with [PAUSE] markers and CAPS emphasis",
-  "title":"YouTube title max 60 chars starting with emoji",
-  "description":"3 sentence description with keywords",
-  "tags":"12 comma separated tags",
-  "hashtags":"#KidsTV #Shorts #Children #${selCat.n.replace(/\s/g,'')} #Educational",
-  "videoPrompt":"AI video gen: bright cartoon animation 9:16 vertical safe for kids. Topic: [topic]",
-  "musicMood":"cheerful upbeat kids background playful"
-}`);
-    setP(50,'📦 Package ready, adding to queue...');
-    const result=JSON.parse(raw.replace(/```json|```/g,'').trim());
-    curOut={...result, category:selCat.n, catId:selCat.id};
-    out.textContent=`📌 Topic: ${result.topic}\n\n📝 Script:\n${result.script}\n\n🏷️ Title: ${result.title}\n\n🎙️ Voice: ${result.voiceoverScript?.substring(0,100)}...\n\n🎥 Video Prompt:\n${result.videoPrompt}`;
-    data.usedTopics=data.usedTopics||[];
-    data.usedTopics.push({catId:selCat.id,topic:result.topic,date:new Date().toISOString()});
-    if(data.usedTopics.length>300) data.usedTopics=data.usedTopics.slice(-300);
-    addToQueue(true);
-    setP(80,'⚡ Triggering GitHub upload...');
-    await triggerGH(true);
-    setP(100,'✅ Done! GitHub Actions is processing your video.');
-    step.style.color='var(--green)';
-    toast('✅ Generated & queued! GitHub Actions is uploading.','ok');
-  } catch(e) {
-    out.textContent='❌ '+e.message;
-    step.textContent='Error: '+e.message; step.style.color='var(--red)';
-    toast(e.message,'err');
-  }
-  btn.disabled=false; btn.innerHTML='✨ Generate &amp; Auto-Upload';
 }
 
 // ═══════════════════════════════════════════════════════
 // QUEUE
 // ═══════════════════════════════════════════════════════
-function addToQueue(silent=false) {
-  if (!curOut) { if(!silent) toast('Generate content first!','err'); return; }
+function addToQueue(silent=false){
+  if(!curOut){if(!silent)toast('Generate content first!','err');return;}
   const data=getUD();
   data.queue=data.queue||[];
-  data.queue.push({...curOut, status:'pending', added:new Date().toISOString(), id:Date.now()});
+  data.queue.push({...curOut,status:'pending',added:new Date().toISOString(),id:Date.now()});
   saveUD(data);
-  renderStats(); renderQPreview(); renderFullQ();
+  renderStats();renderQPreview();renderFullQ();
   const count=data.queue.filter(i=>i.status==='pending').length;
   document.getElementById('sb-queue-count').textContent=count;
-  if(!silent) toast('✓ Added to upload queue','ok');
+  if(!silent)toast('✓ Added to upload queue','ok');
 }
 
-function renderQPreview() {
+function renderQPreview(){
   const data=getUD();
   const q=(data.queue||[]).slice(-5).reverse();
   const el=document.getElementById('dash-q-preview');
@@ -1046,7 +1271,7 @@ function renderQPreview() {
   el.innerHTML=q.map((item,i)=>qHTML(item,i)).join('');
 }
 
-function renderFullQ() {
+function renderFullQ(){
   const data=getUD();
   const q=(data.queue||[]).slice().reverse();
   const el=document.getElementById('full-queue');
@@ -1054,19 +1279,19 @@ function renderFullQ() {
   el.innerHTML=q.map((item,i)=>qHTML(item,i,true)).join('');
 }
 
-function qHTML(item,i,del=false) {
+function qHTML(item,i,del=false){
   const t=new Date(item.added).toLocaleString();
   const db=del?`<button class="q-del" onclick="delQ(${item.id})">×</button>`:'';
   return `<div class="q-item"><div class="q-n">${i+1}</div><div class="q-info"><div class="q-title">${item.title||item.topic||'Untitled'}</div><div class="q-meta">${item.category||''} · ${t}</div></div><span class="q-status qs-${item.status||'pending'}">${item.status||'pending'}</span>${db}</div>`;
 }
 
-function delQ(id) { const data=getUD(); data.queue=(data.queue||[]).filter(i=>i.id!==id); saveUD(data); renderStats(); renderQPreview(); renderFullQ(); }
-function clearDone() { const data=getUD(); data.queue=(data.queue||[]).filter(i=>i.status!=='done'); saveUD(data); renderStats(); renderQPreview(); renderFullQ(); }
+function delQ(id){const data=getUD();data.queue=(data.queue||[]).filter(i=>i.id!==id);saveUD(data);renderStats();renderQPreview();renderFullQ();}
+function clearDone(){const data=getUD();data.queue=(data.queue||[]).filter(i=>i.status!=='done');saveUD(data);renderStats();renderQPreview();renderFullQ();}
 
 // ═══════════════════════════════════════════════════════
 // LOGS
 // ═══════════════════════════════════════════════════════
-function renderLogs() {
+function renderLogs(){
   const data=getUD();
   const logs=(data.logs||[]).slice().reverse();
   const tbody=document.getElementById('log-body');
@@ -1075,104 +1300,93 @@ function renderLogs() {
   nl.style.display='none';
   tbody.innerHTML=logs.map((l,i)=>`<tr>
     <td style="color:var(--muted)">${i+1}</td>
-    <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${l.topic||'-'}</td>
+    <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${l.topic||'-'}</td>
     <td>${l.category||'-'}</td>
     <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${l.title||'-'}</td>
-    <td><span style="font-size:10px;color:var(--muted)">${l.ttsService||'edge'}</span></td>
-    <td><span style="font-size:10px;color:var(--muted)">${l.musicService||'mubert'}</span></td>
+    <td><span style="font-size:10px;color:var(--muted)">${l.musicMood||'jamendo'}</span></td>
     <td><span class="q-status qs-${l.status||'done'}">${l.status||'done'}</span></td>
-    <td style="color:var(--muted)">${new Date(l.date||l.timestamp).toLocaleDateString()}</td>
+    <td style="color:var(--muted)">${new Date(l.date||l.timestamp||Date.now()).toLocaleDateString()}</td>
   </tr>`).join('');
 }
 
-function clearLogs() { if(!confirm('Clear all logs?')) return; const data=getUD(); data.logs=[]; saveUD(data); renderLogs(); }
+function clearLogs(){if(!confirm('Clear all logs?'))return;const data=getUD();data.logs=[];saveUD(data);renderLogs();}
 
 // ═══════════════════════════════════════════════════════
 // STATS
 // ═══════════════════════════════════════════════════════
-function renderStats() {
+function renderStats(){
   const data=getUD();
   const q=data.queue||[];
   const logs=data.logs||[];
   const today=new Date().toDateString();
-  const todayDone=logs.filter(l=>new Date(l.date||l.timestamp).toDateString()===today).length;
+  const todayDone=logs.filter(l=>new Date(l.date||l.timestamp||0).toDateString()===today).length;
   document.getElementById('ds-q').textContent=q.filter(i=>i.status==='pending').length;
   document.getElementById('ds-t').textContent=todayDone;
   document.getElementById('ds-tot').textContent=logs.length;
   document.getElementById('ds-used').textContent=(data.usedTopics||[]).length;
-  const count=q.filter(i=>i.status==='pending').length;
-  document.getElementById('sb-queue-count').textContent=count;
+  document.getElementById('sb-queue-count').textContent=q.filter(i=>i.status==='pending').length;
 }
 
 // ═══════════════════════════════════════════════════════
 // GITHUB
 // ═══════════════════════════════════════════════════════
-async function testGH() {
+async function testGH(){
   const repo=document.getElementById('gh-repo').value.trim();
   const token=document.getElementById('gh-token').value.trim();
   const el=document.getElementById('gh-test');
   if(!repo||!token){el.textContent='❌ Fill in repo and token';el.style.color='var(--red)';return;}
   el.textContent='Testing...';el.style.color='var(--muted)';
-  try {
+  try{
     const r=await fetch(`https://api.github.com/repos/${repo}`,{headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
     el.textContent=r.ok?'✓ Connected!':'❌ Check token & repo';
     el.style.color=r.ok?'var(--green)':'var(--red)';
-  } catch { el.textContent='❌ Network error';el.style.color='var(--red)'; }
+  }catch{el.textContent='❌ Network error';el.style.color='var(--red)';}
 }
 
-async function pushQueue() {
-  const data=getUD();
-  const k=data.keys||{};
-  const repo=k.ghRepo; const token=k.ghToken;
-  if(!repo||!token) return;
-  try {
+async function pushQueue(){
+  const data=getUD();const k=data.keys||{};
+  const repo=k.ghRepo;const token=k.ghToken;
+  if(!repo||!token)return;
+  try{
     const getR=await fetch(`https://api.github.com/repos/${repo}/contents/queue.json`,{headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
     const ex=getR.ok?await getR.json():null;
     const content=btoa(unescape(encodeURIComponent(JSON.stringify(data.queue||[],null,2))));
     await fetch(`https://api.github.com/repos/${repo}/contents/queue.json`,{
       method:'PUT',headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
-      body:JSON.stringify({message:'Update queue',content,sha:ex?.sha})
+      body:JSON.stringify({message:'Update queue via KidsTV Agent',content,sha:ex?.sha})
     });
-  } catch(e){console.error('Push queue failed:',e);}
+  }catch(e){console.error('Push queue failed:',e);}
 }
 
-async function triggerGH(silent=false) {
-  const data=getUD(); const k=data.keys||{};
-  const repo=k.ghRepo; const token=k.ghToken;
+async function triggerGH(silent=false){
+  const data=getUD();const k=data.keys||{};
+  const repo=k.ghRepo;const token=k.ghToken;
   if(!repo||!token){
-    if(!silent){toast('Set GitHub repo & token in Settings → GitHub first!','err');nav('github',document.querySelectorAll('.sb-item')[9]);}
+    if(!silent){toast('Set GitHub repo & token in Settings → GitHub first!','err');}
     return;
   }
-  if(!silent) toast('Pushing queue to GitHub...','ok');
+  if(!silent)toast('Pushing queue to GitHub...','ok');
   await pushQueue();
   const r=await fetch(`https://api.github.com/repos/${repo}/dispatches`,{
     method:'POST',headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
     body:JSON.stringify({event_type:'manual_trigger'})
   });
   if(!silent){
-    if(r.ok||r.status===204) toast('⚡ GitHub Action triggered! Processing in ~30 seconds.','ok');
+    if(r.ok||r.status===204)toast('⚡ GitHub Action triggered! Processing in ~30 seconds.','ok');
     else toast('❌ Trigger failed — check token permissions (repo + workflow).','err');
   }
 }
 
-function exportSecrets() {
-  const data=getUD(); const k=data.keys||{};
+function exportSecrets(){
+  const data=getUD();const k=data.keys||{};
   const lines=[
     k.aiKeyA&&`GEMINI_KEY_A=${k.aiKeyA}`,
     k.aiKeyB&&`GEMINI_KEY_B=${k.aiKeyB}`,
     k.aiKeyC&&`GEMINI_KEY_C=${k.aiKeyC}`,
-    k.ttsKey1&&`TTS_KEY_1=${k.ttsKey1}`,
-    k.ttsSvc1&&`TTS_SVC_1=${k.ttsSvc1}`,
-    k.ttsVoice1&&`TTS_VOICE_1=${k.ttsVoice1}`,
-    k.ttsKey2&&`TTS_KEY_2=${k.ttsKey2}`,
-    k.ttsSvc2&&`TTS_SVC_2=${k.ttsSvc2}`,
-    k.ttsKey3&&`TTS_KEY_3=${k.ttsKey3}`,
-    k.ttsSvc3&&`TTS_SVC_3=${k.ttsSvc3}`,
-    k.musicKey1&&`MUSIC_KEY_1=${k.musicKey1}`,
-    k.musicSvc1&&`MUSIC_SVC_1=${k.musicSvc1}`,
-    k.musicMood1&&`MUSIC_MOOD_1=${k.musicMood1}`,
-    k.musicKey2&&`MUSIC_KEY_2=${k.musicKey2}`,
-    k.musicSvc2&&`MUSIC_SVC_2=${k.musicSvc2}`,
+    k.musicKey1&&`JAMENDO_KEY_1=${k.musicKey1}`,
+    k.musicMood1&&`MUSIC_TAGS_1=${k.musicMood1}`,
+    k.musicKey2&&`JAMENDO_KEY_2=${k.musicKey2}`,
+    k.musicMood2&&`MUSIC_TAGS_2=${k.musicMood2}`,
     k.vidKey1&&`VID_KEY_1=${k.vidKey1}`,
     k.vidSvc1&&`VID_SVC_1=${k.vidSvc1}`,
     k.vidKey2&&`VID_KEY_2=${k.vidKey2}`,
@@ -1182,6 +1396,10 @@ function exportSecrets() {
     k.ytCid&&`YT_CLIENT_ID=${k.ytCid}`,
     k.ytCs&&`YT_CLIENT_SECRET=${k.ytCs}`,
     k.ytRt&&`YT_REFRESH_TOKEN=${k.ytRt}`,
+    k.ytChId&&`YT_CHANNEL_ID=${k.ytChId}`,
+    k.ytPrivacy&&`YT_PRIVACY=${k.ytPrivacy}`,
+    k.ytKids&&`YT_MADE_FOR_KIDS=${k.ytKids}`,
+    k.ytCat&&`YT_CATEGORY_ID=${k.ytCat}`,
   ].filter(Boolean).join('\n');
   navigator.clipboard.writeText(lines);
   document.getElementById('exp-msg').style.display='inline';
@@ -1192,39 +1410,43 @@ function exportSecrets() {
 // ═══════════════════════════════════════════════════════
 // NAV
 // ═══════════════════════════════════════════════════════
-function nav(page, btn) {
+function nav(page,btn){
   document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  document.getElementById('page-'+page).classList.add('active');
-  if(page==='logs') renderLogs();
-  if(page==='queue') renderFullQ();
+  if(btn)btn.classList.add('active');
+  const pageEl=document.getElementById('page-'+page);
+  if(pageEl)pageEl.classList.add('active');
+  if(page==='logs')renderLogs();
+  if(page==='queue')renderFullQ();
+  // Scroll to top on mobile
+  const main=document.querySelector('.main');
+  if(main)main.scrollTop=0;
 }
 
 // ═══════════════════════════════════════════════════════
 // COUNTDOWN
 // ═══════════════════════════════════════════════════════
-function startCD() {
-  function tick() {
-    const now=new Date(); const tom=new Date(now); tom.setUTCHours(24,0,0,0);
+function startCD(){
+  function tick(){
+    const now=new Date();const tom=new Date(now);tom.setUTCHours(24,0,0,0);
     const diff=tom-now;
     const h=String(Math.floor(diff/3600000)).padStart(2,'0');
     const m=String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
     const s=String(Math.floor((diff%60000)/1000)).padStart(2,'0');
     const full=`${h}:${m}:${s}`;
     ['q-cd','vid-cd'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=full;});
-    document.getElementById('ds-cd').textContent=`${h}:${m}`;
+    const ds=document.getElementById('ds-cd');if(ds)ds.textContent=`${h}:${m}`;
   }
-  tick(); setInterval(tick,1000);
+  tick();setInterval(tick,1000);
 }
 
 // ═══════════════════════════════════════════════════════
 // UTILS
 // ═══════════════════════════════════════════════════════
-function cp(id){navigator.clipboard.writeText(document.getElementById(id).textContent);toast('Copied!','ok');}
+function cp(id){navigator.clipboard.writeText(document.getElementById(id).textContent||document.getElementById(id).innerText);toast('Copied!','ok');}
 let _tt;
-function toast(msg,type='ok'){const el=document.getElementById('toast');el.textContent=msg;el.className=`toast show ${type}`;clearTimeout(_tt);_tt=setTimeout(()=>el.className='toast',3200);}
-document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('login-screen').style.display!=='none') handleAuth();});
+function toast(msg,type='ok'){const el=document.getElementById('toast');el.textContent=msg;el.className=`toast show ${type}`;clearTimeout(_tt);_tt=setTimeout(()=>el.className='toast',3500);}
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('login-screen').style.display!=='none')handleAuth();});
 </script>
 </body>
 </html>
