@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Kids TV Agent v3</title>
+<title>Kids TV Agent v4</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -34,7 +34,6 @@
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--ff);min-height:100vh;overflow-x:hidden}
 
-/* ── ANIMATED BG ── */
 .bg-mesh{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .bg-mesh span{position:absolute;border-radius:50%;filter:blur(120px);animation:drift 20s infinite alternate}
 .bg-mesh span:nth-child(1){width:600px;height:600px;background:rgba(255,77,141,0.07);top:-200px;right:-100px;animation-duration:18s}
@@ -42,7 +41,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--ff);min-height:100
 .bg-mesh span:nth-child(3){width:400px;height:400px;background:rgba(157,123,255,0.05);top:40%;left:35%;animation-duration:25s}
 @keyframes drift{0%{transform:translate(0,0) scale(1)}100%{transform:translate(40px,30px) scale(1.1)}}
 
-/* ── LOGIN ── */
+/* LOGIN */
 #login-screen{position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:1rem}
 .login-wrap{width:100%;max-width:420px;position:relative}
 .login-glow{position:absolute;inset:-40px;background:radial-gradient(ellipse,rgba(255,77,141,0.12),transparent 70%);pointer-events:none}
@@ -63,11 +62,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--ff);min-height:100
 .auth-switch span{color:var(--blue);cursor:pointer;font-weight:600}
 .auth-switch span:hover{text-decoration:underline}
 
-/* ── APP ── */
+/* APP */
 #app{display:none;position:relative;z-index:1}
 .layout{display:flex;min-height:100vh}
 
-/* ── DESKTOP SIDEBAR ── */
+/* SIDEBAR */
 .sidebar{width:230px;flex-shrink:0;background:var(--s1);border-right:0.5px solid var(--b1);display:flex;flex-direction:column;padding:1.25rem 0;position:sticky;top:0;height:100vh;overflow-y:auto}
 .sb-brand{padding:0 1rem 1.25rem;border-bottom:0.5px solid var(--b1);margin-bottom:1rem}
 .sb-brand .ico{font-size:30px;line-height:1}
@@ -89,7 +88,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--ff);min-height:100
 .logout-btn{width:100%;padding:8px;background:none;border:0.5px solid var(--b2);border-radius:9px;color:var(--muted);font-size:12px;cursor:pointer;font-family:var(--ff);transition:all .15s}
 .logout-btn:hover{border-color:var(--red);color:var(--red)}
 
-/* ── MAIN ── */
+/* MAIN */
 .main{flex:1;overflow-y:auto}
 .page{display:none;padding:2rem 2rem 4rem;max-width:1020px}
 .page.active{display:block}
@@ -98,7 +97,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--ff);min-height:100
 .ph h1 em{font-style:normal;color:var(--pink)}
 .ph p{font-size:13px;color:var(--muted);margin-top:5px}
 
-/* ── CARDS ── */
+/* CARDS */
 .card{background:var(--s1);border:0.5px solid var(--b1);border-radius:18px;padding:1.5rem;margin-bottom:1rem}
 .card-head{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:1.25rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .tag{font-size:10px;padding:2px 8px;border-radius:5px;font-weight:700;text-transform:none;letter-spacing:0}
@@ -110,14 +109,14 @@ body{background:var(--bg);color:var(--text);font-family:var(--ff);min-height:100
 .tag-cyan  {background:rgba(77,255,243,.13);color:var(--cyan)}
 .tag-orange{background:rgba(255,140,77,.13);color:var(--orange)}
 
-/* ── STATS ── */
+/* STATS */
 .stat-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:1.25rem}
 .stat{background:var(--s1);border:0.5px solid var(--b1);border-radius:14px;padding:1rem 1.25rem}
 .stat-l{font-size:11px;color:var(--muted);margin-bottom:5px;font-weight:500}
 .stat-v{font-size:26px;font-weight:800;line-height:1;font-family:var(--ff)}
-.c-pink{color:var(--pink)} .c-blue{color:var(--blue)} .c-green{color:var(--green)} .c-gold{color:var(--gold)} .c-purple{color:var(--purple)}
+.c-pink{color:var(--pink)}.c-blue{color:var(--blue)}.c-green{color:var(--green)}.c-gold{color:var(--gold)}.c-purple{color:var(--purple)}
 
-/* ── PIPELINE ── */
+/* PIPELINE */
 .pipeline{display:flex;align-items:center;gap:0;margin:1rem 0;overflow-x:auto;padding-bottom:4px}
 .pip-step{background:var(--s2);border:0.5px solid var(--b2);border-radius:12px;padding:10px 14px;text-align:center;flex-shrink:0;min-width:100px}
 .pip-step .p-ico{font-size:20px;display:block;margin-bottom:4px}
@@ -126,7 +125,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--ff);min-height:100
 .pip-step.active-step{background:rgba(255,77,141,.08);border-color:rgba(255,77,141,.25)}
 .pip-arr{color:var(--muted);font-size:18px;padding:0 4px;flex-shrink:0}
 
-/* ── CATEGORIES ── */
+/* CATEGORIES */
 .cat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
 .cat{background:var(--s2);border:1.5px solid var(--b1);border-radius:13px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .15s;user-select:none}
 .cat:hover{border-color:rgba(255,77,141,.4);background:rgba(255,77,141,.05)}
@@ -135,7 +134,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--ff);min-height:100
 .cat .cn{font-size:11px;font-weight:600;color:var(--soft);line-height:1.3}
 .cat.on .cn{color:var(--pink)}
 
-/* ── FORMS ── */
+/* FORMS */
 label{font-size:12px;color:var(--muted);display:block;margin-bottom:5px;font-weight:500}
 input[type=text],input[type=password],input[type=email],select,textarea{width:100%;background:var(--s2);border:0.5px solid var(--b2);color:var(--text);border-radius:10px;padding:10px 13px;font-size:13px;font-family:var(--ff);outline:none;transition:border-color .2s}
 input:focus,select:focus,textarea:focus{border-color:var(--pink)}
@@ -145,7 +144,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
 .fg2{flex:2;display:flex;flex-direction:column}
 .stack{flex-direction:column;gap:10px}
 
-/* ── BUTTONS ── */
+/* BUTTONS */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 20px;border-radius:11px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .18s;white-space:nowrap;font-family:var(--ff)}
 .btn:disabled{opacity:.35;cursor:not-allowed;transform:none!important;filter:none!important}
 .btn-pink{background:linear-gradient(135deg,var(--pink),#ff8d6b);color:#fff}
@@ -163,7 +162,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
 .loader{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.15);border-top-color:currentColor;border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ── API SLOTS ── */
+/* API SLOTS */
 .api-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 .api-slot{background:var(--s2);border:0.5px solid var(--b1);border-radius:13px;padding:14px}
 .api-head{display:flex;align-items:center;gap:7px;margin-bottom:12px}
@@ -172,7 +171,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
 .api-slot .purpose{font-size:11px;color:var(--muted);margin-top:2px}
 .slot-tag{font-size:10px;font-weight:800;padding:3px 8px;border-radius:5px}
 
-/* ── TOPICS ── */
+/* TOPICS */
 .topic-list{display:flex;flex-direction:column;gap:6px}
 .topic-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--s2);border:0.5px solid var(--b1);border-radius:11px;font-size:13px;cursor:pointer;transition:all .15s;user-select:none}
 .topic-item:hover{border-color:rgba(255,77,141,.3);background:rgba(255,77,141,.04)}
@@ -182,7 +181,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
 .t-check{font-size:14px;opacity:0;transition:opacity .15s;color:var(--green)}
 .topic-item.on .t-check{opacity:1}
 
-/* ── QUEUE ── */
+/* QUEUE */
 .q-list{display:flex;flex-direction:column;gap:8px}
 .q-item{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--s2);border:0.5px solid var(--b1);border-radius:13px}
 .q-n{width:28px;height:28px;border-radius:8px;background:var(--pink);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -197,18 +196,18 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
 .q-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;padding:3px 7px;border-radius:5px}
 .q-del:hover{color:var(--red)}
 
-/* ── OUTPUT ── */
+/* OUTPUT */
 .out-box{background:var(--s2);border:0.5px solid var(--b1);border-radius:12px;padding:14px;font-size:13px;line-height:1.8;color:var(--text);white-space:pre-wrap;min-height:90px;font-family:var(--ff);word-break:break-word}
 .out-box.empty{color:var(--muted);font-style:italic}
 
-/* ── LOG TABLE ── */
+/* LOG TABLE */
 .log-tbl{width:100%;border-collapse:collapse;font-size:12px}
 .log-tbl th{text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;letter-spacing:.07em;text-transform:uppercase;border-bottom:0.5px solid var(--b1);font-weight:700}
 .log-tbl td{padding:10px 12px;border-bottom:0.5px solid var(--b1);vertical-align:top;word-break:break-word}
 .log-tbl tr:last-child td{border-bottom:none}
 .log-tbl tr:hover td{background:var(--s2)}
 
-/* ── MISC ── */
+/* MISC */
 .row-btw{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
 .copy-btn{background:none;border:0.5px solid var(--b2);color:var(--muted);font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;font-family:var(--ff)}
 .copy-btn:hover{color:var(--text);background:var(--s3)}
@@ -227,138 +226,76 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
 .toast.ok{border-color:rgba(61,232,160,.3)}
 .toast.err{border-color:rgba(255,77,77,.3)}
 
-/* ── PROGRESS ── */
+/* PROGRESS */
 .progress-wrap{height:4px;background:var(--s3);border-radius:2px;overflow:hidden;margin:8px 0}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--purple));border-radius:2px;transition:width .4s}
 
-/* ── AUTO SCHEDULER STATUS PANEL ── */
+/* SCHED PANEL */
 .sched-panel{background:rgba(61,232,160,.04);border:0.5px solid rgba(61,232,160,.18);border-radius:14px;padding:1rem 1.25rem;margin-top:10px;display:none}
 .sched-panel.active{display:block}
 .sched-title{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--green);margin-bottom:8px;display:flex;align-items:center;gap:8px}
 .sched-step{font-size:13px;color:var(--text);line-height:1.6}
 .sched-loop{font-size:11px;color:var(--muted);margin-top:6px;font-family:var(--mono)}
-.retry-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(255,204,77,.1);border:0.5px solid rgba(255,204,77,.2);border-radius:6px;font-size:11px;color:var(--gold);font-weight:700}
 
-/* ── SCENE MANIFEST CARD ── */
+/* SCENE MANIFEST */
 .scene-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
 .scene-card{background:var(--s2);border:0.5px solid var(--b2);border-radius:12px;padding:12px}
 .scene-num{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
 .scene-time{font-size:10px;color:var(--pink);font-family:var(--mono);margin-bottom:4px}
 .scene-txt{font-size:12px;color:var(--soft);line-height:1.6;word-break:break-word}
 
-/* ─────────────────────────────────────────────
-   MOBILE BOTTOM NAV — ≤768px
-───────────────────────────────────────────── */
+/* DEPLOY PAGE — step cards */
+.deploy-steps{display:flex;flex-direction:column;gap:12px;margin-top:10px}
+.deploy-step{background:var(--s2);border:0.5px solid var(--b1);border-radius:14px;padding:1.25rem}
+.ds-header{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.ds-num{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ds-title{font-size:14px;font-weight:700;color:var(--text)}
+.ds-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.ds-body{font-size:12px;color:var(--soft);line-height:1.75}
+.ds-body code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:11px;color:var(--cyan);font-family:var(--mono)}
+.ds-body strong{color:var(--text)}
+.dl-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:rgba(61,232,160,.1);border:0.5px solid rgba(61,232,160,.3);border-radius:10px;color:var(--green);font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;font-family:var(--ff)}
+.dl-btn:hover{background:rgba(61,232,160,.18);transform:translateY(-1px)}
+.dl-btn-blue{background:rgba(77,143,255,.1);border-color:rgba(77,143,255,.3);color:var(--blue)}
+.dl-btn-blue:hover{background:rgba(77,143,255,.18)}
+.dl-btn-gold{background:rgba(255,204,77,.1);border-color:rgba(255,204,77,.3);color:var(--gold)}
+.dl-btn-gold:hover{background:rgba(255,204,77,.18)}
+.dl-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+
+/* MOBILE */
 @media (max-width: 768px) {
-  .layout { flex-direction: column !important; }
-
-  /* Collapse sidebar into a fixed bottom dock */
-  .sidebar {
-    width: 100% !important;
-    height: var(--mob-nav-h) !important;
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    z-index: 99999 !important;
-    flex-direction: row !important;
-    padding: 0 !important;
-    border-right: none !important;
-    border-top: 0.5px solid var(--b2) !important;
-    background: rgba(12,15,26,0.97) !important;
-    backdrop-filter: blur(16px) !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-    box-shadow: 0 -4px 25px rgba(0,0,0,0.6) !important;
-    scrollbar-width: none !important;
-    align-items: stretch !important;
-  }
-  .sidebar::-webkit-scrollbar { display: none !important; }
-
-  /* Hide branding, labels, user block in mobile dock */
-  .sb-brand,
-  .sb-section-label,
-  .sb-bottom { display: none !important; }
-
-  /* Each section becomes a horizontal strip of icon-buttons */
-  .sb-section {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: stretch !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    gap: 0 !important;
-    flex: 1 !important;
-  }
-
-  /* Nav icon buttons */
-  .sb-item {
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 3px !important;
-    padding: 8px 6px !important;
-    min-width: 60px !important;
-    font-size: 9px !important;
-    border-radius: 0 !important;
-    border: none !important;
-    flex: 1 !important;
-    text-align: center !important;
-    white-space: nowrap !important;
-    background: none !important;
-  }
-  .sb-item .ico { font-size: 17px !important; margin: 0 !important; width: auto !important; }
-  .sb-item.active { background: rgba(255,77,141,.12) !important; color: var(--pink) !important; border-top: 2px solid var(--pink) !important; }
-  .sb-badge { margin: 0 auto !important; font-size: 9px !important; padding: 1px 5px !important; }
-
-  /* Main content area gets bottom padding to clear the nav dock */
-  .main { padding-bottom: calc(var(--mob-nav-h) + 16px) !important; }
-  .page { padding: 12px 12px 20px !important; }
-
-  /* Stats: 2-column grid on mobile */
-  .stat-row {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 8px !important;
-  }
-  .stat-v { font-size: 22px !important; }
-
-  /* Category grid: 3 columns on mobile */
-  .cat-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 6px !important; }
-  .cat .ce { font-size: 20px !important; }
-  .cat .cn { font-size: 10px !important; }
-
-  /* API, scene grids: single column */
-  .api-grid,
-  .scene-grid { grid-template-columns: 1fr !important; }
-
-  /* Form rows stack vertically */
-  .fr { flex-direction: column !important; gap: 8px !important; }
-
-  /* Button rows wrap neatly */
-  .btn-row { flex-wrap: wrap !important; gap: 6px !important; }
-  .btn { font-size: 12px !important; padding: 9px 14px !important; }
-
-  /* Credential / key fields — no overflow */
-  input[type=text],input[type=password],input[type=email],select,textarea,
-  .cred-box, .out-box {
-    word-break: break-all !important;
-    font-size: 12px !important;
-    white-space: normal !important;
-  }
-
-  /* Pipeline horizontal scroll */
-  .pipeline { padding-bottom: 8px !important; }
-  .pip-step { min-width: 80px !important; padding: 8px !important; }
-
-  /* Log table scrollable */
-  .card { padding: 1rem !important; overflow-x: auto !important; }
-  .log-tbl { min-width: 540px !important; }
-
-  /* Page headers */
-  .ph h1 { font-size: 22px !important; }
-  .ph p { font-size: 12px !important; }
-
-  /* Toast sits above the bottom dock */
-  .toast { bottom: calc(var(--mob-nav-h) + 12px) !important; }
+  .layout{flex-direction:column!important}
+  .sidebar{width:100%!important;height:var(--mob-nav-h)!important;position:fixed!important;bottom:0!important;left:0!important;z-index:99999!important;flex-direction:row!important;padding:0!important;border-right:none!important;border-top:0.5px solid var(--b2)!important;background:rgba(12,15,26,0.97)!important;backdrop-filter:blur(16px)!important;overflow-x:auto!important;overflow-y:hidden!important;box-shadow:0 -4px 25px rgba(0,0,0,.6)!important;scrollbar-width:none!important;align-items:stretch!important}
+  .sidebar::-webkit-scrollbar{display:none!important}
+  .sb-brand,.sb-section-label,.sb-bottom{display:none!important}
+  .sb-section{display:flex!important;flex-direction:row!important;align-items:stretch!important;padding:0!important;margin:0!important;gap:0!important;flex:1!important}
+  .sb-item{flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:3px!important;padding:8px 6px!important;min-width:60px!important;font-size:9px!important;border-radius:0!important;border:none!important;flex:1!important;text-align:center!important;white-space:nowrap!important;background:none!important}
+  .sb-item .ico{font-size:17px!important;margin:0!important;width:auto!important}
+  .sb-item.active{background:rgba(255,77,141,.12)!important;color:var(--pink)!important;border-top:2px solid var(--pink)!important}
+  .sb-badge{margin:0 auto!important;font-size:9px!important;padding:1px 5px!important}
+  .main{padding-bottom:calc(var(--mob-nav-h) + 16px)!important}
+  .page{padding:12px 12px 20px!important}
+  .stat-row{grid-template-columns:repeat(2,1fr)!important;gap:8px!important}
+  .stat-v{font-size:22px!important}
+  .cat-grid{grid-template-columns:repeat(3,1fr)!important;gap:6px!important}
+  .cat .ce{font-size:20px!important}
+  .cat .cn{font-size:10px!important}
+  .api-grid,.scene-grid{grid-template-columns:1fr!important}
+  .fr{flex-direction:column!important;gap:8px!important}
+  .btn-row{flex-wrap:wrap!important;gap:6px!important}
+  .btn{font-size:12px!important;padding:9px 14px!important}
+  input[type=text],input[type=password],input[type=email],select,textarea,.out-box{word-break:break-all!important;font-size:12px!important}
+  .pipeline{padding-bottom:8px!important}
+  .pip-step{min-width:80px!important;padding:8px!important}
+  .card{padding:1rem!important;overflow-x:auto!important}
+  .log-tbl{min-width:540px!important}
+  .ph h1{font-size:22px!important}
+  .ph p{font-size:12px!important}
+  .toast{bottom:calc(var(--mob-nav-h) + 12px)!important}
+  .dl-row{flex-direction:column!important}
+}
+@media (max-width: 600px) {
+  .two-col-grid{grid-template-columns:1fr!important}
 }
 </style>
 </head>
@@ -367,7 +304,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
 <div class="bg-mesh"><span></span><span></span><span></span></div>
 <div class="toast" id="toast"></div>
 
-<!-- ═══ LOGIN ═══ -->
+<!-- LOGIN -->
 <div id="login-screen">
   <div class="login-wrap">
     <div class="login-glow"></div>
@@ -398,11 +335,11 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
   </div>
 </div>
 
-<!-- ═══ APP ═══ -->
+<!-- APP -->
 <div id="app">
 <div class="layout">
 
-<!-- SIDEBAR / MOBILE BOTTOM NAV -->
+<!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sb-brand">
     <div class="ico">🎬</div>
@@ -417,12 +354,12 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
     <button class="sb-item" onclick="nav('logs',this)"><span class="ico">📝</span>Logs</button>
   </div>
   <div class="sb-section">
-    <div class="sb-section-label">API Settings</div>
+    <div class="sb-section-label">Settings</div>
     <button class="sb-item" onclick="nav('ai-apis',this)"><span class="ico">🧠</span>AI APIs</button>
     <button class="sb-item" onclick="nav('audio-apis',this)"><span class="ico">🎵</span>Music</button>
     <button class="sb-item" onclick="nav('video-apis',this)"><span class="ico">🎬</span>Video</button>
     <button class="sb-item" onclick="nav('youtube',this)"><span class="ico">▶️</span>YouTube</button>
-    <button class="sb-item" onclick="nav('github',this)"><span class="ico">⚙️</span>GitHub</button>
+    <button class="sb-item" onclick="nav('deploy',this)"><span class="ico">🚀</span>Deploy</button>
   </div>
   <div class="sb-bottom">
     <div class="user-chip">
@@ -436,13 +373,12 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
   </div>
 </aside>
 
-<!-- MAIN CONTENT -->
+<!-- MAIN -->
 <main class="main">
 
-<!-- ═══ DASHBOARD ═══ -->
+<!-- DASHBOARD -->
 <div class="page active" id="page-dashboard">
   <div class="ph"><h1>Dashboard <em>Overview</em></h1><p>Autonomous zero-cost engine: AI → Scene Manifest → Music → YouTube Shorts.</p></div>
-
   <div class="stat-row">
     <div class="stat"><div class="stat-l">Queued</div><div class="stat-v c-pink" id="ds-q">0</div></div>
     <div class="stat"><div class="stat-l">Done Today</div><div class="stat-v c-green" id="ds-t">0</div></div>
@@ -450,7 +386,6 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
     <div class="stat"><div class="stat-l">Topics Used</div><div class="stat-v c-purple" id="ds-used">0</div></div>
     <div class="stat"><div class="stat-l">Reset In</div><div class="stat-v c-gold" id="ds-cd">--:--</div></div>
   </div>
-
   <div class="card">
     <div class="card-head">Full zero-cost automation pipeline <span class="tag tag-green">100% Free</span></div>
     <div class="pipeline">
@@ -467,7 +402,6 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
       <div class="pip-step"><span class="p-ico">▶️</span><div class="p-name">Upload</div><div class="p-tool">YouTube API</div></div>
     </div>
   </div>
-
   <div class="card">
     <div class="card-head">Autonomous daily scheduler <span class="tag tag-pink">Auto-loop</span><span class="tag tag-gold" id="sched-status-tag">Idle</span></div>
     <div class="cat-grid" id="dash-cats"></div>
@@ -476,19 +410,14 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
       <button class="btn btn-blue" onclick="triggerGH()">⚡ Trigger GitHub Now</button>
       <button class="btn btn-ghost btn-sm" onclick="stopAutoScheduler()">⏹ Stop Loop</button>
     </div>
-
-    <!-- Auto-Scheduler Status Panel -->
     <div class="sched-panel" id="sched-panel">
       <div class="sched-title"><span class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--green);animation:blink 1s infinite;display:inline-block"></span> Auto-Scheduler Active</div>
       <div class="sched-step" id="sched-step">Initializing...</div>
       <div class="progress-wrap"><div class="progress-fill" id="sched-prog-fill" style="width:0%"></div></div>
       <div class="sched-loop" id="sched-loop"></div>
     </div>
-
     <div id="dash-out" class="out-box empty" style="margin-top:12px">Pick a category above → autonomous engine selects viral topic → generates non-verbal scene manifest + Shorts metadata → pushes to YouTube automatically. Zero cost.</div>
   </div>
-
-  <!-- Scene Manifest Preview -->
   <div class="card" id="scene-manifest-card" style="display:none">
     <div class="card-head">Generated scene manifest <span class="tag tag-cyan">Non-verbal · 4 scenes · 16s</span></div>
     <div id="manifest-title" style="font-size:14px;font-weight:700;margin-bottom:8px;color:var(--text)"></div>
@@ -499,7 +428,6 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
       <pre id="manifest-json-raw" style="display:none"></pre>
     </div>
   </div>
-
   <div class="card">
     <div class="row-btw" style="margin-bottom:12px">
       <div class="card-head" style="margin:0">Recent queue</div>
@@ -509,15 +437,13 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
   </div>
 </div>
 
-<!-- ═══ GENERATE ═══ -->
+<!-- GENERATE -->
 <div class="page" id="page-generate">
   <div class="ph"><h1>Generate <em>Content</em></h1><p>Pick category → AI suggests viral topics → generates non-verbal 4-scene manifest + YouTube Shorts metadata.</p></div>
-
   <div class="card">
     <div class="card-head">Step 1 — Choose category</div>
     <div class="cat-grid" id="gen-cats"></div>
   </div>
-
   <div class="card" id="topics-card" style="display:none">
     <div class="row-btw" style="margin-bottom:12px">
       <div class="card-head" style="margin:0">Step 2 — Viral topic archetypes <span class="tag tag-green">Never repeated</span></div>
@@ -526,7 +452,6 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
     <div id="topics-loading" style="color:var(--muted);font-size:13px;padding:10px 0;display:none"><span class="loader" style="color:var(--pink)"></span> Generating high-retention viral topics...</div>
     <div class="topic-list" id="topic-list"></div>
   </div>
-
   <div class="card" id="gen-out-card" style="display:none">
     <div class="card-head">Step 3 — Full Shorts package <span class="tag tag-pink">Upload-ready</span></div>
     <div id="gen-loading" style="display:none;padding:10px 0">
@@ -534,7 +459,6 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
       <div class="progress-wrap"><div class="progress-fill" id="gen-prog-fill" style="width:0%"></div></div>
     </div>
     <div id="gen-output" style="display:none">
-      <!-- Scene Manifest -->
       <div style="margin-bottom:12px">
         <div class="row-btw" style="margin-bottom:6px"><label style="margin:0;font-size:13px;font-weight:700;color:var(--text)">🎬 4-Scene Non-Verbal Manifest</label><button class="copy-btn" onclick="cp('o-manifest')">Copy JSON</button></div>
         <div class="out-box" id="o-manifest" style="font-family:var(--mono);font-size:11px"></div>
@@ -566,7 +490,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
   </div>
 </div>
 
-<!-- ═══ QUEUE ═══ -->
+<!-- QUEUE -->
 <div class="page" id="page-queue">
   <div class="ph"><h1>Upload <em>Queue</em></h1><p>GitHub Actions processes this automatically 3× daily. Trigger manually anytime.</p></div>
   <div class="card">
@@ -581,7 +505,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
   </div>
 </div>
 
-<!-- ═══ LOGS ═══ -->
+<!-- LOGS -->
 <div class="page" id="page-logs">
   <div class="ph"><h1>Upload <em>Logs</em></h1><p>Complete history of all generated and uploaded Shorts.</p></div>
   <div class="card">
@@ -599,7 +523,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
   </div>
 </div>
 
-<!-- ═══ AI APIS ═══ -->
+<!-- AI APIS -->
 <div class="page" id="page-ai-apis">
   <div class="ph"><h1>AI Script <em>APIs</em></h1><p>3 Gemini Flash free-tier keys rotate automatically. Saved to your account.</p></div>
   <div class="card">
@@ -624,12 +548,12 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
         <div class="purpose">🏷️ SEO meta + overflow</div>
       </div>
     </div>
-    <div class="notice"><strong>Get free Gemini keys:</strong> Go to <code>aistudio.google.com</code> → Sign in → Get API key → Create key → paste here. Each key gives 15 requests/min free. 3 keys = 45 req/min with auto-rotation. If all are rate-limited, the scheduler self-heals with a 60s retry pause.</div>
+    <div class="notice"><strong>Get free Gemini keys:</strong> Go to <code>aistudio.google.com</code> → Sign in → Get API key → Create key → paste here. Each key gives 15 requests/min free. 3 keys = 45 req/min with auto-rotation.</div>
     <div class="btn-row" style="margin-top:14px"><button class="btn btn-pink" onclick="saveAll()">💾 Save AI Keys</button><span id="ai-saved" style="font-size:12px;color:var(--green);display:none;margin-left:8px">✓ Saved</span></div>
   </div>
 </div>
 
-<!-- ═══ MUSIC (replaces audio + music pages) ═══ -->
+<!-- MUSIC -->
 <div class="page" id="page-audio-apis">
   <div class="ph"><h1>Music <em>APIs</em></h1><p>Zero-cost royalty-free background music via Jamendo. Layered at 25% volume behind scenes.</p></div>
   <div class="card">
@@ -652,14 +576,12 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
         <div class="purpose">🎵 Backup music source</div>
       </div>
     </div>
-    <div class="notice">
-      <strong>Get free Jamendo API key:</strong> Go to <code>developer.jamendo.com</code> → Register free account → My Apps → Create app → copy the <code>client_id</code> here. Completely free, no credit card. Returns direct MP3 URLs for royalty-free tracks. Search by tags like "children", "happy", "playful". No premium subscription needed.
-    </div>
+    <div class="notice"><strong>Get free Jamendo API key:</strong> Go to <code>developer.jamendo.com</code> → Register free account → My Apps → Create app → copy the <code>client_id</code> here. Completely free, no credit card.</div>
     <div class="btn-row" style="margin-top:14px"><button class="btn btn-pink" onclick="saveAll()">💾 Save Music Settings</button><span id="audio-saved" style="font-size:12px;color:var(--green);display:none;margin-left:8px">✓ Saved</span></div>
   </div>
 </div>
 
-<!-- ═══ VIDEO APIS ═══ -->
+<!-- VIDEO APIS -->
 <div class="page" id="page-video-apis">
   <div class="ph"><h1>Video Generator <em>APIs</em></h1><p>3 accounts rotate daily by credits. Scene manifests feed directly into these engines.</p></div>
   <div class="card">
@@ -682,12 +604,12 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
         <label>API Key</label><input type="password" id="vid-key-3" placeholder="Key..." oninput="dirty=true" />
       </div>
     </div>
-    <div class="notice"><strong>Scene manifests are pre-formatted for these engines.</strong> Each 4-scene JSON block describes exact visual actions, character expressions, timing, and art style — no dialogue, no text overlays. The agent passes each scene description directly as the generation prompt.</div>
+    <div class="notice"><strong>Scene manifests are pre-formatted for these engines.</strong> Each 4-scene JSON block describes exact visual actions, character expressions, timing, and art style — no dialogue, no text overlays.</div>
     <div class="btn-row" style="margin-top:14px"><button class="btn btn-pink" onclick="saveAll()">💾 Save Video Keys</button><span id="vid-saved" style="font-size:12px;color:var(--green);display:none;margin-left:8px">✓ Saved</span></div>
   </div>
 </div>
 
-<!-- ═══ YOUTUBE ═══ -->
+<!-- YOUTUBE -->
 <div class="page" id="page-youtube">
   <div class="ph"><h1>YouTube <em>Settings</em></h1><p>OAuth for auto-upload to YouTube Shorts. Set once, saved forever.</p></div>
   <div class="card">
@@ -709,17 +631,24 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
       <div class="fg"><label>Client Secret</label><input type="password" id="yt-cs" placeholder="GOCSPX-..." oninput="dirty=true" /></div>
       <div class="fg"><label>Refresh Token</label><input type="password" id="yt-rt" placeholder="1//xxxxx..." oninput="dirty=true" /></div>
     </div>
-    <div class="notice"><strong>Steps:</strong> <code>console.cloud.google.com</code> → New Project → Enable YouTube Data API v3 → Credentials → OAuth 2.0 Client (Desktop app) → Download JSON → run <code>node scripts/get_token.js</code> once on your computer → copy the refresh_token here.</div>
+    <div class="notice"><strong>Steps:</strong> <code>console.cloud.google.com</code> → New Project → Enable YouTube Data API v3 → Credentials → OAuth 2.0 Client (Desktop app) → Download JSON → run <code>node scripts/get_token.js</code> once on your computer → copy the refresh_token here. The get_token.js file is available on the Deploy page.</div>
   </div>
   <button class="btn btn-pink" onclick="saveAll()">💾 Save YouTube Settings</button>
   <span id="yt-saved" style="font-size:12px;color:var(--green);display:none;margin-left:8px">✓ Saved</span>
 </div>
 
-<!-- ═══ GITHUB ═══ -->
-<div class="page" id="page-github">
-  <div class="ph"><h1>GitHub <em>Setup</em></h1><p>Runs your agent 24/7 on GitHub servers — free, no computer needed.</p></div>
+<!-- ═══════════════════════════════════════════════════════
+     DEPLOY PAGE — replaces GitHub Setup
+════════════════════════════════════════════════════════ -->
+<div class="page" id="page-deploy">
+  <div class="ph">
+    <h1>Deploy to <em>GitHub</em></h1>
+    <p>One-time setup — download all files, create a free repo, paste your secrets. No manual coding needed.</p>
+  </div>
+
+  <!-- Quick status -->
   <div class="card">
-    <div class="card-head">Repository connection</div>
+    <div class="card-head">GitHub connection <span class="tag tag-blue">For auto-upload triggers</span></div>
     <div class="fr">
       <div class="fg2"><label>Repository (username/repo-name)</label><input type="text" id="gh-repo" placeholder="yourname/kidstv-agent" oninput="dirty=true" /></div>
       <div class="fg2"><label>Personal Access Token <span style="color:var(--muted);font-size:10px">(repo + workflow)</span></label><input type="password" id="gh-token" placeholder="ghp_..." oninput="dirty=true" /></div>
@@ -727,9 +656,12 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
     <div class="btn-row">
       <button class="btn btn-ghost btn-sm" onclick="testGH()">🔌 Test Connection</button>
       <span id="gh-test" style="font-size:12px;margin-left:4px"></span>
+      <button class="btn btn-pink btn-sm" onclick="saveAll()">💾 Save</button>
     </div>
-    <div class="notice"><strong>Get your PAT:</strong> GitHub.com → Settings → Developer settings → Personal access tokens → Tokens (classic) → New → check <code>repo</code> + <code>workflow</code> → Generate → copy it here.</div>
+    <div class="notice"><strong>Get your PAT:</strong> GitHub.com → Settings → Developer settings → Personal access tokens → Tokens (classic) → New → check <code>repo</code> + <code>workflow</code> → Generate → paste above.</div>
   </div>
+
+  <!-- Upload schedule -->
   <div class="card">
     <div class="card-head">Upload schedule (UTC times)</div>
     <div class="fr">
@@ -738,25 +670,103 @@ textarea{resize:vertical;min-height:80px;line-height:1.65}
       <div class="fg"><label>Upload 3</label><select id="sched-3" onchange="dirty=true"><option value="15:00">15:00 — 7PM UAE</option><option value="16:00">16:00 — 8PM UAE</option><option value="14:00">14:00 — 6PM UAE</option></select></div>
     </div>
   </div>
+
+  <!-- Step-by-step deploy guide with downloads -->
   <div class="card">
-    <div class="card-head">Export GitHub Secrets <span class="tag tag-gold">Paste into repo settings</span></div>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Copy all saved keys as GitHub Secrets format → paste into your repo → Settings → Secrets and variables → Actions.</p>
-    <button class="btn btn-ghost" onclick="exportSecrets()">📋 Copy All Secrets</button>
-    <span id="exp-msg" style="font-size:12px;color:var(--green);display:none;margin-left:8px">✓ Copied!</span>
+    <div class="card-head">One-time setup — 5 steps <span class="tag tag-green">~10 minutes total</span></div>
+    <div class="deploy-steps">
+
+      <div class="deploy-step">
+        <div class="ds-header">
+          <div class="ds-num">1</div>
+          <div><div class="ds-title">Create a free GitHub repo</div><div class="ds-sub">github.com → New repository → name it <code>kidstv-agent</code> → Public → Create</div></div>
+        </div>
+        <div class="ds-body">Go to <strong>github.com</strong>, click the <strong>+</strong> icon → <strong>New repository</strong>. Name it <code>kidstv-agent</code>, leave it Public, click <strong>Create repository</strong>. That's it.</div>
+      </div>
+
+      <div class="deploy-step">
+        <div class="ds-header">
+          <div class="ds-num">2</div>
+          <div><div class="ds-title">Download all project files</div><div class="ds-sub">Click each button below — all files come pre-filled with your settings</div></div>
+        </div>
+        <div class="ds-body" style="margin-bottom:10px">Download these 4 files. They are ready to use — no editing needed.</div>
+        <div class="dl-row">
+          <button class="dl-btn" onclick="dlAgentJS()">⬇️ scripts/agent.js</button>
+          <button class="dl-btn dl-btn-blue" onclick="dlWorkflow()">⬇️ .github/workflows/agent.yml</button>
+          <button class="dl-btn dl-btn-gold" onclick="dlGetToken()">⬇️ scripts/get_token.js</button>
+          <button class="dl-btn" style="background:rgba(157,123,255,.1);border-color:rgba(157,123,255,.3);color:var(--purple)" onclick="dlPackageJson()">⬇️ package.json</button>
+        </div>
+      </div>
+
+      <div class="deploy-step">
+        <div class="ds-header">
+          <div class="ds-num">3</div>
+          <div><div class="ds-title">Upload files to your repo</div><div class="ds-sub">Drag and drop directly on GitHub — no git commands needed</div></div>
+        </div>
+        <div class="ds-body">
+          In your new repo on GitHub:<br>
+          • Click <strong>Add file → Upload files</strong><br>
+          • Upload <code>agent.js</code> into a folder called <code>scripts/</code> (type <code>scripts/agent.js</code> in the path)<br>
+          • Upload <code>package.json</code> to the root<br>
+          • For the workflow: go into <strong>.github/workflows/</strong> folder (create it) and upload <code>agent.yml</code><br>
+          • Click <strong>Commit changes</strong>
+        </div>
+      </div>
+
+      <div class="deploy-step">
+        <div class="ds-header">
+          <div class="ds-num">4</div>
+          <div><div class="ds-title">Paste GitHub Secrets</div><div class="ds-sub">Your API keys go in repo Settings → Secrets — never exposed publicly</div></div>
+        </div>
+        <div class="ds-body" style="margin-bottom:10px">
+          In your repo → <strong>Settings → Secrets and variables → Actions → New repository secret</strong>.<br>
+          Click the button below to copy all your keys pre-formatted:
+        </div>
+        <div class="dl-row">
+          <button class="dl-btn dl-btn-blue" onclick="exportSecrets()">📋 Copy All Secrets (paste into GitHub)</button>
+          <span id="exp-msg" style="font-size:12px;color:var(--green);display:none;align-self:center">✓ Copied!</span>
+        </div>
+        <div class="ds-body" style="margin-top:10px">Add each one as a separate secret. Name must match exactly (e.g. <code>GEMINI_KEY_A</code>, <code>YT_REFRESH_TOKEN</code>, etc.)</div>
+      </div>
+
+      <div class="deploy-step">
+        <div class="ds-header">
+          <div class="ds-num">5</div>
+          <div><div class="ds-title">Get YouTube Refresh Token (one-time)</div><div class="ds-sub">Run get_token.js once on your computer to authorize your channel</div></div>
+        </div>
+        <div class="ds-body">
+          <strong>Prerequisites:</strong> Node.js installed on your computer (<code>nodejs.org</code> → download → install).<br><br>
+          1. Download <code>get_token.js</code> from Step 2 above<br>
+          2. Open Terminal / Command Prompt in the same folder<br>
+          3. Run: <code>node get_token.js</code><br>
+          4. It prints a URL → open it in your browser → authorize with your YouTube channel account<br>
+          5. Paste the code back into the terminal<br>
+          6. Copy the <code>refresh_token</code> it shows → add it as GitHub Secret <code>YT_REFRESH_TOKEN</code><br>
+          7. Also save it in the YouTube Settings page here
+        </div>
+      </div>
+
+    </div>
+
+    <div class="success-notice" style="margin-top:14px">
+      <strong>✅ Once set up:</strong> GitHub Actions runs your agent automatically at 10AM, 3PM, and 7PM UAE time every day. You only use this app to generate content and trigger uploads. No maintenance needed.
+    </div>
   </div>
-  <button class="btn btn-pink" onclick="saveAll()">💾 Save GitHub Settings</button>
+
+  <!-- Manual trigger -->
+  <div class="card">
+    <div class="card-head">Manual controls</div>
+    <div class="btn-row">
+      <button class="btn btn-blue" onclick="triggerGH()">⚡ Trigger GitHub Action Now</button>
+      <button class="btn btn-ghost" onclick="pushQueue()">📤 Push Queue to GitHub</button>
+    </div>
+    <div class="notice" style="margin-top:10px">Triggering manually pushes the current queue to your GitHub repo and fires the workflow immediately. Useful for testing or one-off uploads outside the schedule.</div>
+  </div>
 </div>
 
 </main>
 </div>
 </div>
-
-<style>
-/* Two-col grid collapses on mobile */
-@media (max-width: 600px) {
-  .two-col-grid { grid-template-columns: 1fr !important; }
-}
-</style>
 
 <script>
 // ═══════════════════════════════════════════════════════
@@ -771,7 +781,6 @@ let curOut = null;
 let autoSchedulerRunning = false;
 let autoSchedulerTimer = null;
 
-// ── VIRAL ARCHETYPES for autonomous topic selection ──
 const VIRAL_ARCHETYPES = [
   'Baby sharing treats with farm animals',
   'Clumsy animal causes hilarious chain reaction mishap',
@@ -813,7 +822,7 @@ const CATS = [
 // ═══════════════════════════════════════════════════════
 function enc(t,k){let o='';for(let i=0;i<t.length;i++)o+=String.fromCharCode(t.charCodeAt(i)^k.charCodeAt(i%k.length));return btoa(o);}
 function dec(e,k){try{const t=atob(e);let o='';for(let i=0;i<t.length;i++)o+=String.fromCharCode(t.charCodeAt(i)^k.charCodeAt(i%k.length));return o;}catch{return null;}}
-const ukey=u=>`ktvv3_${u}`;
+const ukey=u=>`ktvv4_${u}`;
 
 function getUD(){
   const raw=localStorage.getItem(ukey(CU.email));
@@ -913,10 +922,400 @@ function saveAll(){
     sched1:gv('sched-1'),sched2:gv('sched-2'),sched3:gv('sched-3'),
   };
   saveUD(data);dirty=false;
-  ['ai-saved','audio-saved','music-saved','vid-saved','yt-saved'].forEach(id=>{
+  ['ai-saved','audio-saved','vid-saved','yt-saved'].forEach(id=>{
     const el=document.getElementById(id);if(el){el.style.display='inline';setTimeout(()=>el.style.display='none',2500);}
   });
   toast('✓ All settings saved','ok');
+}
+
+// ═══════════════════════════════════════════════════════
+// DOWNLOAD FILE HELPERS
+// ═══════════════════════════════════════════════════════
+function dlFile(content, filename, mime='text/plain'){
+  const blob=new Blob([content],{type:mime});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=filename;a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  toast(`⬇️ ${filename} downloaded`,'ok');
+}
+
+function dlAgentJS(){
+  dlFile(AGENT_JS_CONTENT(), 'agent.js');
+}
+
+function dlWorkflow(){
+  const data=getUD();const k=data.keys||{};
+  const s1=k.sched1||'06:00';const s2=k.sched2||'11:00';const s3=k.sched3||'15:00';
+  const h1=s1.split(':')[0];const h2=s2.split(':')[0];const h3=s3.split(':')[0];
+  const yml=`name: Kids TV Shorts Agent
+on:
+  schedule:
+    - cron: '0 ${h1} * * *'
+    - cron: '0 ${h2} * * *'
+    - cron: '0 ${h3} * * *'
+  repository_dispatch:
+    types: [manual_trigger]
+  workflow_dispatch:
+
+jobs:
+  generate-and-upload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Kids TV Agent
+        env:
+          GEMINI_KEY_A: \${{ secrets.GEMINI_KEY_A }}
+          GEMINI_KEY_B: \${{ secrets.GEMINI_KEY_B }}
+          GEMINI_KEY_C: \${{ secrets.GEMINI_KEY_C }}
+          VID_KEY_1: \${{ secrets.VID_KEY_1 }}
+          VID_SVC_1: \${{ secrets.VID_SVC_1 }}
+          VID_KEY_2: \${{ secrets.VID_KEY_2 }}
+          VID_SVC_2: \${{ secrets.VID_SVC_2 }}
+          VID_KEY_3: \${{ secrets.VID_KEY_3 }}
+          VID_SVC_3: \${{ secrets.VID_SVC_3 }}
+          JAMENDO_KEY_1: \${{ secrets.JAMENDO_KEY_1 }}
+          MUSIC_TAGS_1: \${{ secrets.MUSIC_TAGS_1 }}
+          JAMENDO_KEY_2: \${{ secrets.JAMENDO_KEY_2 }}
+          MUSIC_TAGS_2: \${{ secrets.MUSIC_TAGS_2 }}
+          YT_CLIENT_ID: \${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: \${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: \${{ secrets.YT_REFRESH_TOKEN }}
+          YT_CHANNEL_ID: \${{ secrets.YT_CHANNEL_ID }}
+          YT_PRIVACY: \${{ secrets.YT_PRIVACY }}
+          YT_MADE_FOR_KIDS: \${{ secrets.YT_MADE_FOR_KIDS }}
+          YT_CATEGORY_ID: \${{ secrets.YT_CATEGORY_ID }}
+          GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO: \${{ github.repository }}
+        run: node scripts/agent.js
+
+      - name: Commit updated queue
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "Kids TV Agent"
+          git add queue.json output_log.json || true
+          git diff --staged --quiet || git commit -m "Agent run: \$(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push || true
+`;
+  dlFile(yml,'agent.yml');
+}
+
+function dlGetToken(){
+  const data=getUD();const k=data.keys||{};
+  const content=`// Kids TV Agent — YouTube OAuth Token Generator
+// Run ONCE on your computer to get your refresh token.
+//
+// Usage:
+//   1. Make sure Node.js is installed (nodejs.org)
+//   2. Open Terminal/Command Prompt in this file's folder
+//   3. Run: node get_token.js
+//   4. Open the URL it prints in your browser
+//   5. Sign in with your YouTube CHANNEL account
+//   6. Paste the code back here
+//   7. Copy the refresh_token → add to GitHub Secrets as YT_REFRESH_TOKEN
+
+const https = require('https');
+const readline = require('readline');
+
+const CLIENT_ID     = process.env.YT_CLIENT_ID     || '${k.ytCid||'YOUR_CLIENT_ID'}';
+const CLIENT_SECRET = process.env.YT_CLIENT_SECRET || '${k.ytCs||'YOUR_CLIENT_SECRET'}';
+const REDIRECT_URI  = 'urn:ietf:wg:oauth:2.0:oob';
+const SCOPE         = 'https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube';
+
+const authUrl = \`https://accounts.google.com/o/oauth2/v2/auth?client_id=\${CLIENT_ID}&redirect_uri=\${REDIRECT_URI}&response_type=code&scope=\${encodeURIComponent(SCOPE)}&access_type=offline&prompt=consent\`;
+
+console.log('\\n=== YouTube OAuth Token Generator ===\\n');
+console.log('1. Open this URL in your browser:\\n');
+console.log(authUrl);
+console.log('\\n2. Authorize with your YouTube channel account');
+console.log('3. Paste the authorization code below:\\n');
+
+const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+rl.question('Authorization code: ', async (code) => {
+  rl.close();
+  const body = \`code=\${encodeURIComponent(code.trim())}&client_id=\${CLIENT_ID}&client_secret=\${CLIENT_SECRET}&redirect_uri=\${REDIRECT_URI}&grant_type=authorization_code\`;
+  const req = https.request({
+    hostname: 'oauth2.googleapis.com',
+    path: '/token',
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Content-Length': body.length }
+  }, res => {
+    let data = '';
+    res.on('data', c => data += c);
+    res.on('end', () => {
+      const parsed = JSON.parse(data);
+      if (parsed.refresh_token) {
+        console.log('\\n✅ SUCCESS!\\n');
+        console.log('Add this to GitHub Secrets as YT_REFRESH_TOKEN:');
+        console.log(parsed.refresh_token);
+        console.log('\\nKeep this token secret — it gives upload access to your channel.');
+      } else {
+        console.log('\\n❌ Error:', data);
+      }
+    });
+  });
+  req.write(body);
+  req.end();
+});
+`;
+  dlFile(content,'get_token.js');
+}
+
+function dlPackageJson(){
+  const pkg=JSON.stringify({
+    name:"kidstv-shorts-agent",
+    version:"1.0.0",
+    description:"AI-powered YouTube Kids Shorts automation agent",
+    main:"scripts/agent.js",
+    scripts:{start:"node scripts/agent.js","get-token":"node scripts/get_token.js"},
+    dependencies:{},
+    engines:{node:">=18"}
+  },null,2);
+  dlFile(pkg,'package.json','application/json');
+}
+
+// ═══════════════════════════════════════════════════════
+// agent.js content (injected with saved settings)
+// ═══════════════════════════════════════════════════════
+function AGENT_JS_CONTENT(){
+  const data=getUD();const k=data.keys||{};
+  return `// Kids TV Shorts Agent - GitHub Actions Runner
+// Auto-generated by Kids TV Agent app
+// Reads queue.json, processes content via Gemini, uploads to YouTube.
+
+const fs = require('fs');
+const https = require('https');
+
+const AI_SLOTS = [
+  { name: 'Slot A', key: process.env.GEMINI_KEY_A, purpose: 'script' },
+  { name: 'Slot B', key: process.env.GEMINI_KEY_B, purpose: 'voiceover' },
+  { name: 'Slot C', key: process.env.GEMINI_KEY_C, purpose: 'metadata' },
+];
+
+const VID_SLOTS = [
+  { name: 'Gen 1', key: process.env.VID_KEY_1, service: process.env.VID_SVC_1 || '${k.vidSvc1||'kling'}' },
+  { name: 'Gen 2', key: process.env.VID_KEY_2, service: process.env.VID_SVC_2 || '${k.vidSvc2||'luma'}' },
+  { name: 'Gen 3', key: process.env.VID_KEY_3, service: process.env.VID_SVC_3 || '${k.vidSvc3||'haiper'}' },
+];
+
+const YT = {
+  clientId:     process.env.YT_CLIENT_ID,
+  clientSecret: process.env.YT_CLIENT_SECRET,
+  refreshToken: process.env.YT_REFRESH_TOKEN,
+  channelId:    process.env.YT_CHANNEL_ID || '${k.ytChId||''}',
+  privacy:      process.env.YT_PRIVACY || '${k.ytPrivacy||'public'}',
+  madeForKids:  (process.env.YT_MADE_FOR_KIDS || '${k.ytKids||'true'}') === 'true',
+  categoryId:   process.env.YT_CATEGORY_ID || '${k.ytCat||'27'}',
+};
+
+const JAMENDO = {
+  key1: process.env.JAMENDO_KEY_1,
+  tags1: process.env.MUSIC_TAGS_1 || '${k.musicMood1||'children happy playful'}',
+  key2: process.env.JAMENDO_KEY_2,
+  tags2: process.env.MUSIC_TAGS_2 || '${k.musicMood2||'kids instrumental cheerful'}',
+};
+
+const LOG_FILE   = 'output_log.json';
+const QUEUE_FILE = 'queue.json';
+
+function httpsRequest(options, body = null) {
+  return new Promise((resolve, reject) => {
+    const req = https.request(options, res => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        try { resolve({ status: res.statusCode, body: JSON.parse(data) }); }
+        catch(e) { resolve({ status: res.statusCode, body: data }); }
+      });
+    });
+    req.on('error', reject);
+    if (body) req.write(typeof body === 'string' ? body : JSON.stringify(body));
+    req.end();
+  });
+}
+
+function log(msg) { console.log(\`[\${new Date().toISOString()}] \${msg}\`); }
+
+function readQueue() {
+  if (!fs.existsSync(QUEUE_FILE)) return [];
+  try { return JSON.parse(fs.readFileSync(QUEUE_FILE, 'utf8')); }
+  catch(e) { return []; }
+}
+
+function writeQueue(q) { fs.writeFileSync(QUEUE_FILE, JSON.stringify(q, null, 2)); }
+
+function appendLog(entry) {
+  let logs = [];
+  if (fs.existsSync(LOG_FILE)) {
+    try { logs = JSON.parse(fs.readFileSync(LOG_FILE, 'utf8')); } catch(e) {}
+  }
+  logs.unshift({ ...entry, timestamp: new Date().toISOString() });
+  if (logs.length > 50) logs = logs.slice(0, 50);
+  fs.writeFileSync(LOG_FILE, JSON.stringify(logs, null, 2));
+}
+
+function pickAiSlot() { return AI_SLOTS.find(s => s.key) || AI_SLOTS[0]; }
+function pickVidSlot() { return VID_SLOTS.find(s => s.key) || VID_SLOTS[0]; }
+
+async function callGemini(apiKey, prompt) {
+  if (!apiKey) throw new Error('No Gemini API key available');
+  const body = {
+    contents: [{ parts: [{ text: prompt }] }],
+    generationConfig: { temperature: 0.85, maxOutputTokens: 2000 }
+  };
+  const res = await httpsRequest({
+    hostname: 'generativelanguage.googleapis.com',
+    path: \`/v1beta/models/gemini-1.5-flash:generateContent?key=\${apiKey}\`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' }
+  }, body);
+  if (res.status === 429) throw new Error('Rate limit hit — will retry next run');
+  if (res.status !== 200) throw new Error(\`Gemini error \${res.status}: \${JSON.stringify(res.body)}\`);
+  return res.body?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+}
+
+async function getJamendoTrack(tags) {
+  const key = JAMENDO.key1 || JAMENDO.key2;
+  if (!key) return null;
+  try {
+    const res = await httpsRequest({
+      hostname: 'api.jamendo.com',
+      path: \`/v3.0/tracks/?client_id=\${key}&format=json&limit=1&tags=\${encodeURIComponent(tags)}&audioformat=mp32&include=musicinfo\`,
+      method: 'GET'
+    });
+    const track = res.body?.results?.[0];
+    return track ? { url: track.audio, name: track.name, artist: track.artist_name } : null;
+  } catch(e) { log('Jamendo error: ' + e.message); return null; }
+}
+
+async function generateSceneManifest(slot, topic, category) {
+  log(\`[\${slot.name}] Generating non-verbal scene manifest for: \${topic}\`);
+  const raw = await callGemini(slot.key, \`You are a Lead Creative Director for a viral YouTube Shorts animation studio targeting toddlers aged 2-5.
+
+Generate a 4-scene non-verbal slapstick animation manifest for the topic: "\${topic}"
+Category: \${category}
+
+CRITICAL RULES:
+- ZERO dialogue, ZERO voiceover, ZERO narration. Completely non-verbal.
+- Story told purely through physical slapstick actions, facial expressions, body language, and sound effects.
+- 3D Pixar/claymation aesthetic: hyper-bright neon-pastel colors, soft plastic textures, chubby expressive characters.
+- Each scene = exactly 4 seconds = 16 seconds total Short.
+- 9:16 vertical format. No text overlays.
+
+Return ONLY valid minified JSON, no markdown, no backticks:
+{"title":"engaging Shorts title max 60 chars starting with emoji","tags":"#shorts #funny #cute #kidstv #animation #toddler #viral #children","scenes":{"scene_1":"[detailed 3D engine visual: hook scene]","scene_2":"[mishap scene]","scene_3":"[empathy scene]","scene_4":"[resolution scene]"},"musicMood":"children upbeat cheerful background music","description":"Fun \${category} Shorts for toddlers! Watch what happens when \${topic.toLowerCase()}. Subscribe for more! #Shorts #Kids"}\`);
+  return JSON.parse(raw.replace(/\`\`\`json|\`\`\`/g, '').trim());
+}
+
+async function generateMetadata(slot, topic, category, manifest) {
+  log(\`[\${slot.name}] Generating SEO metadata\`);
+  const raw = await callGemini(slot.key, \`You are a YouTube SEO expert for kids content.
+Topic: \${topic}
+Category: \${category}
+Title: \${manifest.title}
+
+Generate optimized Shorts metadata. Return ONLY valid JSON:
+{"title":"\${manifest.title}","description":"\${manifest.description} Subscribe for daily kids videos! #Shorts","tags":\${JSON.stringify(manifest.tags.split(' '))},"videoPrompts":{"scene_1":"\${manifest.scenes?.scene_1||''}","scene_2":"\${manifest.scenes?.scene_2||''}","scene_3":"\${manifest.scenes?.scene_3||''}","scene_4":"\${manifest.scenes?.scene_4||''}"}}\`);
+  try { return JSON.parse(raw.replace(/\`\`\`json|\`\`\`/g, '').trim()); }
+  catch { return { title: manifest.title, description: manifest.description, tags: manifest.tags.split(' '), videoPrompts: manifest.scenes }; }
+}
+
+async function getYouTubeToken() {
+  if (!YT.clientId || !YT.clientSecret || !YT.refreshToken) {
+    throw new Error('YouTube credentials not configured');
+  }
+  const res = await httpsRequest({
+    hostname: 'oauth2.googleapis.com',
+    path: '/token',
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+  }, \`client_id=\${YT.clientId}&client_secret=\${YT.clientSecret}&refresh_token=\${YT.refreshToken}&grant_type=refresh_token\`);
+  if (!res.body.access_token) throw new Error('Failed to get YouTube token: ' + JSON.stringify(res.body));
+  return res.body.access_token;
+}
+
+async function uploadToYouTube(accessToken, metadata, musicInfo) {
+  log('Uploading to YouTube...');
+  const desc = metadata.description + (musicInfo ? \`\\n\\nMusic: \${musicInfo.name} by \${musicInfo.artist} (Jamendo)\` : '');
+  const res = await httpsRequest({
+    hostname: 'www.googleapis.com',
+    path: '/youtube/v3/videos?part=snippet,status',
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: \`Bearer \${accessToken}\` }
+  }, {
+    snippet: {
+      title: metadata.title,
+      description: desc,
+      tags: Array.isArray(metadata.tags) ? metadata.tags : metadata.tags.split(' '),
+      categoryId: YT.categoryId,
+      defaultLanguage: 'en',
+    },
+    status: {
+      privacyStatus: YT.privacy,
+      selfDeclaredMadeForKids: YT.madeForKids,
+      embeddable: true,
+      publicStatsViewable: true
+    }
+  });
+  return res.body;
+}
+
+async function main() {
+  log('=== Kids TV Shorts Agent starting ===');
+  const queue = readQueue();
+  const pending = queue.filter(item => item.status === 'pending');
+  if (!pending.length) { log('No pending items. Exiting.'); return; }
+  const toProcess = pending.slice(0, 3);
+  log(\`Processing \${toProcess.length} video(s)\`);
+  let accessToken = null;
+  try { accessToken = await getYouTubeToken(); log('YouTube token OK'); }
+  catch(e) { log('WARNING: YouTube upload disabled — ' + e.message); }
+  for (const item of toProcess) {
+    log(\`--- Processing: \${item.topic} ---\`);
+    item.status = 'running';
+    writeQueue(queue);
+    try {
+      const scriptSlot = AI_SLOTS.find(s => s.purpose === 'script' && s.key) || pickAiSlot();
+      const metaSlot   = AI_SLOTS.find(s => s.purpose === 'metadata' && s.key) || pickAiSlot();
+      const vidSlot    = pickVidSlot();
+      const manifest   = await generateSceneManifest(scriptSlot, item.topic, item.category || item.cat || 'Kids');
+      const musicTags  = manifest.musicMood || JAMENDO.tags1;
+      const music      = await getJamendoTrack(musicTags);
+      if (music) log(\`Music found: \${music.name} by \${music.artist}\`);
+      const metadata   = await generateMetadata(metaSlot, item.topic, item.category || item.cat, manifest);
+      log(\`Video prompts ready for \${vidSlot.name} (\${vidSlot.service})\`);
+      let ytResult = null;
+      if (accessToken) { ytResult = await uploadToYouTube(accessToken, metadata, music); log(\`YouTube result: \${JSON.stringify(ytResult).substring(0, 100)}\`); }
+      item.status = 'done';
+      item.completedAt = new Date().toISOString();
+      item.output = { title: metadata.title, tags: metadata.tags, videoPrompts: metadata.videoPrompts, music };
+      appendLog({ topic: item.topic, category: item.category||item.cat, status: 'done', title: metadata.title, manifest, music, youtubeResult: ytResult, vidSlot: vidSlot.name });
+      log(\`✅ Done: "\${metadata.title}"\`);
+    } catch(e) {
+      log(\`❌ Error: \${e.message}\`);
+      item.status = 'pending';
+      item.lastError = e.message;
+      appendLog({ topic: item.topic, status: 'error', error: e.message });
+    }
+    writeQueue(queue);
+    await new Promise(r => setTimeout(r, 3000));
+  }
+  log('=== Agent run complete ===');
+}
+
+main().catch(e => { console.error('Fatal:', e); process.exit(1); });
+`;
 }
 
 // ═══════════════════════════════════════════════════════
@@ -925,6 +1324,7 @@ function saveAll(){
 function buildCatGrids(){
   ['dash-cats','gen-cats'].forEach(gid=>{
     const g=document.getElementById(gid);
+    if(!g)return;
     g.innerHTML=CATS.map(c=>`<div class="cat" id="${gid}-${c.id}" onclick="selCategory('${c.id}','${gid}')"><span class="ce">${c.e}</span><span class="cn">${c.n}</span></div>`).join('');
   });
 }
@@ -937,7 +1337,7 @@ function selCategory(id,gid){
 }
 
 // ═══════════════════════════════════════════════════════
-// GEMINI — with rate-limit self-healing
+// GEMINI
 // ═══════════════════════════════════════════════════════
 function getKey(slot=0){
   const k=getUD().keys||{};
@@ -945,7 +1345,7 @@ function getKey(slot=0){
   return keys[slot%keys.length]||null;
 }
 
-async function gemini(prompt,slot=0,retryCount=0){
+async function gemini(prompt,slot=0){
   const key=getKey(slot);
   if(!key)throw new Error('No Gemini API key saved. Go to AI APIs → add your key first.');
   const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`,{
@@ -954,7 +1354,7 @@ async function gemini(prompt,slot=0,retryCount=0){
   });
   if(r.status===429){
     const totalKeys=[getUD().keys?.aiKeyA,getUD().keys?.aiKeyB,getUD().keys?.aiKeyC].filter(Boolean).length;
-    if(slot+1<totalKeys)return gemini(prompt,slot+1,retryCount); // try next key
+    if(slot+1<totalKeys)return gemini(prompt,slot+1);
     const err=new Error('RATE_LIMIT_ALL_SLOTS');err.isRateLimit=true;throw err;
   }
   if(!r.ok){const e=await r.json();throw new Error('Gemini '+(e.error?.message||r.status));}
@@ -962,10 +1362,7 @@ async function gemini(prompt,slot=0,retryCount=0){
   return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
 }
 
-// ═══════════════════════════════════════════════════════
-// NON-VERBAL 4-SCENE MANIFEST GENERATOR
-// ═══════════════════════════════════════════════════════
-async function generateSceneManifest(topic, category, chName){
+async function generateSceneManifest(topic,category,chName){
   const catObj=CATS.find(c=>c.n===category)||CATS[0];
   const prompt=`You are a Lead Creative Director for a viral YouTube Shorts animation studio targeting toddlers aged 2-5.
 
@@ -989,13 +1386,12 @@ Scene 4 (12-16s) [Resolution]: Massive glowing green checkmark or floating heart
 
 Return ONLY valid minified JSON, no markdown, no backticks:
 {"title":"engaging Shorts title max 60 chars starting with emoji for ${category}","tags":"#shorts #funny #cute #kidstv #animation #toddler #${catObj.id} #${category.toLowerCase().replace(/\s/g,'')} #viral #children","scenes":{"scene_1":"[detailed 3D engine visual: character description, clothing colors, object, lighting, exact action, facial expression, camera angle, background setting]","scene_2":"[detailed 3D engine visual: same character markings, the accident moment, dynamic motion blur, shock expression, debris/spill details, dramatic lighting shift]","scene_3":"[detailed 3D engine visual: same characters, streaming tears animation detail, secondary characters rushing in, warm empathetic lighting, hands reaching out]","scene_4":"[detailed 3D engine visual: glowing reward UI element, repair action, shared treat moment, joyful dancing loop animation, rainbow lighting, camera pulls back to starting frame]"},"musicMood":"${catObj.p} upbeat cheerful children background music","description":"Fun ${category} Shorts for toddlers! Watch what happens when ${topic.toLowerCase()}. Perfect for babies and young children. 🎬✨ Subscribe for more daily ${category} videos! #Shorts #Kids #${category}"}`;
-
   const raw=await gemini(prompt);
   return JSON.parse(raw.replace(/```json|```/g,'').trim());
 }
 
 // ═══════════════════════════════════════════════════════
-// SCHEDULER UI HELPERS
+// SCHEDULER UI
 // ═══════════════════════════════════════════════════════
 function schedStep(msg,pct){
   const panel=document.getElementById('sched-panel');
@@ -1007,65 +1403,45 @@ function schedStep(msg,pct){
   const dashOut=document.getElementById('dash-out');
   if(dashOut){dashOut.textContent=msg;dashOut.className='out-box';}
 }
-
-function schedLoop(msg){
-  const el=document.getElementById('sched-loop');
-  if(el)el.textContent=msg;
-}
-
+function schedLoop(msg){const el=document.getElementById('sched-loop');if(el)el.textContent=msg;}
 function schedTag(state){
-  const el=document.getElementById('sched-status-tag');
-  if(!el)return;
-  el.textContent=state;
-  el.className='tag';
+  const el=document.getElementById('sched-status-tag');if(!el)return;
+  el.textContent=state;el.className='tag';
   if(state==='Running')el.classList.add('tag-green');
   else if(state==='Retrying')el.classList.add('tag-gold');
   else if(state==='Error')el.classList.add('tag-pink');
   else el.classList.add('tag-blue');
 }
-
 function stopAutoScheduler(){
   autoSchedulerRunning=false;
   if(autoSchedulerTimer){clearTimeout(autoSchedulerTimer);autoSchedulerTimer=null;}
-  schedTag('Stopped');
-  schedLoop('Scheduler stopped by user.');
+  schedTag('Stopped');schedLoop('Scheduler stopped by user.');
   const btn=document.getElementById('dash-gen-btn');
   if(btn){btn.disabled=false;btn.innerHTML='🤖 Run Autonomous Post';}
   toast('⏹ Scheduler stopped','ok');
 }
 
 // ═══════════════════════════════════════════════════════
-// AUTONOMOUS DAILY SCHEDULER — main engine
+// AUTONOMOUS SCHEDULER
 // ═══════════════════════════════════════════════════════
 async function triggerAutonomousDailyPost(){
   if(autoSchedulerRunning){toast('Scheduler already running. Stop first.','err');return;}
-
   const btn=document.getElementById('dash-gen-btn');
   btn.disabled=true;btn.innerHTML='<span class="loader" style="color:#fff"></span> Generating...';
-  autoSchedulerRunning=true;
-  schedTag('Running');
-
-  // ── Auto-pick category ──
-  const activeCard=document.querySelector('#dash-cats .cat.on');
+  autoSchedulerRunning=true;schedTag('Running');
   let chosenCat=selCat;
   if(!chosenCat){
-    // Pick random from all categories if none selected
     chosenCat=CATS[Math.floor(Math.random()*CATS.length)];
     const catEl=document.getElementById(`dash-cats-${chosenCat.id}`);
     if(catEl){document.querySelectorAll('#dash-cats .cat').forEach(c=>c.classList.remove('on'));catEl.classList.add('on');}
   }
-
-  // ── Auto-pick viral archetype + category topic ──
   const data=getUD();
   const used=(data.usedTopics||[]).filter(t=>t.catId===chosenCat.id).map(t=>t.topic);
   const archetype=VIRAL_ARCHETYPES[Math.floor(Math.random()*VIRAL_ARCHETYPES.length)];
   const chName=data.keys?.ytChName||'Kids TV';
-
-  schedStep(`[Auto-Scheduler] Category: ${chosenCat.n} · Archetype: "${archetype}". Calling Gemini Flash free tier...`, 10);
+  schedStep(`[Auto-Scheduler] Category: ${chosenCat.n} · Archetype: "${archetype}". Calling Gemini Flash...`,10);
   schedLoop(`Loop #${(data.logs||[]).length+1} · ${new Date().toLocaleTimeString()}`);
-
-  try {
-    // ── Step 1: generate specific topic via AI ──
+  try{
     const avoidStr=used.length?`Never reuse these topics: ${used.slice(-20).join('; ')}`:'';
     const topicRaw=await gemini(`Generate ONE specific viral YouTube Shorts topic.
 Category: ${chosenCat.n} — ${chosenCat.p}
@@ -1074,99 +1450,54 @@ ${avoidStr}
 Rules: under 8 words, specific and vivid, safe for toddlers, high visual comedy potential.
 Return ONLY the topic text, nothing else.`);
     const autoTopic=topicRaw.trim().replace(/^["']|["']$/g,'');
-    schedStep(`✅ Topic selected: "${autoTopic}". Generating 4-scene non-verbal manifest...`, 30);
-
-    // ── Step 2: generate scene manifest ──
+    schedStep(`✅ Topic selected: "${autoTopic}". Generating 4-scene non-verbal manifest...`,30);
     const manifest=await generateSceneManifest(autoTopic,chosenCat.n,chName);
-    schedStep(`🎬 Scene manifest ready. Building Shorts metadata package...`, 65);
-
-    // ── Show manifest on dashboard ──
+    schedStep(`🎬 Scene manifest ready. Building Shorts metadata package...`,65);
     renderManifestPreview(manifest);
-
-    // ── Save to curOut ──
-    curOut={
-      topic:autoTopic,
-      category:chosenCat.n,
-      catId:chosenCat.id,
-      title:manifest.title,
-      description:manifest.description,
-      tags:manifest.tags,
-      musicMood:manifest.musicMood,
-      scenes:manifest.scenes,
-      status:'pending',
-    };
-
-    // ── Mark topic as used ──
+    curOut={topic:autoTopic,category:chosenCat.n,catId:chosenCat.id,title:manifest.title,description:manifest.description,tags:manifest.tags,musicMood:manifest.musicMood,scenes:manifest.scenes,status:'pending'};
     data.usedTopics=data.usedTopics||[];
     data.usedTopics.push({catId:chosenCat.id,topic:autoTopic,date:new Date().toISOString()});
     if(data.usedTopics.length>300)data.usedTopics=data.usedTopics.slice(-300);
     saveUD(data);
-
-    schedStep(`📦 Package ready. Pushing to queue & triggering GitHub...`, 85);
+    schedStep(`📦 Package ready. Pushing to queue & triggering GitHub...`,85);
     addToQueue(true);
     await triggerGH(true);
-
-    schedStep(`✅ Autonomous post complete! GitHub Actions is uploading "${autoTopic}" to YouTube Shorts.`, 100);
-    schedLoop(`Completed at ${new Date().toLocaleTimeString()} · Next: run again or set GitHub schedule`);
+    schedStep(`✅ Autonomous post complete! GitHub Actions is uploading "${autoTopic}" to YouTube Shorts.`,100);
+    schedLoop(`Completed at ${new Date().toLocaleTimeString()}`);
     schedTag('Done');
     toast(`✅ Auto-post done: "${autoTopic}"`, 'ok');
-
-  } catch(e){
-    // ── Rate limit self-healing ──
+  }catch(e){
     if(e.isRateLimit){
       schedTag('Retrying');
       let countdown=60;
-      schedStep(`⏳ Free tier rate-limit reached across all ${getUD().keys?Object.values({a:getUD().keys.aiKeyA,b:getUD().keys.aiKeyB,c:getUD().keys.aiKeyC}).filter(Boolean).length:0} keys. Self-healing — retrying in 60 seconds...`,50);
-      const countTimer=setInterval(()=>{
-        countdown--;
-        schedLoop(`Resuming in ${countdown}s... All Gemini free slots temporarily exhausted.`);
-        if(countdown<=0)clearInterval(countTimer);
-      },1000);
-      autoSchedulerRunning=false;
-      btn.disabled=false;btn.innerHTML='🤖 Run Autonomous Post';
-      autoSchedulerTimer=setTimeout(()=>{
-        clearInterval(countTimer);
-        triggerAutonomousDailyPost();
-      },60000);
+      schedStep(`⏳ Rate-limit reached across all keys. Self-healing — retrying in 60 seconds...`,50);
+      const countTimer=setInterval(()=>{countdown--;schedLoop(`Resuming in ${countdown}s...`);if(countdown<=0)clearInterval(countTimer);},1000);
+      autoSchedulerRunning=false;btn.disabled=false;btn.innerHTML='🤖 Run Autonomous Post';
+      autoSchedulerTimer=setTimeout(()=>{clearInterval(countTimer);triggerAutonomousDailyPost();},60000);
       return;
     }
-    schedStep(`❌ Pipeline error: ${e.message}`, 0);
-    schedTag('Error');
-    schedLoop(`Failed at ${new Date().toLocaleTimeString()}`);
+    schedStep(`❌ Pipeline error: ${e.message}`,0);schedTag('Error');schedLoop(`Failed at ${new Date().toLocaleTimeString()}`);
     toast(`❌ ${e.message}`,'err');
   }
-
-  autoSchedulerRunning=false;
-  btn.disabled=false;btn.innerHTML='🤖 Run Autonomous Post';
+  autoSchedulerRunning=false;btn.disabled=false;btn.innerHTML='🤖 Run Autonomous Post';
 }
 
 // ═══════════════════════════════════════════════════════
-// MANIFEST PREVIEW RENDERER
+// MANIFEST PREVIEW
 // ═══════════════════════════════════════════════════════
 function renderManifestPreview(manifest){
-  const card=document.getElementById('scene-manifest-card');
-  if(!card)return;
+  const card=document.getElementById('scene-manifest-card');if(!card)return;
   card.style.display='block';
   document.getElementById('manifest-title').textContent=manifest.title||'';
   document.getElementById('manifest-tags').textContent=manifest.tags||'';
-  const SCENE_META=[
-    {num:'Scene 1',time:'0–4s',label:'🪝 Hook'},
-    {num:'Scene 2',time:'4–8s',label:'💥 Mishap'},
-    {num:'Scene 3',time:'8–12s',label:'💧 Empathy'},
-    {num:'Scene 4',time:'12–16s',label:'🏆 Resolution'},
-  ];
-  const grid=document.getElementById('scene-grid');
-  grid.innerHTML=Object.entries(manifest.scenes||{}).map(([k,v],i)=>`
-    <div class="scene-card">
-      <div class="scene-num">${SCENE_META[i]?.label||k}</div>
-      <div class="scene-time">${SCENE_META[i]?.time||''}</div>
-      <div class="scene-txt">${v}</div>
-    </div>`).join('');
+  const SCENE_META=[{label:'🪝 Hook',time:'0–4s'},{label:'💥 Mishap',time:'4–8s'},{label:'💧 Empathy',time:'8–12s'},{label:'🏆 Resolution',time:'12–16s'}];
+  document.getElementById('scene-grid').innerHTML=Object.entries(manifest.scenes||{}).map(([k,v],i)=>`
+    <div class="scene-card"><div class="scene-num">${SCENE_META[i]?.label||k}</div><div class="scene-time">${SCENE_META[i]?.time||''}</div><div class="scene-txt">${v}</div></div>`).join('');
   document.getElementById('manifest-json-raw').textContent=JSON.stringify(manifest,null,2);
 }
 
 // ═══════════════════════════════════════════════════════
-// TOPICS (for Generate page)
+// TOPICS
 // ═══════════════════════════════════════════════════════
 async function loadTopics(){
   if(!selCat)return;
@@ -1175,7 +1506,6 @@ async function loadTopics(){
   const data=getUD();
   const used=(data.usedTopics||[]).filter(t=>t.catId===selCat.id).map(t=>t.topic);
   const avoid=used.length?`\nNever suggest these already used topics: ${used.slice(-25).join('; ')}`:'';
-  // Pick 2 random archetypes to bias the topics
   const twoArch=[VIRAL_ARCHETYPES[Math.floor(Math.random()*VIRAL_ARCHETYPES.length)],VIRAL_ARCHETYPES[Math.floor(Math.random()*VIRAL_ARCHETYPES.length)]];
   try{
     const raw=await gemini(`Generate 6 specific viral YouTube Shorts topics.
@@ -1195,7 +1525,7 @@ Return ONLY a JSON array: ["topic 1","topic 2","topic 3","topic 4","topic 5","to
     if(e.isRateLimit){
       document.getElementById('topic-list').innerHTML=`<div style="color:var(--gold);padding:10px;font-size:13px">⏳ Rate limit hit — retrying in 60s...</div>`;
       setTimeout(loadTopics,60000);
-    } else {
+    }else{
       document.getElementById('topic-list').innerHTML=`<div style="color:var(--red);padding:10px;font-size:13px">${e.message}</div>`;
     }
   }
@@ -1204,12 +1534,11 @@ Return ONLY a JSON array: ["topic 1","topic 2","topic 3","topic 4","topic 5","to
 function pickTopic(i,topic){
   document.querySelectorAll('.topic-item').forEach(el=>el.classList.remove('on'));
   document.getElementById('tp-'+i).classList.add('on');
-  selTopic=topic;
-  generateContent();
+  selTopic=topic;generateContent();
 }
 
 // ═══════════════════════════════════════════════════════
-// GENERATE FULL CONTENT (Generate page)
+// GENERATE (page)
 // ═══════════════════════════════════════════════════════
 async function generateContent(){
   if(!selCat||!selTopic)return;
@@ -1219,8 +1548,7 @@ async function generateContent(){
   const setP=(pct,txt)=>{document.getElementById('gen-prog-fill').style.width=pct+'%';document.getElementById('gen-step-txt').textContent=txt;};
   setP(10,'🎬 Building non-verbal scene manifest...');
   try{
-    const data=getUD();
-    const chName=data.keys?.ytChName||'Kids TV';
+    const data=getUD();const chName=data.keys?.ytChName||'Kids TV';
     setP(40,'🧠 Generating 4-scene non-verbal manifest...');
     const manifest=await generateSceneManifest(selTopic,selCat.n,chName);
     setP(85,'📦 Finalizing Shorts package...');
@@ -1233,18 +1561,12 @@ async function generateContent(){
     data.usedTopics=data.usedTopics||[];
     data.usedTopics.push({catId:selCat.id,topic:selTopic,date:new Date().toISOString()});
     if(data.usedTopics.length>300)data.usedTopics=data.usedTopics.slice(-300);
-    saveUD(data);
-    setP(100,'✅ Ready!');
+    saveUD(data);setP(100,'✅ Ready!');
     setTimeout(()=>{document.getElementById('gen-loading').style.display='none';document.getElementById('gen-output').style.display='block';},300);
   }catch(e){
     document.getElementById('gen-loading').style.display='none';
-    if(e.isRateLimit){
-      document.getElementById('gen-step-txt').textContent='⏳ Rate limit — retrying in 60s...';
-      setTimeout(generateContent,60000);
-    } else {
-      document.getElementById('gen-out-card').querySelector('.card-head').innerHTML=`<span style="color:var(--red)">❌ ${e.message}</span>`;
-      toast(e.message,'err');
-    }
+    if(e.isRateLimit){document.getElementById('gen-step-txt').textContent='⏳ Rate limit — retrying in 60s...';setTimeout(generateContent,60000);}
+    else{document.getElementById('gen-out-card').querySelector('.card-head').innerHTML=`<span style="color:var(--red)">❌ ${e.message}</span>`;toast(e.message,'err');}
   }
 }
 
@@ -1253,27 +1575,22 @@ async function generateContent(){
 // ═══════════════════════════════════════════════════════
 function addToQueue(silent=false){
   if(!curOut){if(!silent)toast('Generate content first!','err');return;}
-  const data=getUD();
-  data.queue=data.queue||[];
+  const data=getUD();data.queue=data.queue||[];
   data.queue.push({...curOut,status:'pending',added:new Date().toISOString(),id:Date.now()});
-  saveUD(data);
-  renderStats();renderQPreview();renderFullQ();
-  const count=data.queue.filter(i=>i.status==='pending').length;
-  document.getElementById('sb-queue-count').textContent=count;
+  saveUD(data);renderStats();renderQPreview();renderFullQ();
+  document.getElementById('sb-queue-count').textContent=data.queue.filter(i=>i.status==='pending').length;
   if(!silent)toast('✓ Added to upload queue','ok');
 }
 
 function renderQPreview(){
-  const data=getUD();
-  const q=(data.queue||[]).slice(-5).reverse();
+  const data=getUD();const q=(data.queue||[]).slice(-5).reverse();
   const el=document.getElementById('dash-q-preview');
   if(!q.length){el.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;padding:1rem">No videos queued yet.</div>';return;}
   el.innerHTML=q.map((item,i)=>qHTML(item,i)).join('');
 }
 
 function renderFullQ(){
-  const data=getUD();
-  const q=(data.queue||[]).slice().reverse();
+  const data=getUD();const q=(data.queue||[]).slice().reverse();
   const el=document.getElementById('full-queue');
   if(!q.length){el.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;padding:1.5rem">Queue is empty.</div>';return;}
   el.innerHTML=q.map((item,i)=>qHTML(item,i,true)).join('');
@@ -1292,10 +1609,8 @@ function clearDone(){const data=getUD();data.queue=(data.queue||[]).filter(i=>i.
 // LOGS
 // ═══════════════════════════════════════════════════════
 function renderLogs(){
-  const data=getUD();
-  const logs=(data.logs||[]).slice().reverse();
-  const tbody=document.getElementById('log-body');
-  const nl=document.getElementById('no-logs');
+  const data=getUD();const logs=(data.logs||[]).slice().reverse();
+  const tbody=document.getElementById('log-body');const nl=document.getElementById('no-logs');
   if(!logs.length){tbody.innerHTML='';nl.style.display='block';return;}
   nl.style.display='none';
   tbody.innerHTML=logs.map((l,i)=>`<tr>
@@ -1308,16 +1623,13 @@ function renderLogs(){
     <td style="color:var(--muted)">${new Date(l.date||l.timestamp||Date.now()).toLocaleDateString()}</td>
   </tr>`).join('');
 }
-
 function clearLogs(){if(!confirm('Clear all logs?'))return;const data=getUD();data.logs=[];saveUD(data);renderLogs();}
 
 // ═══════════════════════════════════════════════════════
 // STATS
 // ═══════════════════════════════════════════════════════
 function renderStats(){
-  const data=getUD();
-  const q=data.queue||[];
-  const logs=data.logs||[];
+  const data=getUD();const q=data.queue||[];const logs=data.logs||[];
   const today=new Date().toDateString();
   const todayDone=logs.filter(l=>new Date(l.date||l.timestamp||0).toDateString()===today).length;
   document.getElementById('ds-q').textContent=q.filter(i=>i.status==='pending').length;
@@ -1338,15 +1650,14 @@ async function testGH(){
   el.textContent='Testing...';el.style.color='var(--muted)';
   try{
     const r=await fetch(`https://api.github.com/repos/${repo}`,{headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
-    el.textContent=r.ok?'✓ Connected!':'❌ Check token & repo';
-    el.style.color=r.ok?'var(--green)':'var(--red)';
+    el.textContent=r.ok?'✓ Connected!':'❌ Check token & repo';el.style.color=r.ok?'var(--green)':'var(--red)';
   }catch{el.textContent='❌ Network error';el.style.color='var(--red)';}
 }
 
 async function pushQueue(){
   const data=getUD();const k=data.keys||{};
   const repo=k.ghRepo;const token=k.ghToken;
-  if(!repo||!token)return;
+  if(!repo||!token){toast('Enter repo & token in Deploy page first','err');return;}
   try{
     const getR=await fetch(`https://api.github.com/repos/${repo}/contents/queue.json`,{headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
     const ex=getR.ok?await getR.json():null;
@@ -1355,16 +1666,14 @@ async function pushQueue(){
       method:'PUT',headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
       body:JSON.stringify({message:'Update queue via KidsTV Agent',content,sha:ex?.sha})
     });
-  }catch(e){console.error('Push queue failed:',e);}
+    toast('✓ Queue pushed to GitHub','ok');
+  }catch(e){toast('Push failed: '+e.message,'err');}
 }
 
 async function triggerGH(silent=false){
   const data=getUD();const k=data.keys||{};
   const repo=k.ghRepo;const token=k.ghToken;
-  if(!repo||!token){
-    if(!silent){toast('Set GitHub repo & token in Settings → GitHub first!','err');}
-    return;
-  }
+  if(!repo||!token){if(!silent)toast('Set GitHub repo & token in Deploy page first!','err');return;}
   if(!silent)toast('Pushing queue to GitHub...','ok');
   await pushQueue();
   const r=await fetch(`https://api.github.com/repos/${repo}/dispatches`,{
@@ -1372,7 +1681,7 @@ async function triggerGH(silent=false){
     body:JSON.stringify({event_type:'manual_trigger'})
   });
   if(!silent){
-    if(r.ok||r.status===204)toast('⚡ GitHub Action triggered! Processing in ~30 seconds.','ok');
+    if(r.ok||r.status===204)toast('⚡ GitHub Action triggered! Processing in ~30s.','ok');
     else toast('❌ Trigger failed — check token permissions (repo + workflow).','err');
   }
 }
@@ -1418,9 +1727,7 @@ function nav(page,btn){
   if(pageEl)pageEl.classList.add('active');
   if(page==='logs')renderLogs();
   if(page==='queue')renderFullQ();
-  // Scroll to top on mobile
-  const main=document.querySelector('.main');
-  if(main)main.scrollTop=0;
+  const main=document.querySelector('.main');if(main)main.scrollTop=0;
 }
 
 // ═══════════════════════════════════════════════════════
